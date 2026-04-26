@@ -1,0 +1,51 @@
+[
+{
+    "id": "8",
+    "title": "Build a Basic Histogram",
+    "markdown": "### The Scenario\nA teacher wants to see how exam scores are distributed.\n\n### The Task\n- Use `plt.hist()` to create a histogram of `scores`.\n- Use exactly `5` bins.\n- Give the chart the title: `Exam Scores Distribution`.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nscores =[55, 60, 62, 65, 68, 70, 72, 75, 78, 80, 83, 85, 88, 90, 92]\n\n# Create your histogram below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.patches) == 5, 'We expected a histogram with exactly 5 bins.'\nassert ax.get_title() == 'Exam Scores Distribution', 'Check your plot title! It must be exactly Exam Scores Distribution.'"
+  },
+  {
+    "id": "9",
+    "title": "Customize Histogram Colors",
+    "markdown": "### The Scenario\nAn HR analyst is reviewing interview scores and wants a histogram with clearer styling.\n\n### The Task\n- Use `plt.hist()` to create a histogram of `scores`.\n- Use exactly `6` bins.\n- Set the bar color to `orange`.\n- Set the edge color to `black`.\n- Set the x-axis label to `Score`.\n- Give the chart the title: `Interview Score Distribution`.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nscores =[58, 61, 64, 67, 68, 70, 72, 73, 75, 78, 81, 84, 86, 89, 91, 94]\n\n# Create your customized histogram below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "import matplotlib.colors as mcolors\nax = plt.gca()\nassert len(ax.patches) == 6, 'We expected a histogram with exactly 6 bins.'\npatch = ax.patches[0]\nassert mcolors.to_rgba(patch.get_facecolor()) == mcolors.to_rgba('orange'), 'Your histogram bars should be orange.'\nassert mcolors.to_rgba(patch.get_edgecolor()) == mcolors.to_rgba('black'), 'Your histogram bar edges should be black.'\nassert ax.get_xlabel() == 'Score', 'Check your x-axis label! It must be exactly Score.'\nassert ax.get_title() == 'Interview Score Distribution', 'Check your plot title! It must be exactly Interview Score Distribution.'"
+  },
+  {
+    "id": "10",
+    "title": "Compare Two Histograms",
+    "markdown": "### The Scenario\nA gym wants to compare morning and evening workout durations.\n\n### The Task\n- Plot `morning_minutes` and `evening_minutes` on the same histogram.\n- Use `5` bins for each histogram.\n- Add labels so the legend shows `Morning` and `Evening`.\n- Show the legend.\n- Give the chart the title: `Workout Duration Comparison`.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nmorning_minutes =[20, 22, 25, 28, 30, 32, 35, 38]\nevening_minutes =[25, 27, 29, 31, 34, 36, 39, 42]\n\n# Create your overlapping histograms below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.patches) == 10, 'We expected two histograms with 5 bins each, for a total of 10 bars.'\nlegend = ax.get_legend()\nassert legend is not None, 'We could not find a legend. Did you call plt.legend()?'\nlabels = {text.get_text() for text in legend.get_texts()}\nassert labels == {'Morning', 'Evening'}, 'Your legend labels must be Morning and Evening.'\nassert ax.get_title() == 'Workout Duration Comparison', 'Check your plot title! It must be exactly Workout Duration Comparison.'"
+  },
+  {
+    "id": "11",
+    "title": "Create a 1x2 Subplot Layout",
+    "markdown": "### The Scenario\nA small business wants revenue shown beside order distribution in one figure.\n\n### The Task\n- Create a `1x2` subplot layout.\n- In the first subplot, make a line chart of `months` vs `revenue` and title it `Revenue`.\n- In the second subplot, make a histogram of `orders` with `4` bins and title it `Orders`.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nmonths =['Jan', 'Feb', 'Mar', 'Apr']\nrevenue =[200, 230, 250, 280]\norders =[18, 20, 22, 24, 25, 27, 28, 30]\n\n# Create your 1x2 subplot figure below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "fig = plt.gcf()\nassert len(fig.axes) == 2, 'We expected exactly two subplots.'\nleft_ax, right_ax = fig.axes\nassert len(left_ax.lines) == 1, 'The first subplot should contain a line chart.'\nassert len(right_ax.patches) == 4, 'The second subplot should contain a histogram with 4 bins.'\nassert left_ax.get_title() == 'Revenue', 'The first subplot title must be Revenue.'\nassert right_ax.get_title() == 'Orders', 'The second subplot title must be Orders.'"
+  },
+  {
+    "id": "12",
+    "title": "Stack Two Subplots Vertically",
+    "markdown": "### The Scenario\nAn ecommerce analyst wants traffic and purchase values in a vertical dashboard.\n\n### The Task\n- Set the figure size to `(8, 6)`.\n- Create a `2x1` subplot layout.\n- In the top subplot, plot `days` vs `visits` and title it `Website Visits`.\n- In the bottom subplot, create a histogram of `purchase_values` with `5` bins and title it `Purchase Values`.",
+    "starting_code": "import matplotlib.pyplot as plt\n\ndays =['Mon', 'Tue', 'Wed', 'Thu', 'Fri']\nvisits =[120, 145, 138, 160, 172]\npurchase_values =[18, 22, 25, 30, 35, 40, 42, 45, 48, 50, 55]\n\n# Create your vertical subplot figure below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "fig = plt.gcf()\nwidth, height = fig.get_size_inches()\nassert abs(width - 8) < 0.1 and abs(height - 6) < 0.1, 'Your figure size should be 8 by 6.'\nassert len(fig.axes) == 2, 'We expected exactly two subplots.'\ntop_ax, bottom_ax = fig.axes\nassert len(top_ax.lines) == 1, 'The top subplot should contain a line chart.'\nassert len(bottom_ax.patches) == 5, 'The bottom subplot should contain a histogram with 5 bins.'\nassert top_ax.get_title() == 'Website Visits', 'The top subplot title must be Website Visits.'\nassert bottom_ax.get_title() == 'Purchase Values', 'The bottom subplot title must be Purchase Values.'"
+  },
+  {
+    "id": "13",
+    "title": "Build a 2x2 Visualization Dashboard",
+    "markdown": "### The Scenario\nA startup wants a quick visual dashboard with four different views of its data.\n\n### The Task\n- Create a `2x2` subplot layout.\n- In subplot 1, create a line chart of `days` vs `sales` titled `Sales Line`.\n- In subplot 2, create a scatter plot of `ad_spend` vs `signups` titled `Ad Spend vs Signups`.\n- In subplot 3, create a bar chart of `regions` vs `region_sales` titled `Regional Sales`.\n- In subplot 4, create a histogram of `ratings` with `4` bins titled `Ratings Histogram`.",
+    "starting_code": "import matplotlib.pyplot as plt\n\ndays = ['Mon', 'Tue', 'Wed', 'Thu']\nsales =[20, 24, 19, 27]\nad_spend =[100, 120, 90, 140]\nsignups = [5, 7, 4, 8]\nregions = ['North', 'South', 'East', 'West']\nregion_sales =[80, 65, 70, 90]\nratings =[3, 4, 5, 4, 3, 5, 4, 4]\n\n# Create your 2x2 dashboard below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "fig = plt.gcf()\nassert len(fig.axes) == 4, 'We expected exactly four subplots in a 2x2 layout.'\nax1, ax2, ax3, ax4 = fig.axes\nassert len(ax1.lines) == 1, 'The first subplot should contain a line chart.'\nassert len(ax2.collections) > 0, 'The second subplot should contain a scatter plot.'\nassert len(ax3.patches) == 4, 'The third subplot should contain a bar chart with four bars.'\nassert len(ax4.patches) == 4, 'The fourth subplot should contain a histogram with 4 bins.'\nassert ax1.get_title() == 'Sales Line', 'The first subplot title must be Sales Line.'\nassert ax2.get_title() == 'Ad Spend vs Signups', 'The second subplot title must be Ad Spend vs Signups.'\nassert ax3.get_title() == 'Regional Sales', 'The third subplot title must be Regional Sales.'\nassert ax4.get_title() == 'Ratings Histogram', 'The fourth subplot title must be Ratings Histogram.'"
+  },
+  {
+    "id": "14",
+    "title": "Add a Mean Line to a Histogram",
+    "markdown": "### The Scenario\nA delivery company wants to show delivery times and highlight the average.\n\n### The Task\n- Create a histogram of `delivery_times` using `6` bins.\n- Add a vertical dashed line at the mean delivery time.\n- Give the chart the title: `Delivery Times`.",
+    "starting_code": "import matplotlib.pyplot as plt\nimport numpy as np\n\ndelivery_times =[22, 24, 25, 27, 29, 30, 31, 33, 35, 36, 38, 40]\n\n# Create your histogram below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "import numpy as np\nax = plt.gca()\nexpected_mean = np.mean(delivery_times)\nassert len(ax.patches) == 6, 'We expected a histogram with exactly 6 bins.'\nassert any(np.allclose(line.get_xdata(), [expected_mean, expected_mean]) for line in ax.lines), 'Add a vertical line at the mean using plt.axvline().'\nassert ax.get_title() == 'Delivery Times', 'Check your plot title! It must be exactly Delivery Times.'"
+  }
+]

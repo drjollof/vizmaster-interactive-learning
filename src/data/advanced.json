@@ -1,0 +1,44 @@
+[
+{
+    "id": "15",
+    "title": "Create Your First Seaborn Heatmap",
+    "markdown": "### The Scenario\nA retail team wants a compact view of weekly sales across stores.\n\n### The Task\n- Use `sns.heatmap()` to visualize `sales_data`.\n- Use the colormap `Blues`.\n- Give the chart the title: `Weekly Sales Heatmap`.",
+    "starting_code": "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\n\nsales_data = pd.DataFrame(\n    [[22, 18, 25, 20], [28, 24, 30, 27],[26, 21, 29, 23]],\n    index=['Store A', 'Store B', 'Store C'],\n    columns=['Mon', 'Tue', 'Wed', 'Thu']\n)\n\n# Create your heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.collections) > 0, 'We could not find a heatmap. Did you use sns.heatmap()?'\nassert ax.collections[0].cmap.name == 'Blues', 'Your heatmap should use the Blues colormap.'\nassert ax.get_title() == 'Weekly Sales Heatmap', 'Check your plot title! It must be exactly Weekly Sales Heatmap.'"
+  },
+  {
+    "id": "16",
+    "title": "Annotate a Heatmap",
+    "markdown": "### The Scenario\nA school wants a heatmap that clearly shows class attendance values.\n\n### The Task\n- Use `sns.heatmap()` to visualize `attendance`.\n- Turn on annotations with `annot=True`.\n- Use the colormap `YlGnBu`.\n- Give the chart the title: `Attendance Heatmap`.",
+    "starting_code": "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\n\nattendance = pd.DataFrame(\n    [[28, 30, 29],[26, 27, 28], [30, 29, 30],[25, 26, 27]],\n    index=['Week 1', 'Week 2', 'Week 3', 'Week 4'],\n    columns=['Class A', 'Class B', 'Class C']\n)\n\n# Create your annotated heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.collections) > 0, 'We could not find a heatmap. Did you use sns.heatmap()?'\nassert ax.collections[0].cmap.name == 'YlGnBu', 'Your heatmap should use the YlGnBu colormap.'\nassert len(ax.texts) > 0, 'We could not find annotations. Did you set annot=True?'\nassert ax.get_title() == 'Attendance Heatmap', 'Check your plot title! It must be exactly Attendance Heatmap.'"
+  },
+  {
+    "id": "17",
+    "title": "Plot a Correlation Heatmap",
+    "markdown": "### The Scenario\nA data analyst wants to inspect how several study-related variables relate to one another.\n\n### The Task\n- Compute the correlation matrix of `df`.\n- Plot it with `sns.heatmap()`.\n- Use `annot=True`.\n- Use the colormap `coolwarm`.\n- Set `center=0`.\n- Give the chart the title: `Correlation Heatmap`.",
+    "starting_code": "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\n\ndf = pd.DataFrame({\n    'study_hours':[2, 3, 4, 5, 6, 7],\n    'sleep_hours':[8, 7, 7, 6, 6, 5],\n    'practice_tests':[1, 1, 2, 2, 3, 3],\n    'exam_score':[60, 65, 72, 78, 85, 90]\n})\n\n# Create your correlation heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.collections) > 0, 'We could not find a heatmap. Did you use sns.heatmap()?'\nassert ax.collections[0].cmap.name == 'coolwarm', 'Your heatmap should use the coolwarm colormap.'\nassert len(ax.texts) >= 16, 'We expected annotations on the correlation heatmap.'\nassert ax.get_title() == 'Correlation Heatmap', 'Check your plot title! It must be exactly Correlation Heatmap.'"
+  },
+  {
+    "id": "18",
+    "title": "Add Cell Borders to a Heatmap",
+    "markdown": "### The Scenario\nAn operations manager wants a clearer productivity heatmap with visible cell boundaries.\n\n### The Task\n- Use `sns.heatmap()` to visualize `productivity`.\n- Use the colormap `rocket`.\n- Set `linewidths=0.5`.\n- Set `linecolor='white'`.\n- Keep the color bar visible.\n- Give the chart the title: `Team Productivity Heatmap`.",
+    "starting_code": "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\n\nproductivity = pd.DataFrame(\n    [[72, 75, 78, 74],[68, 70, 73, 71], [80, 82, 85, 83],[76, 77, 79, 78]],\n    index=['Team A', 'Team B', 'Team C', 'Team D'],\n    columns=['Week 1', 'Week 2', 'Week 3', 'Week 4']\n)\n\n# Create your bordered heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "fig = plt.gcf()\nax = plt.gca()\nassert len(ax.collections) > 0, 'We could not find a heatmap. Did you use sns.heatmap()?'\nassert ax.collections[0].cmap.name == 'rocket', 'Your heatmap should use the rocket colormap.'\nassert ax.collections[0].get_linewidths()[0] == 0.5, 'Your heatmap should use linewidths=0.5.'\nassert len(fig.axes) == 2, 'We expected the heatmap and its color bar to be visible.'\nassert ax.get_title() == 'Team Productivity Heatmap', 'Check your plot title! It must be exactly Team Productivity Heatmap.'"
+  },
+  {
+    "id": "19",
+    "title": "Format Heatmap Annotations",
+    "markdown": "### The Scenario\nA retailer wants a heatmap of store traffic with whole-number annotations only.\n\n### The Task\n- Use `sns.heatmap()` to visualize `traffic`.\n- Turn on annotations with `annot=True`.\n- Format the annotations as whole numbers with `fmt='.0f'`.\n- Use the colormap `magma`.\n- Give the chart the title: `Store Traffic Heatmap`.",
+    "starting_code": "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\n\ntraffic = pd.DataFrame(\n    [[120, 135, 128], [142, 150, 147],[160, 158, 165]],\n    index=['Store A', 'Store B', 'Store C'],\n    columns=['Morning', 'Afternoon', 'Evening']\n)\n\n# Create your formatted heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.collections) > 0, 'We could not find a heatmap. Did you use sns.heatmap()?'\nassert ax.collections[0].cmap.name == 'magma', 'Your heatmap should use the magma colormap.'\nassert len(ax.texts) == 9, 'We expected annotations for all 9 cells.'\nassert all('.' not in text.get_text() for text in ax.texts), 'Your annotations should be formatted as whole numbers.'\nassert ax.get_title() == 'Store Traffic Heatmap', 'Check your plot title! It must be exactly Store Traffic Heatmap.'"
+  },
+  {
+    "id": "20",
+    "title": "Create a Masked Correlation Heatmap",
+    "markdown": "### The Scenario\nA data scientist wants to show only the lower triangle of a correlation matrix.\n\n### The Task\n- Compute the correlation matrix of `metrics`.\n- Create an upper-triangle mask with `np.triu()`.\n- Plot the heatmap with `sns.heatmap()` using that mask.\n- Turn on annotations with `annot=True`.\n- Use the colormap `viridis`.\n- Set `square=True`.\n- Turn the color bar off with `cbar=False`.\n- Give the chart the title: `Masked Correlation Heatmap`.",
+    "starting_code": "import matplotlib.pyplot as plt\nimport numpy as np\nimport pandas as pd\nimport seaborn as sns\n\nmetrics = pd.DataFrame({\n    'speed':[10, 12, 14, 16, 18, 20],\n    'accuracy':[70, 72, 75, 79, 82, 85],\n    'stamina':[55, 58, 60, 64, 68, 70],\n    'focus':[65, 67, 70, 73, 77, 80]\n})\n\n# Create your masked heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
+    "validation_code": "ax = plt.gca()\nfig = plt.gcf()\nassert len(ax.collections) > 0, 'We could not find a heatmap. Did you use sns.heatmap()?'\nassert ax.collections[0].cmap.name == 'viridis', 'Your heatmap should use the viridis colormap.'\nassert len(fig.axes) == 1, 'The color bar should be turned off, so we expected only one axis.'\nassert len(ax.texts) == 6, 'We expected annotations only on the visible lower-triangle cells.'\nassert ax.get_title() == 'Masked Correlation Heatmap', 'Check your plot title! It must be exactly Masked Correlation Heatmap.'"
+  }
+]
