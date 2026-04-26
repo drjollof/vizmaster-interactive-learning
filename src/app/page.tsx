@@ -11,7 +11,7 @@ import remarkGfm from 'remark-gfm';
 import WelcomeDashboard from '@/components/WelcomeDashboard';
 
 function extractPreviewData(code: string) {
-  const listRegex = /([a-zA-Z0-9_]+)\s*=\s*\[(.*?)\]/gs;
+  const listRegex = /([a-zA-Z0-9_]+)\s*=\s*\[([\s\S]*?)\]/g;
   const columns: string[] = [];
   const rowsRaw: any[][] = [];
   let match;
