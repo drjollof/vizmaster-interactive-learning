@@ -220,7 +220,7 @@ export default function Home() {
         {!activeExercise ? (
           <WelcomeDashboard onStartLesson={(id) => setActiveExerciseId(id)} />
         ) : (
-          <Group direction="horizontal" className="flex-1 w-full h-full">
+          <Group orientation="horizontal" className="flex-1 w-full h-full">
             {/* Markdown Instructions + Hints */}
             <LeftPanel
               activeExercise={activeExercise}
