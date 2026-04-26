@@ -46,8 +46,8 @@ sys.stdout = io.StringIO()
 sys.stderr = io.StringIO()
 `);
 
-    // Load micropip, then pandas + matplotlib
-    await pyodide.loadPackage(['micropip', 'pandas', 'matplotlib', 'numpy']);
+    // Load baseline packages + micropip (needed for packages outside Pyodide's built-in set)
+    await pyodide.loadPackage(['micropip', 'numpy', 'pandas', 'matplotlib']);
 
     // Install the custom "wasm_agg" backend shim.
     // We override plt.show() so that instead of trying to open a GUI window
@@ -118,6 +118,37 @@ _plt_run.close('all')
 
   // Pass the user's code safely into the Python environment
   py.globals.set('_user_code', code);
+
+  // Stage 1: load any packages that ship with Pyodide's built-in registry (fast, CDN wheel)
+  await py.loadPackagesFromImports(code);
+
+  // Stage 2: micropip fallback for packages NOT in Pyodide's registry (e.g. seaborn).
+  // We parse the import statements from the code, filter out already-loaded modules,
+  // and let micropip fetch anything still missing. Errors per-package are swallowed
+  // so a bad package name doesn't block execution of unrelated code.
+  py.globals.set('_dyn_code', code);
+  await py.runPythonAsync(`
+import sys, ast, micropip
+
+_dyn_imports = set()
+try:
+    _dyn_tree = ast.parse(_dyn_code)
+    for _node in ast.walk(_dyn_tree):
+        if isinstance(_node, ast.Import):
+            for _alias in _node.names:
+                _dyn_imports.add(_alias.name.split('.')[0])
+        elif isinstance(_node, ast.ImportFrom) and _node.module:
+            _dyn_imports.add(_node.module.split('.')[0])
+except SyntaxError:
+    pass
+
+for _pkg in _dyn_imports:
+    if _pkg not in sys.modules:
+        try:
+            await micropip.install(_pkg)
+        except Exception:
+            pass
+`);
 
   // We wrap the user code execution in Python so we have 100% control over the traceback formatting
   // and we don't rely on Pyodide's JS Error mapping which can sometimes drop the traceback string.
