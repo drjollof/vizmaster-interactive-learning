@@ -8,6 +8,7 @@ export type Exercise = typeof beginner[0] & {
     rows: any[][];
   };
   hints?: string[];
+  solution_code?: string;
 };
 
 export const allExercises: Exercise[] = [

@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📊 VizMaster: Interactive Python Data Visualization
 
-## Getting Started
+VizMaster is a serverless, browser-based interactive learning platform designed to practice Python data visualization. Inspired by platforms like DataCamp, it allows users to write, execute, and validate Python code (Pandas, Matplotlib, Seaborn) entirely in the browser using WebAssembly.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
+* **In-Browser Execution:** Powered by Pyodide, Python code compiles and runs locally in the user's browser—no backend servers required.
+* **Auto-Grading Engine:** A robust hidden validation script inspects Matplotlib and Seaborn Python objects (AST/Axes inspection) to accurately grade user code and plots.
+* **Dynamic Data Previews:** Automatically parses Python code and JSON schema to provide HTML table previews of the datasets being used.
+* **Progressive Hint System:** Localized, multi-step hints to guide users without spoiling the solution.
+* **Professional IDE UI:** A fully responsive, draggable split-pane interface using Monaco Editor and React Resizable Panels.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
+* **Frontend:** Next.js 16 (App Router), React, Tailwind CSS
+* **Code Editor:** `@monaco-editor/react`
+* **Execution Engine:** `pyodide` (WebAssembly)
+* **Layout:** `react-resizable-panels`
+* **State Management:** LocalStorage & React Hooks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🚀 Running Locally
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/drjollof/vizmaster-interactive-learning.git

@@ -1,86 +1,202 @@
 [
-    {
-        "id":  "1",
-        "title":  "Line Chart Basics",
-        "markdown":  "### The Scenario\nYou are tracking monthly sales for a small online shop.\n\n### The Task\n- Use `plt.plot()` to create a line chart of `months` vs `sales`.\n- Give the chart the title: `Monthly Sales Trend`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\nmonths =[\u0027Jan\u0027, \u0027Feb\u0027, \u0027Mar\u0027, \u0027Apr\u0027, \u0027May\u0027]\nsales =[120, 135, 150, 170, 165]\n\n# Create your line chart below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.lines) == 1, \u0027We could not find exactly one line. Did you use plt.plot()?\u0027\nassert ax.get_title() == \u0027Monthly Sales Trend\u0027, \u0027Check your plot title! It must be exactly Monthly Sales Trend.\u0027",
-        "hints":  [
-                      "Start with a single line connecting the month labels to the sales values.",
-                      "Use `plt.plot()` to draw the line, then set the chart title.",
-                      "Try `plt.plot(months, sales)` followed by `plt.title(\u0027Monthly Sales Trend\u0027)`."
-                  ]
+  {
+    "id": "1",
+    "title": "Monthly Sales Line Chart",
+    "markdown": "### The Scenario\nA small online shop wants a simple visual of monthly sales to share in a team check-in.\n\n### The Task\n- Use `plt.plot()` to create a line chart of `months` vs `sales`.\n- Set the chart title to `Monthly Sales Trend`.\n- Set the x-axis label to `Month`.\n- Set the y-axis label to `Sales ($)`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nmonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']\nsales = [1200, 1350, 1280, 1500, 1625, 1700]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.lines) == 1, 'We expected exactly one line on the chart.'\nassert ax.get_title() == 'Monthly Sales Trend', 'Set the title to exactly \"Monthly Sales Trend\".'\nassert ax.get_xlabel() == 'Month', 'Set the x-axis label to exactly \"Month\".'\nassert ax.get_ylabel() == 'Sales ($)', 'Set the y-axis label to exactly \"Sales ($)\".'",
+    "dataset_preview": {
+      "columns": ["month", "sales"],
+      "rows": [
+        ["Jan", 1200],
+        ["Feb", 1350]
+      ]
     },
-    {
-        "id":  "2",
-        "title":  "Label Your Axes",
-        "markdown":  "### The Scenario\nA blog team wants to visualize website visitors across the work week.\n\n### The Task\n- Use `plt.plot()` to create a line chart of `days` vs `visitors`.\n- Set the x-axis label to `Day`.\n- Set the y-axis label to `Visitors`.\n- Give the chart the title: `Website Visitors`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\ndays = [\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027]\nvisitors =[120, 150, 170, 160, 180]\n\n# Create your chart below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.lines) == 1, \u0027We could not find a line chart. Did you use plt.plot()?\u0027\nassert ax.get_xlabel() == \u0027Day\u0027, \u0027Check your x-axis label! It must be exactly Day.\u0027\nassert ax.get_ylabel() == \u0027Visitors\u0027, \u0027Check your y-axis label! It must be exactly Visitors.\u0027\nassert ax.get_title() == \u0027Website Visitors\u0027, \u0027Check your plot title! It must be exactly Website Visitors.\u0027",
-        "hints":  [
-                      "After drawing the line, make the chart easier to read by labeling both axes.",
-                      "Use `plt.plot()` for the line, then `plt.xlabel()` and `plt.ylabel()`.",
-                      "Try `plt.plot(days, visitors)`, then `plt.xlabel(\u0027Day\u0027)`, `plt.ylabel(\u0027Visitors\u0027)`, and `plt.title(\u0027Website Visitors\u0027)`."
-                  ]
+    "hints": [
+      "Start by plotting the month names on the x-axis and the sales values on the y-axis.",
+      "Use `plt.plot()` for the line, then add `plt.title()`, `plt.xlabel()`, and `plt.ylabel()`.",
+      "Try `plt.plot(months, sales)` followed by `plt.title('Monthly Sales Trend')`, `plt.xlabel('Month')`, and `plt.ylabel('Sales ($)')`."
+    ],
+    "solution_code": "plt.plot(months, sales)\nplt.title('Monthly Sales Trend')\nplt.xlabel('Month')\nplt.ylabel('Sales ($)')"
+  },
+  {
+    "id": "2",
+    "title": "Daily Temperature with Markers",
+    "markdown": "### The Scenario\nA local weather station wants a quick chart showing temperature changes across a week.\n\n### The Task\n- Use `plt.plot()` to graph `days` vs `temperature`.\n- Add circle markers to each point.\n- Set the title to `Weekly Temperature`.\n- Set the y-axis label to `Temperature (C)`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\ndays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']\ntemperature = [29, 30, 31, 30, 32, 33, 31]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.lines) == 1, 'We expected exactly one line on the chart.'\nline = ax.lines[0]\nassert line.get_marker() == 'o', 'Add circle markers using marker=\"o\".'\nassert ax.get_title() == 'Weekly Temperature', 'Set the title to exactly \"Weekly Temperature\".'\nassert ax.get_ylabel() == 'Temperature (C)', 'Set the y-axis label to exactly \"Temperature (C)\".'",
+    "dataset_preview": {
+      "columns": ["day", "temperature"],
+      "rows": [
+        ["Mon", 29],
+        ["Tue", 30]
+      ]
     },
-    {
-        "id":  "3",
-        "title":  "Style a Line Chart",
-        "markdown":  "### The Scenario\nA fitness coach is plotting a runner\u0027s heart rate over time.\n\n### The Task\n- Use `plt.plot()` to graph `minutes` vs `heart_rate`.\n- Make the line color `green`.\n- Use a dashed line style: `--`.\n- Give the chart the title: `Heart Rate Over Time`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\nminutes = [0, 5, 10, 15, 20, 25]\nheart_rate =[78, 88, 96, 101, 99, 90]\n\n# Create your styled line chart below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "import matplotlib.colors as mcolors\nax = plt.gca()\nassert len(ax.lines) == 1, \u0027We could not find exactly one line. Did you use plt.plot()?\u0027\nline = ax.lines[0]\nassert mcolors.to_rgba(line.get_color()) == mcolors.to_rgba(\u0027green\u0027), \u0027Your line color should be green.\u0027\nassert line.get_linestyle() == \u0027--\u0027, \u0027Your line should use a dashed linestyle.\u0027\nassert ax.get_title() == \u0027Heart Rate Over Time\u0027, \u0027Check your plot title! It must be exactly Heart Rate Over Time.\u0027",
-        "hints":  [
-                      "You already need a line chart, but this time you also need to style how the line looks.",
-                      "Use `plt.plot()` and pass styling arguments like `color` and `linestyle`.",
-                      "Try `plt.plot(minutes, heart_rate, color=\u0027green\u0027, linestyle=\u0027--\u0027)` and then `plt.title(\u0027Heart Rate Over Time\u0027)`."
-                  ]
+    "hints": [
+      "This is a basic line chart, but each point should be highlighted with a marker.",
+      "Use `plt.plot()` and pass `marker='o'`.",
+      "Try `plt.plot(days, temperature, marker='o')`, then `plt.title('Weekly Temperature')` and `plt.ylabel('Temperature (C)')`."
+    ],
+    "solution_code": "plt.plot(days, temperature, marker='o')\nplt.title('Weekly Temperature')\nplt.ylabel('Temperature (C)')"
+  },
+  {
+    "id": "3",
+    "title": "Heart Rate Style Practice",
+    "markdown": "### The Scenario\nA fitness coach is reviewing how a runner's heart rate changed during a workout.\n\n### The Task\n- Use `plt.plot()` to graph `minutes` vs `heart_rate`.\n- Make the line green.\n- Use a dashed line style.\n- Set the title to `Heart Rate Over Time`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nminutes = [0, 5, 10, 15, 20, 25]\nheart_rate = [78, 88, 96, 101, 99, 90]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "import matplotlib.colors as mcolors\nax = plt.gca()\nassert len(ax.lines) == 1, 'We expected exactly one line on the chart.'\nline = ax.lines[0]\nassert mcolors.to_rgba(line.get_color()) == mcolors.to_rgba('green'), 'The line should be green.'\nassert line.get_linestyle() == '--', 'The line should use a dashed linestyle.'\nassert ax.get_title() == 'Heart Rate Over Time', 'Set the title to exactly \"Heart Rate Over Time\".'",
+    "dataset_preview": {
+      "columns": ["minutes", "heart_rate"],
+      "rows": [
+        [0, 78],
+        [5, 88]
+      ]
     },
-    {
-        "id":  "4",
-        "title":  "Compare Two Lines",
-        "markdown":  "### The Scenario\nA store wants to compare sales for two products across four quarters.\n\n### The Task\n- Plot `product_a` and `product_b` against `quarters` on the same chart.\n- Add labels so a legend can identify each line as `Product A` and `Product B`.\n- Show the legend.\n- Give the chart the title: `Product Comparison`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\nquarters = [\u0027Q1\u0027, \u0027Q2\u0027, \u0027Q3\u0027, \u0027Q4\u0027]\nproduct_a =[120, 140, 160, 180]\nproduct_b =[100, 135, 155, 190]\n\n# Create your comparison chart below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.lines) == 2, \u0027We expected two lines on the chart.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027We could not find a legend. Did you call plt.legend()?\u0027\nlabels = {text.get_text() for text in legend.get_texts()}\nassert labels == {\u0027Product A\u0027, \u0027Product B\u0027}, \u0027Your legend labels must be Product A and Product B.\u0027\nassert ax.get_title() == \u0027Product Comparison\u0027, \u0027Check your plot title! It must be exactly Product Comparison.\u0027",
-        "hints":  [
-                      "Plot both products on the same axes so the trends can be compared directly.",
-                      "Use `plt.plot()` twice, give each line a `label`, and then call `plt.legend()`.",
-                      "Try `plt.plot(quarters, product_a, label=\u0027Product A\u0027)` and `plt.plot(quarters, product_b, label=\u0027Product B\u0027)`, then `plt.legend()` and `plt.title(\u0027Product Comparison\u0027)`."
-                  ]
+    "hints": [
+      "You already know how to make a line chart; now focus on line styling.",
+      "Use `plt.plot()` with `color='green'` and `linestyle='--'`.",
+      "Try `plt.plot(minutes, heart_rate, color='green', linestyle='--')` and then `plt.title('Heart Rate Over Time')`."
+    ],
+    "solution_code": "plt.plot(minutes, heart_rate, color='green', linestyle='--')\nplt.title('Heart Rate Over Time')"
+  },
+  {
+    "id": "4",
+    "title": "Compare Two Product Lines",
+    "markdown": "### The Scenario\nA store manager wants to compare quarterly sales for two products on the same chart.\n\n### The Task\n- Plot `product_a` against `quarters`.\n- Plot `product_b` against `quarters` on the same chart.\n- Label the lines `Product A` and `Product B`.\n- Show a legend.\n- Set the title to `Quarterly Product Comparison`.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nquarters = ['Q1', 'Q2', 'Q3', 'Q4']\nproduct_a = [120, 140, 160, 180]\nproduct_b = [100, 135, 155, 190]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.lines) == 2, 'We expected exactly two lines on the chart.'\nlegend = ax.get_legend()\nassert legend is not None, 'Show a legend using plt.legend().'\nlabels = {text.get_text() for text in legend.get_texts()}\nassert labels == {'Product A', 'Product B'}, 'The legend labels must be Product A and Product B.'\nassert ax.get_title() == 'Quarterly Product Comparison', 'Set the title to exactly \"Quarterly Product Comparison\".'",
+    "dataset_preview": {
+      "columns": ["quarter", "product_a", "product_b"],
+      "rows": [
+        ["Q1", 120, 100],
+        ["Q2", 140, 135]
+      ]
     },
-    {
-        "id":  "5",
-        "title":  "Add Markers to a Line",
-        "markdown":  "### The Scenario\nA weather station is plotting temperature readings across a week.\n\n### The Task\n- Use `plt.plot()` to create a line chart of `days` vs `temperature`.\n- Add circular markers with `marker=\u0027o\u0027`.\n- Give the chart the title: `Daily Temperature`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\ndays = [\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027, \u0027Sat\u0027, \u0027Sun\u0027]\ntemperature =[29, 30, 31, 30, 32, 33, 31]\n\n# Create your marked line chart below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.lines) == 1, \u0027We could not find a line chart. Did you use plt.plot()?\u0027\nline = ax.lines[0]\nassert line.get_marker() == \u0027o\u0027, \u0027Your line should use circle markers.\u0027\nassert ax.get_title() == \u0027Daily Temperature\u0027, \u0027Check your plot title! It must be exactly Daily Temperature.\u0027",
-        "hints":  [
-                      "This is still a line chart, but now each data point should be visibly marked.",
-                      "Use `plt.plot()` with the `marker` argument.",
-                      "Try `plt.plot(days, temperature, marker=\u0027o\u0027)` followed by `plt.title(\u0027Daily Temperature\u0027)`."
-                  ]
+    "hints": [
+      "You need two separate lines on the same axes so the trends can be compared directly.",
+      "Use `plt.plot()` twice, give each line a `label`, and then call `plt.legend()`.",
+      "Try `plt.plot(quarters, product_a, label='Product A')` and `plt.plot(quarters, product_b, label='Product B')`, then `plt.legend()` and `plt.title('Quarterly Product Comparison')`."
+    ],
+    "solution_code": "plt.plot(quarters, product_a, label='Product A')\nplt.plot(quarters, product_b, label='Product B')\nplt.legend()\nplt.title('Quarterly Product Comparison')"
+  },
+  {
+    "id": "5",
+    "title": "Study Hours Scatter Plot",
+    "markdown": "### The Scenario\nA teacher wants to see whether more study time is linked to higher quiz scores.\n\n### The Task\n- Use `plt.scatter()` to create a scatter plot of `study_hours` vs `quiz_score`.\n- Set the title to `Study Hours vs Quiz Score`.\n- Set the x-axis label to `Study Hours`.\n- Set the y-axis label to `Quiz Score`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nstudy_hours = [1, 2, 2.5, 3, 4, 5, 6]\nquiz_score = [55, 60, 64, 68, 74, 81, 88]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.collections) > 0, 'We could not find a scatter plot. Did you use plt.scatter()?'\nassert ax.get_title() == 'Study Hours vs Quiz Score', 'Set the title to exactly \"Study Hours vs Quiz Score\".'\nassert ax.get_xlabel() == 'Study Hours', 'Set the x-axis label to exactly \"Study Hours\".'\nassert ax.get_ylabel() == 'Quiz Score', 'Set the y-axis label to exactly \"Quiz Score\".'",
+    "dataset_preview": {
+      "columns": ["study_hours", "quiz_score"],
+      "rows": [
+        [1, 55],
+        [2, 60]
+      ]
     },
-    {
-        "id":  "6",
-        "title":  "Resize the Figure and Add a Grid",
-        "markdown":  "### The Scenario\nA project manager wants a clearer chart for team output by sprint.\n\n### The Task\n- Set the figure size to `(8, 4)`.\n- Use `plt.plot()` to chart `sprints` vs `tasks_completed`.\n- Turn the grid on.\n- Give the chart the title: `Sprint Output`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\nsprints = [1, 2, 3, 4, 5]\ntasks_completed =[12, 18, 17, 22, 24]\n\n# Create your chart below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nax = plt.gca()\nwidth, height = fig.get_size_inches()\nassert abs(width - 8) \u003c 0.1 and abs(height - 4) \u003c 0.1, \u0027Your figure size should be 8 by 4.\u0027\nassert len(ax.lines) == 1, \u0027We could not find a line chart. Did you use plt.plot()?\u0027\nassert any(line.get_visible() for line in ax.get_xgridlines() + ax.get_ygridlines()), \u0027We could not detect a visible grid. Did you call plt.grid(True)?\u0027\nassert ax.get_title() == \u0027Sprint Output\u0027, \u0027Check your plot title! It must be exactly Sprint Output.\u0027",
-        "hints":  [
-                      "Set up the figure size first, then draw the line and turn on the background grid.",
-                      "Use `plt.figure(figsize=(...))`, `plt.plot()`, and `plt.grid(True)`.",
-                      "Try `plt.figure(figsize=(8, 4))`, then `plt.plot(sprints, tasks_completed)`, `plt.grid(True)`, and `plt.title(\u0027Sprint Output\u0027)`."
-                  ]
+    "hints": [
+      "This chart should show separate points instead of a connected line.",
+      "Use `plt.scatter()` for the plot, then add the title and axis labels.",
+      "Try `plt.scatter(study_hours, quiz_score)`, then `plt.title('Study Hours vs Quiz Score')`, `plt.xlabel('Study Hours')`, and `plt.ylabel('Quiz Score')`."
+    ],
+    "solution_code": "plt.scatter(study_hours, quiz_score)\nplt.title('Study Hours vs Quiz Score')\nplt.xlabel('Study Hours')\nplt.ylabel('Quiz Score')"
+  },
+  {
+    "id": "6",
+    "title": "Department Revenue Bar Chart",
+    "markdown": "### The Scenario\nA business analyst wants to compare revenue across store departments in a simple bar chart.\n\n### The Task\n- Use `plt.bar()` to create a bar chart of `departments` vs `revenue`.\n- Set the title to `Department Revenue`.\n- Set the y-axis label to `Revenue ($)`.\n- Make the bars purple.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\ndepartments = ['Electronics', 'Clothing', 'Home', 'Sports']\nrevenue = [4200, 3100, 2800, 3500]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "import matplotlib.colors as mcolors\nax = plt.gca()\nassert len(ax.patches) == 4, 'We expected four bars on the chart.'\nassert mcolors.to_rgba(ax.patches[0].get_facecolor()) == mcolors.to_rgba('purple'), 'The bars should be purple.'\nassert ax.get_title() == 'Department Revenue', 'Set the title to exactly \"Department Revenue\".'\nassert ax.get_ylabel() == 'Revenue ($)', 'Set the y-axis label to exactly \"Revenue ($)\".'",
+    "dataset_preview": {
+      "columns": ["department", "revenue"],
+      "rows": [
+        ["Electronics", 4200],
+        ["Clothing", 3100]
+      ]
     },
-    {
-        "id":  "7",
-        "title":  "Control the Y-Axis Range",
-        "markdown":  "### The Scenario\nA team lead is plotting project completion percentages and wants the full 0 to 100 scale visible.\n\n### The Task\n- Use `plt.plot()` to chart `weeks` vs `completion`.\n- Set the y-axis limits from `0` to `100`.\n- Give the chart the title: `Project Completion`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\nweeks =[1, 2, 3, 4, 5, 6]\ncompletion =[10, 22, 38, 55, 74, 88]\n\n# Create your chart below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.lines) == 1, \u0027We could not find a line chart. Did you use plt.plot()?\u0027\nymin, ymax = ax.get_ylim()\nassert abs(ymin - 0) \u003c 0.1 and abs(ymax - 100) \u003c 0.1, \u0027Your y-axis limits should be 0 to 100.\u0027\nassert ax.get_title() == \u0027Project Completion\u0027, \u0027Check your plot title! It must be exactly Project Completion.\u0027",
-        "hints":  [
-                      "Plot the completion trend, then force the y-axis to show the full 0 to 100 range.",
-                      "Use `plt.plot()` and then set the limits with `plt.ylim()`.",
-                      "Try `plt.plot(weeks, completion)`, then `plt.ylim(0, 100)` and `plt.title(\u0027Project Completion\u0027)`."
-                  ]
-    }
+    "hints": [
+      "A bar chart is the right choice when you want to compare values across categories.",
+      "Use `plt.bar()` and pass a bar color with the `color` argument.",
+      "Try `plt.bar(departments, revenue, color='purple')`, then `plt.title('Department Revenue')` and `plt.ylabel('Revenue ($)')`."
+    ],
+    "solution_code": "plt.bar(departments, revenue, color='purple')\nplt.title('Department Revenue')\nplt.ylabel('Revenue ($)')"
+  },
+  {
+    "id": "7",
+    "title": "Exam Score Histogram",
+    "markdown": "### The Scenario\nA teacher wants to see how exam results are distributed across a class.\n\n### The Task\n- Use `plt.hist()` to create a histogram of `scores`.\n- Use exactly `5` bins.\n- Set the title to `Exam Score Distribution`.\n- Set the x-axis label to `Score`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nscores = [55, 60, 62, 65, 68, 70, 72, 75, 78, 80, 83, 85, 88, 90, 92]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.patches) == 5, 'We expected a histogram with exactly 5 bins.'\nassert ax.get_title() == 'Exam Score Distribution', 'Set the title to exactly \"Exam Score Distribution\".'\nassert ax.get_xlabel() == 'Score', 'Set the x-axis label to exactly \"Score\".'",
+    "dataset_preview": {
+      "columns": ["score"],
+      "rows": [
+        [55],
+        [60]
+      ]
+    },
+    "hints": [
+      "A histogram groups numeric values into bins instead of plotting each score separately.",
+      "Use `plt.hist()` and pass the number of bins with `bins=5`.",
+      "Try `plt.hist(scores, bins=5)`, then `plt.title('Exam Score Distribution')` and `plt.xlabel('Score')`."
+    ],
+    "solution_code": "plt.hist(scores, bins=5)\nplt.title('Exam Score Distribution')\nplt.xlabel('Score')"
+  },
+  {
+    "id": "8",
+    "title": "Sprint Output with Grid",
+    "markdown": "### The Scenario\nA project manager wants a clearer chart showing tasks completed across development sprints.\n\n### The Task\n- Set the figure size to `(8, 4)`.\n- Use `plt.plot()` to chart `sprints` vs `tasks_completed`.\n- Turn the grid on.\n- Set the title to `Sprint Output`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nsprints = [1, 2, 3, 4, 5]\ntasks_completed = [12, 18, 17, 22, 24]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "fig = plt.gcf()\nax = plt.gca()\nwidth, height = fig.get_size_inches()\nassert abs(width - 8) < 0.1 and abs(height - 4) < 0.1, 'Set the figure size to 8 by 4.'\nassert len(ax.lines) == 1, 'We expected exactly one line on the chart.'\nassert any(line.get_visible() for line in ax.get_xgridlines() + ax.get_ygridlines()), 'Turn the grid on using plt.grid(True).'\nassert ax.get_title() == 'Sprint Output', 'Set the title to exactly \"Sprint Output\".'",
+    "dataset_preview": {
+      "columns": ["sprint", "tasks_completed"],
+      "rows": [
+        [1, 12],
+        [2, 18]
+      ]
+    },
+    "hints": [
+      "First create a figure with the requested size, then draw the line and enable the grid.",
+      "Use `plt.figure(figsize=(8, 4))`, `plt.plot()`, and `plt.grid(True)`.",
+      "Try `plt.figure(figsize=(8, 4))`, then `plt.plot(sprints, tasks_completed)`, `plt.grid(True)`, and `plt.title('Sprint Output')`."
+    ],
+    "solution_code": "plt.figure(figsize=(8, 4))\nplt.plot(sprints, tasks_completed)\nplt.grid(True)\nplt.title('Sprint Output')"
+  },
+  {
+    "id": "9",
+    "title": "Project Completion Range",
+    "markdown": "### The Scenario\nA team lead wants a completion chart that always shows the full 0 to 100 percent scale.\n\n### The Task\n- Use `plt.plot()` to chart `weeks` vs `completion`.\n- Set the y-axis limits from `0` to `100`.\n- Set the title to `Project Completion`.\n- Set the y-axis label to `Completion (%)`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nweeks = [1, 2, 3, 4, 5, 6]\ncompletion = [10, 22, 38, 55, 74, 88]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.lines) == 1, 'We expected exactly one line on the chart.'\nymin, ymax = ax.get_ylim()\nassert abs(ymin - 0) < 0.1 and abs(ymax - 100) < 0.1, 'Set the y-axis limits to 0 and 100.'\nassert ax.get_title() == 'Project Completion', 'Set the title to exactly \"Project Completion\".'\nassert ax.get_ylabel() == 'Completion (%)', 'Set the y-axis label to exactly \"Completion (%)\".'",
+    "dataset_preview": {
+      "columns": ["week", "completion"],
+      "rows": [
+        [1, 10],
+        [2, 22]
+      ]
+    },
+    "hints": [
+      "Plot the progress line, then force the y-axis to show the entire percentage scale.",
+      "Use `plt.plot()` and then `plt.ylim(0, 100)`.",
+      "Try `plt.plot(weeks, completion)`, then `plt.ylim(0, 100)`, `plt.title('Project Completion')`, and `plt.ylabel('Completion (%)')`."
+    ],
+    "solution_code": "plt.plot(weeks, completion)\nplt.ylim(0, 100)\nplt.title('Project Completion')\nplt.ylabel('Completion (%)')"
+  },
+  {
+    "id": "10",
+    "title": "Two-City Rainfall Comparison",
+    "markdown": "### The Scenario\nA climate club wants a simple chart comparing monthly rainfall in two cities.\n\n### The Task\n- Plot `city_a` against `months`.\n- Plot `city_b` against `months` on the same chart.\n- Use labels `City A` and `City B` so the legend is correct.\n- Show the legend.\n- Set the title to `Monthly Rainfall Comparison`.\n- Set the y-axis label to `Rainfall (mm)`.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nmonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May']\ncity_a = [42, 38, 55, 61, 73]\ncity_b = [30, 35, 40, 52, 60]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.lines) == 2, 'We expected exactly two lines on the chart.'\nlegend = ax.get_legend()\nassert legend is not None, 'Show a legend using plt.legend().'\nlabels = {text.get_text() for text in legend.get_texts()}\nassert labels == {'City A', 'City B'}, 'The legend labels must be City A and City B.'\nassert ax.get_title() == 'Monthly Rainfall Comparison', 'Set the title to exactly \"Monthly Rainfall Comparison\".'\nassert ax.get_ylabel() == 'Rainfall (mm)', 'Set the y-axis label to exactly \"Rainfall (mm)\".'",
+    "dataset_preview": {
+      "columns": ["month", "city_a", "city_b"],
+      "rows": [
+        ["Jan", 42, 30],
+        ["Feb", 38, 35]
+      ]
+    },
+    "hints": [
+      "This is a side-by-side trend comparison, so both cities should be plotted on the same axes.",
+      "Use `plt.plot()` twice with `label=` for each line, then call `plt.legend()`.",
+      "Try `plt.plot(months, city_a, label='City A')` and `plt.plot(months, city_b, label='City B')`, then `plt.legend()`, `plt.title('Monthly Rainfall Comparison')`, and `plt.ylabel('Rainfall (mm)')`."
+    ],
+    "solution_code": "plt.plot(months, city_a, label='City A')\nplt.plot(months, city_b, label='City B')\nplt.legend()\nplt.title('Monthly Rainfall Comparison')\nplt.ylabel('Rainfall (mm)')"
+  }
 ]

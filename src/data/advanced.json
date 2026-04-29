@@ -1,1031 +1,325 @@
 [
     {
-        "id":  "15",
-        "title":  "Create Your First Seaborn Heatmap",
-        "markdown":  "### The Scenario\nA retail team wants a compact view of weekly sales across stores.\n\n### The Task\n- Use `sns.heatmap()` to visualize `sales_data`.\n- Use the colormap `Blues`.\n- Give the chart the title: `Weekly Sales Heatmap`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\n\nsales_data = pd.DataFrame(\n    [[22, 18, 25, 20],[28, 24, 30, 27],[26, 21, 29, 23]],\n    index=[\u0027Store A\u0027, \u0027Store B\u0027, \u0027Store C\u0027],\n    columns=[\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027]\n)\n\n# Create your heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.collections) \u003e 0, \u0027We could not find a heatmap. Did you use sns.heatmap()?\u0027\nassert ax.collections[0].cmap.name == \u0027Blues\u0027, \u0027Your heatmap should use the Blues colormap.\u0027\nassert ax.get_title() == \u0027Weekly Sales Heatmap\u0027, \u0027Check your plot title! It must be exactly Weekly Sales Heatmap.\u0027",
+        "id":  "45",
+        "title":  "Housing Market Correlation Structure",
+        "markdown":  "### The Scenario\nA real estate analytics team is building an exploratory report to understand how structural, neighborhood, and accessibility features move together in a metropolitan housing market. A correlation heatmap is appropriate here because the dataset contains several continuous variables whose relationships may reveal redundancy, proxy effects, or latent drivers of sale price.\n\n### The Task\n- Compute a correlation matrix using the continuous columns `sqft`, `bedrooms`, `bathrooms`, `age_years`, `distance_to_transit_km`, `school_score`, `crime_index`, and `sale_price_k`.\n- Create an upper-triangle mask so the heatmap only displays the lower half of the correlation matrix.\n- Plot the masked matrix with `sns.heatmap()` using `annot=True`, `fmt=\u0027.2f\u0027`, `cmap=\u0027coolwarm\u0027`, `center=0`, and `linewidths=0.5`.\n- Keep the color bar visible and label it `Pearson r`.\n- Rotate the x-axis tick labels by 45 degrees and keep the y-axis tick labels horizontal.\n- Title the chart `Metro Housing Feature Correlations`.",
+        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\nnp.random.seed(42)\n\nn = 240\nsqft = np.random.normal(1850, 420, n).clip(650, 4200)\nbedrooms = np.random.choice([2, 3, 4, 5], size=n, p=[0.18, 0.36, 0.31, 0.15])\nbathrooms = np.round((bedrooms + np.random.normal(0.15, 0.45, n)).clip(1.0, 4.5), 1)\nage_years = np.random.randint(0, 80, size=n)\ndistance_to_transit_km = np.random.gamma(2.2, 1.6, n).clip(0.2, 15)\nschool_score = np.random.normal(7.2, 1.1, n).clip(3.0, 10.0)\ncrime_index = np.random.normal(52, 14, n).clip(15, 95)\nsale_price_k = (\n    55\n    + sqft * 0.19\n    + bedrooms * 16\n    + bathrooms * 21\n    - age_years * 1.45\n    - distance_to_transit_km * 8.5\n    + school_score * 24\n    - crime_index * 1.7\n    + np.random.normal(0, 32, n)\n).clip(90, 1200)\n\ndf = pd.DataFrame({\n    \u0027sqft\u0027: np.round(sqft, 0),\n    \u0027bedrooms\u0027: bedrooms,\n    \u0027bathrooms\u0027: bathrooms,\n    \u0027age_years\u0027: age_years,\n    \u0027distance_to_transit_km\u0027: np.round(distance_to_transit_km, 2),\n    \u0027school_score\u0027: np.round(school_score, 2),\n    \u0027crime_index\u0027: np.round(crime_index, 1),\n    \u0027sale_price_k\u0027: np.round(sale_price_k, 1)\n})\n\n# Build the housing correlation heatmap below\n\n\n\nplt.show()",
+        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep the main heatmap axis and its color bar visible.\u0027\nassert len(ax.collections) \u003e 0, \u0027We could not find a heatmap. Did you use sns.heatmap()?\u0027\nassert ax.collections[0].cmap.name == \u0027coolwarm\u0027, \u0027Your heatmap should use the coolwarm colormap.\u0027\nassert len(ax.texts) == 36, \u0027A masked 8x8 lower triangle with annotations should display 36 text labels.\u0027\nassert fig.axes[1].get_ylabel() == \u0027Pearson r\u0027, \u0027Label the color bar Pearson r.\u0027\nassert ax.get_title() == \u0027Metro Housing Feature Correlations\u0027, \u0027Check your plot title! It must be exactly Metro Housing Feature Correlations.\u0027",
         "dataset_preview":  {
                                 "columns":  [
-                                                "",
-                                                "Mon",
-                                                "Tue",
-                                                "Wed",
-                                                "Thu"
+                                                "sqft",
+                                                "distance_to_transit_km",
+                                                "sale_price_k"
                                             ],
                                 "rows":  [
                                              [
-                                                 "Store A",
-                                                 22,
-                                                 18,
-                                                 25,
-                                                 20
+                                                 2058.0,
+                                                 2.73,
+                                                 512.4
                                              ],
                                              [
-                                                 "Store B",
-                                                 28,
-                                                 24,
-                                                 30,
-                                                 27
-                                             ],
-                                             [
-                                                 "Store C",
-                                                 26,
-                                                 21,
-                                                 29,
-                                                 23
+                                                 1791.0,
+                                                 6.11,
+                                                 367.8
                                              ]
                                          ]
                             },
         "hints":  [
-                      "Think about which seaborn function turns a rectangular DataFrame into a color-coded grid.",
-                      "You need `sns.heatmap()` and then a title on the active axis.",
-                      "Try something like `sns.heatmap(sales_data, cmap=\u0027Blues\u0027)` followed by `plt.title(\u0027Weekly Sales Heatmap\u0027)`."
-                  ]
+                      "A correlation heatmap only makes sense when you compare several continuous variables at once, so start by selecting the numeric housing features named in the task.",
+                      "Use `df[cols].corr()` to compute the matrix, `np.triu()` to make the mask, and `sns.heatmap()` to render it.",
+                      "Try `corr = df[cols].corr()`, then `mask = np.triu(np.ones_like(corr, dtype=bool))`, then `sns.heatmap(corr, mask=mask, annot=True, fmt=\u0027.2f\u0027, cmap=\u0027coolwarm\u0027, center=0, linewidths=0.5, cbar_kws={\u0027label\u0027: \u0027Pearson r\u0027})`."
+                  ],
+        "solution_code":  "cols = [\u0027sqft\u0027, \u0027bedrooms\u0027, \u0027bathrooms\u0027, \u0027age_years\u0027, \u0027distance_to_transit_km\u0027, \u0027school_score\u0027, \u0027crime_index\u0027, \u0027sale_price_k\u0027]\ncorr = df[cols].corr()\nmask = np.triu(np.ones_like(corr, dtype=bool))\nax = sns.heatmap(corr, mask=mask, annot=True, fmt=\u0027.2f\u0027, cmap=\u0027coolwarm\u0027, center=0, linewidths=0.5, cbar_kws={\u0027label\u0027: \u0027Pearson r\u0027})\nplt.xticks(rotation=45)\nplt.yticks(rotation=0)\nax.set_title(\u0027Metro Housing Feature Correlations\u0027)"
     },
     {
-        "id":  "16",
-        "title":  "Annotate a Heatmap",
-        "markdown":  "### The Scenario\nA school wants a heatmap that clearly shows class attendance values.\n\n### The Task\n- Use `sns.heatmap()` to visualize `attendance`.\n- Turn on annotations with `annot=True`.\n- Use the colormap `YlGnBu`.\n- Give the chart the title: `Attendance Heatmap`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\n\nattendance = pd.DataFrame(\n    [[28, 30, 29],[26, 27, 28],[30, 29, 30],[25, 26, 27]],\n    index=[\u0027Week 1\u0027, \u0027Week 2\u0027, \u0027Week 3\u0027, \u0027Week 4\u0027],\n    columns=[\u0027Class A\u0027, \u0027Class B\u0027, \u0027Class C\u0027]\n)\n\n# Create your annotated heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.collections) \u003e 0, \u0027We could not find a heatmap. Did you use sns.heatmap()?\u0027\nassert ax.collections[0].cmap.name == \u0027YlGnBu\u0027, \u0027Your heatmap should use the YlGnBu colormap.\u0027\nassert len(ax.texts) \u003e 0, \u0027We could not find annotations. Did you set annot=True?\u0027\nassert ax.get_title() == \u0027Attendance Heatmap\u0027, \u0027Check your plot title! It must be exactly Attendance Heatmap.\u0027",
+        "id":  "46",
+        "title":  "SaaS Cohort Retention Analysis",
+        "markdown":  "### The Scenario\nA subscription analytics team wants to understand how user retention decays by signup month. A cohort retention heatmap is the correct analytical choice because the data naturally forms a matrix of cohorts by months-since-signup, making drop-off patterns and relative cohort quality easy to compare.\n\n### The Task\n- Use the precomputed `retention_df` matrix where rows represent signup cohorts and columns represent months `M1` through `M12`.\n- Plot the matrix with `sns.heatmap()` using `annot=True`, `fmt=\u0027.0%\u0027`, `cmap=\u0027YlGnBu\u0027`, `vmin=0`, and `vmax=1`.\n- Keep the color bar visible and label it `Retention Rate`.\n- Set the x-axis label to `Months Since Signup` and the y-axis label to `Signup Cohort`.\n- Title the chart `12-Month SaaS Cohort Retention`.\n- Make sure all cohort-month cells are displayed and annotated.",
+        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\n\ncohorts = [\u00272025-01\u0027, \u00272025-02\u0027, \u00272025-03\u0027, \u00272025-04\u0027, \u00272025-05\u0027, \u00272025-06\u0027]\nmonths = [f\u0027M{i}\u0027 for i in range(1, 13)]\nbase = np.array([1.00, 0.77, 0.69, 0.63, 0.58, 0.54, 0.51, 0.48, 0.45, 0.43, 0.41, 0.39])\nretention_rows = []\nfor offset in [0.00, 0.02, -0.01, 0.03, -0.02, 0.01]:\n    curve = (base + offset + np.linspace(0, -0.03, 12)).clip(0.18, 1.00)\n    curve[0] = 1.00\n    retention_rows.append(np.round(curve, 2))\n\nretention_df = pd.DataFrame(retention_rows, index=cohorts, columns=months)\n\n# Build the cohort retention heatmap below\n\n\n\nplt.show()",
+        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep the heatmap and its color bar visible.\u0027\nassert len(ax.collections) \u003e 0, \u0027We could not find a heatmap. Did you use sns.heatmap()?\u0027\nassert ax.collections[0].cmap.name == \u0027YlGnBu\u0027, \u0027Your heatmap should use the YlGnBu colormap.\u0027\nassert len(ax.texts) == 72, \u0027There should be 72 annotated cells for 6 cohorts across 12 months.\u0027\nassert fig.axes[1].get_ylabel() == \u0027Retention Rate\u0027, \u0027Label the color bar Retention Rate.\u0027\nassert ax.get_xlabel() == \u0027Months Since Signup\u0027, \u0027Set the x-axis label to Months Since Signup.\u0027\nassert ax.get_ylabel() == \u0027Signup Cohort\u0027, \u0027Set the y-axis label to Signup Cohort.\u0027\nassert ax.get_title() == \u002712-Month SaaS Cohort Retention\u0027, \u0027Check your plot title! It must be exactly 12-Month SaaS Cohort Retention.\u0027",
         "dataset_preview":  {
                                 "columns":  [
-                                                "",
-                                                "Class A",
-                                                "Class B",
-                                                "Class C"
+                                                "Cohort",
+                                                "M1",
+                                                "M2",
+                                                "M3"
                                             ],
                                 "rows":  [
                                              [
-                                                 "Week 1",
-                                                 28,
-                                                 30,
-                                                 29
+                                                 "2025-01",
+                                                 1.0,
+                                                 0.77,
+                                                 0.68
                                              ],
                                              [
-                                                 "Week 2",
-                                                 26,
-                                                 27,
-                                                 28
-                                             ],
-                                             [
-                                                 "Week 3",
-                                                 30,
-                                                 29,
-                                                 30
-                                             ],
-                                             [
-                                                 "Week 4",
-                                                 25,
-                                                 26,
-                                                 27
+                                                 "2025-02",
+                                                 1.0,
+                                                 0.79,
+                                                 0.70
                                              ]
                                          ]
                             },
         "hints":  [
-                      "The missing piece here is showing the values directly inside the heatmap cells.",
-                      "Use `sns.heatmap()` with `annot=True` and set the colormap before adding the title.",
-                      "Try `sns.heatmap(attendance, annot=True, cmap=\u0027YlGnBu\u0027)` and then `plt.title(\u0027Attendance Heatmap\u0027)`."
-                  ]
+                      "This dataset is already shaped the way a retention heatmap should be: cohorts in rows and months-since-signup in columns.",
+                      "Use `sns.heatmap()` directly on `retention_df` and format the values as percentages with `fmt=\u0027.0%\u0027`.",
+                      "Try `sns.heatmap(retention_df, annot=True, fmt=\u0027.0%\u0027, cmap=\u0027YlGnBu\u0027, vmin=0, vmax=1, cbar_kws={\u0027label\u0027: \u0027Retention Rate\u0027})`, then set the axis labels and title."
+                  ],
+        "solution_code":  "ax = sns.heatmap(retention_df, annot=True, fmt=\u0027.0%\u0027, cmap=\u0027YlGnBu\u0027, vmin=0, vmax=1, cbar_kws={\u0027label\u0027: \u0027Retention Rate\u0027})\nax.set_xlabel(\u0027Months Since Signup\u0027)\nax.set_ylabel(\u0027Signup Cohort\u0027)\nax.set_title(\u002712-Month SaaS Cohort Retention\u0027)"
     },
     {
-        "id":  "17",
-        "title":  "Plot a Correlation Heatmap",
-        "markdown":  "### The Scenario\nA data analyst wants to inspect how several study-related variables relate to one another.\n\n### The Task\n- Compute the correlation matrix of `df`.\n- Plot it with `sns.heatmap()`.\n- Use `annot=True`.\n- Use the colormap `coolwarm`.\n- Set `center=0`.\n- Give the chart the title: `Correlation Heatmap`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\n\ndf = pd.DataFrame({\n    \u0027study_hours\u0027:[2, 3, 4, 5, 6, 7],\n    \u0027sleep_hours\u0027:[8, 7, 7, 6, 6, 5],\n    \u0027practice_tests\u0027:[1, 1, 2, 2, 3, 3],\n    \u0027exam_score\u0027:[60, 65, 72, 78, 85, 90]\n})\n\n# Create your correlation heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.collections) \u003e 0, \u0027We could not find a heatmap. Did you use sns.heatmap()?\u0027\nassert ax.collections[0].cmap.name == \u0027coolwarm\u0027, \u0027Your heatmap should use the coolwarm colormap.\u0027\nassert len(ax.texts) \u003e= 16, \u0027We expected annotations on the correlation heatmap.\u0027\nassert ax.get_title() == \u0027Correlation Heatmap\u0027, \u0027Check your plot title! It must be exactly Correlation Heatmap.\u0027",
+        "id":  "47",
+        "title":  "Compensation Distribution by Role and Work Mode",
+        "markdown":  "### The Scenario\nAn HR analytics team is comparing salary distributions across technical job families while also distinguishing remote from in-office roles. A split violin plot is analytically appropriate because salary is continuous, job title is categorical, and work mode is a binary grouping whose distributional differences matter.\n\n### The Task\n- Set the figure size to `(12, 6)`.\n- Create a Seaborn violin plot with `job_title` on the x-axis, `annual_salary_k` on the y-axis, and `work_mode` as the hue.\n- Use `split=True`, `inner=\u0027quartile\u0027`, and the palette `{\u0027In-Office\u0027: \u0027#4c72b0\u0027, \u0027Remote\u0027: \u0027#dd8452\u0027}`.\n- Set the y-axis label to `Annual Salary ($k)` and limit the y-axis from `60` to `260`.\n- Place the legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Title the chart `Salary Distribution by Role and Work Mode`.",
+        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\nnp.random.seed(21)\n\nroles = [\u0027Data Analyst\u0027, \u0027Data Scientist\u0027, \u0027ML Engineer\u0027, \u0027Analytics Manager\u0027]\nrows = []\nrole_params = {\n    \u0027Data Analyst\u0027: (92, 14),\n    \u0027Data Scientist\u0027: (128, 18),\n    \u0027ML Engineer\u0027: (146, 20),\n    \u0027Analytics Manager\u0027: (168, 22)\n}\nfor role in roles:\n    mu, sigma = role_params[role]\n    for mode in [\u0027In-Office\u0027, \u0027Remote\u0027]:\n        adj = 8 if mode == \u0027Remote\u0027 else 0\n        salaries = np.random.normal(mu + adj, sigma, 90).clip(60, 255)\n        for salary in salaries:\n            rows.append({\n                \u0027job_title\u0027: role,\n                \u0027work_mode\u0027: mode,\n                \u0027annual_salary_k\u0027: round(float(salary), 1),\n                \u0027years_experience\u0027: np.random.randint(1, 16)\n            })\n\ndf = pd.DataFrame(rows)\n\n# Build the salary distribution plot below\n\n\n\nplt.show()",
+        "validation_code":  "ax = plt.gca()\nassert len(ax.collections) \u003e= 4, \u0027We could not find the violin plot shapes. Did you use sns.violinplot()?\u0027\nassert len(ax.lines) \u003e 0, \u0027Use inner=quartile so quartile lines appear inside each violin.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nlabels = [text.get_text() for text in legend.get_texts()]\nassert labels == [\u0027In-Office\u0027, \u0027Remote\u0027], \u0027Your legend labels should be In-Office and Remote.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nlow, high = ax.get_ylim()\nassert abs(low - 60) \u003c 0.1 and abs(high - 260) \u003c 0.1, \u0027Set the y-axis limits from 60 to 260.\u0027\nassert ax.get_ylabel() == \u0027Annual Salary ($k)\u0027, \u0027Set the y-axis label to Annual Salary ($k).\u0027\nassert ax.get_title() == \u0027Salary Distribution by Role and Work Mode\u0027, \u0027Check your plot title! It must be exactly Salary Distribution by Role and Work Mode.\u0027",
         "dataset_preview":  {
                                 "columns":  [
-                                                "study_hours",
-                                                "sleep_hours",
-                                                "practice_tests",
-                                                "exam_score"
+                                                "job_title",
+                                                "work_mode",
+                                                "annual_salary_k"
                                             ],
                                 "rows":  [
                                              [
-                                                 2,
+                                                 "Data Analyst",
+                                                 "In-Office",
+                                                 91.4
+                                             ],
+                                             [
+                                                 "Data Analyst",
+                                                 "Remote",
+                                                 101.7
+                                             ]
+                                         ]
+                            },
+        "hints":  [
+                      "A split violin plot is ideal here because salary is continuous, role is categorical, and work mode has exactly two groups.",
+                      "Use `sns.violinplot()` with `hue=\u0027work_mode\u0027`, `split=True`, and `inner=\u0027quartile\u0027`.",
+                      "Try `sns.violinplot(data=df, x=\u0027job_title\u0027, y=\u0027annual_salary_k\u0027, hue=\u0027work_mode\u0027, split=True, inner=\u0027quartile\u0027, palette={\u0027In-Office\u0027: \u0027#4c72b0\u0027, \u0027Remote\u0027: \u0027#dd8452\u0027})`."
+                  ],
+        "solution_code":  "plt.figure(figsize=(12, 6))\nax = sns.violinplot(data=df, x=\u0027job_title\u0027, y=\u0027annual_salary_k\u0027, hue=\u0027work_mode\u0027, hue_order=[\u0027In-Office\u0027, \u0027Remote\u0027], split=True, inner=\u0027quartile\u0027, palette={\u0027In-Office\u0027: \u0027#4c72b0\u0027, \u0027Remote\u0027: \u0027#dd8452\u0027})\nax.set_ylabel(\u0027Annual Salary ($k)\u0027)\nax.set_ylim(60, 260)\nax.legend(bbox_to_anchor=(1.02, 1), loc=\u0027upper left\u0027)\nax.set_title(\u0027Salary Distribution by Role and Work Mode\u0027)"
+    },
+    {
+        "id":  "48",
+        "title":  "Long-Run Energy Mix Composition",
+        "markdown":  "### The Scenario\nAn energy policy research group wants to show how the composition of electricity generation changed over more than two decades. A stacked area chart is appropriate because the key question is how the mix of generation sources contributes to total supply over time.\n\n### The Task\n- Set the figure size to `(13, 7)`.\n- Use `ax.stackplot()` to plot `solar_twh`, `wind_twh`, `coal_twh`, and `nuclear_twh` against `year`.\n- Overlay `total_demand_twh` as a black line with `linewidth=2.2`.\n- Set the x-axis label to `Year` and the y-axis label to `Generation / Demand (TWh)`.\n- Place the legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Add an annotation with the text `Renewables \u003e Coal` near the first year where `solar_twh + wind_twh` exceeds `coal_twh`.\n- Title the chart `National Electricity Generation Mix, 2000-2023`.",
+        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\n\nyear = np.arange(2000, 2024)\nsolar_twh = np.array([8, 9, 11, 13, 16, 20, 25, 31, 38, 46, 55, 66, 79, 95, 112, 131, 150, 171, 193, 214, 228, 238, 247, 255])\nwind_twh = np.array([15, 17, 20, 24, 29, 35, 42, 50, 59, 69, 80, 92, 105, 118, 132, 146, 159, 172, 184, 196, 205, 212, 218, 223])\ncoal_twh = np.array([520, 515, 507, 500, 492, 481, 469, 455, 440, 422, 405, 389, 370, 348, 325, 301, 278, 254, 231, 210, 196, 183, 171, 160])\nnuclear_twh = np.array([182, 183, 184, 184, 185, 185, 186, 186, 187, 187, 186, 186, 185, 185, 184, 183, 183, 182, 181, 181, 180, 180, 179, 179])\ntotal_demand_twh = solar_twh + wind_twh + coal_twh + nuclear_twh + np.array([42, 44, 45, 47, 48, 50, 52, 55, 58, 60, 62, 65, 67, 69, 70, 73, 75, 76, 78, 80, 82, 84, 86, 88])\n\ndf = pd.DataFrame({\n    \u0027year\u0027: year,\n    \u0027solar_twh\u0027: solar_twh,\n    \u0027wind_twh\u0027: wind_twh,\n    \u0027coal_twh\u0027: coal_twh,\n    \u0027nuclear_twh\u0027: nuclear_twh,\n    \u0027total_demand_twh\u0027: total_demand_twh\n})\n\n# Build the long-run energy mix chart below\n\n\n\nplt.show()",
+        "validation_code":  "ax = plt.gca()\nassert len(ax.collections) \u003e= 4, \u0027We expected a stacked area chart with four layers.\u0027\nassert len(ax.lines) \u003e= 1, \u0027Overlay the total demand line on top of the stacked areas.\u0027\nassert abs(ax.lines[0].get_linewidth() - 2.2) \u003c 0.01, \u0027The total demand line must use linewidth 2.2.\u0027\nassert ax.get_xlabel() == \u0027Year\u0027, \u0027Set the x-axis label to Year.\u0027\nassert ax.get_ylabel() == \u0027Generation / Demand (TWh)\u0027, \u0027Set the y-axis label to Generation / Demand (TWh).\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nassert any(\u0027Renewables \u003e Coal\u0027 in text.get_text() for text in ax.texts), \u0027Add the Renewables \u003e Coal annotation.\u0027\nassert ax.get_title() == \u0027National Electricity Generation Mix, 2000-2023\u0027, \u0027Check your plot title! It must be exactly National Electricity Generation Mix, 2000-2023.\u0027",
+        "dataset_preview":  {
+                                "columns":  [
+                                                "year",
+                                                "solar_twh",
+                                                "coal_twh"
+                                            ],
+                                "rows":  [
+                                             [
+                                                 2000,
                                                  8,
-                                                 1,
-                                                 60
+                                                 520
                                              ],
                                              [
-                                                 3,
-                                                 7,
-                                                 1,
-                                                 65
-                                             ],
-                                             [
-                                                 4,
-                                                 7,
-                                                 2,
-                                                 72
-                                             ],
-                                             [
-                                                 5,
-                                                 6,
-                                                 2,
-                                                 78
-                                             ],
-                                             [
-                                                 6,
-                                                 6,
-                                                 3,
-                                                 85
+                                                 2001,
+                                                 9,
+                                                 515
                                              ]
                                          ]
                             },
         "hints":  [
-                      "You first need a correlation matrix before you can color it as a heatmap.",
-                      "Use `df.corr()` and pass the result to `sns.heatmap()` with annotations.",
-                      "Try `corr = df.corr()` then `sns.heatmap(corr, annot=True, cmap=\u0027coolwarm\u0027, center=0)` and `plt.title(\u0027Correlation Heatmap\u0027)`."
-                  ]
+                      "A stacked area chart is the right choice when you want to show how several components make up a total over a long time series.",
+                      "Use `ax.stackplot()` for the generation sources, then `ax.plot()` for the total demand line.",
+                      "Try `fig, ax = plt.subplots(figsize=(13, 7))`, then `ax.stackplot(df[\u0027year\u0027], df[\u0027solar_twh\u0027], df[\u0027wind_twh\u0027], df[\u0027coal_twh\u0027], df[\u0027nuclear_twh\u0027], labels=[...])`, and `ax.plot(df[\u0027year\u0027], df[\u0027total_demand_twh\u0027], color=\u0027black\u0027, linewidth=2.2)`."
+                  ],
+        "solution_code":  "fig, ax = plt.subplots(figsize=(13, 7))\nax.stackplot(df[\u0027year\u0027], df[\u0027solar_twh\u0027], df[\u0027wind_twh\u0027], df[\u0027coal_twh\u0027], df[\u0027nuclear_twh\u0027], labels=[\u0027Solar\u0027, \u0027Wind\u0027, \u0027Coal\u0027, \u0027Nuclear\u0027])\nax.plot(df[\u0027year\u0027], df[\u0027total_demand_twh\u0027], color=\u0027black\u0027, linewidth=2.2, label=\u0027Total Demand\u0027)\nax.set_xlabel(\u0027Year\u0027)\nax.set_ylabel(\u0027Generation / Demand (TWh)\u0027)\nrenewables = df[\u0027solar_twh\u0027] + df[\u0027wind_twh\u0027]\nidx = renewables.gt(df[\u0027coal_twh\u0027]).idxmax()\nax.annotate(\u0027Renewables \u003e Coal\u0027, (df.loc[idx, \u0027year\u0027], renewables.loc[idx]), xytext=(8, 8), textcoords=\u0027offset points\u0027)\nax.legend(bbox_to_anchor=(1.02, 1), loc=\u0027upper left\u0027)\nax.set_title(\u0027National Electricity Generation Mix, 2000-2023\u0027)"
     },
     {
-        "id":  "18",
-        "title":  "Add Cell Borders to a Heatmap",
-        "markdown":  "### The Scenario\nAn operations manager wants a clearer productivity heatmap with visible cell boundaries.\n\n### The Task\n- Use `sns.heatmap()` to visualize `productivity`.\n- Use the colormap `rocket`.\n- Set `linewidths=0.5`.\n- Set `linecolor=\u0027white\u0027`.\n- Keep the color bar visible.\n- Give the chart the title: `Team Productivity Heatmap`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\n\nproductivity = pd.DataFrame(\n    [[72, 75, 78, 74],[68, 70, 73, 71],[80, 82, 85, 83],[76, 77, 79, 78]],\n    index=[\u0027Team A\u0027, \u0027Team B\u0027, \u0027Team C\u0027, \u0027Team D\u0027],\n    columns=[\u0027Week 1\u0027, \u0027Week 2\u0027, \u0027Week 3\u0027, \u0027Week 4\u0027]\n)\n\n# Create your bordered heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nax = plt.gca()\nassert len(ax.collections) \u003e 0, \u0027We could not find a heatmap. Did you use sns.heatmap()?\u0027\nassert ax.collections[0].cmap.name == \u0027rocket\u0027, \u0027Your heatmap should use the rocket colormap.\u0027\nassert ax.collections[0].get_linewidths()[0] == 0.5, \u0027Your heatmap should use linewidths=0.5.\u0027\nassert len(fig.axes) == 2, \u0027We expected the heatmap and its color bar to be visible.\u0027\nassert ax.get_title() == \u0027Team Productivity Heatmap\u0027, \u0027Check your plot title! It must be exactly Team Productivity Heatmap.\u0027",
+        "id":  "49",
+        "title":  "Ride-Hailing Pickup Density Map",
+        "markdown":  "### The Scenario\nA mobility analytics team is studying pickup concentration across an urban core. Because the dataset contains thousands of latitude-longitude points, a standard scatter plot would overplot badly, so a hexbin density plot is the statistically appropriate visualization.\n\n### The Task\n- Set the figure size to `(10, 7)`.\n- Create a hexbin plot of `pickup_longitude` on the x-axis and `pickup_latitude` on the y-axis using `gridsize=45`, `cmap=\u0027magma\u0027`, and `mincnt=1`.\n- Add a color bar and label it `Pickup Count`.\n- Set the x-axis label to `Longitude` and the y-axis label to `Latitude`.\n- Limit the x-axis to `-74.03` through `-73.93` and the y-axis to `40.70` through `40.82`.\n- Add an annotation labeled `Midtown Cluster` near the densest business-district zone.\n- Title the chart `NYC Ride-Hailing Pickup Density`.",
+        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\nnp.random.seed(9)\n\nclusters = [\n    (-73.985, 40.758, 2200, 0.006, 0.005),\n    (-74.000, 40.730, 1600, 0.007, 0.006),\n    (-73.970, 40.750, 1300, 0.005, 0.004),\n    (-73.990, 40.710, 1200, 0.006, 0.005)\n]\nrows = []\nfor lon_center, lat_center, size, lon_sd, lat_sd in clusters:\n    lon = np.random.normal(lon_center, lon_sd, size)\n    lat = np.random.normal(lat_center, lat_sd, size)\n    for x, y in zip(lon, lat):\n        rows.append({\n            \u0027pickup_longitude\u0027: round(float(x), 6),\n            \u0027pickup_latitude\u0027: round(float(y), 6),\n            \u0027surge_multiplier\u0027: round(float(np.random.choice([1.0, 1.2, 1.5, 1.8], p=[0.55, 0.25, 0.15, 0.05])), 1),\n            \u0027pickup_hour\u0027: int(np.random.randint(0, 24))\n        })\n\ndf = pd.DataFrame(rows)\n\n# Build the ride-hailing density chart below\n\n\n\nplt.show()",
+        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep the main hexbin axis and its color bar visible.\u0027\nassert len(ax.collections) \u003e 0, \u0027We could not find a hexbin plot. Did you use ax.hexbin()?\u0027\nassert ax.collections[0].cmap.name == \u0027magma\u0027, \u0027Your hexbin plot should use the magma colormap.\u0027\nassert fig.axes[1].get_ylabel() == \u0027Pickup Count\u0027, \u0027Label the color bar Pickup Count.\u0027\nassert ax.get_xlabel() == \u0027Longitude\u0027, \u0027Set the x-axis label to Longitude.\u0027\nassert ax.get_ylabel() == \u0027Latitude\u0027, \u0027Set the y-axis label to Latitude.\u0027\nlow_x, high_x = ax.get_xlim()\nlow_y, high_y = ax.get_ylim()\nassert abs(low_x - (-74.03)) \u003c 0.01 and abs(high_x - (-73.93)) \u003c 0.01, \u0027Set the x-axis limits to -74.03 through -73.93.\u0027\nassert abs(low_y - 40.70) \u003c 0.01 and abs(high_y - 40.82) \u003c 0.01, \u0027Set the y-axis limits to 40.70 through 40.82.\u0027\nassert any(\u0027Midtown Cluster\u0027 in text.get_text() for text in ax.texts), \u0027Add the Midtown Cluster annotation.\u0027\nassert ax.get_title() == \u0027NYC Ride-Hailing Pickup Density\u0027, \u0027Check your plot title! It must be exactly NYC Ride-Hailing Pickup Density.\u0027",
         "dataset_preview":  {
                                 "columns":  [
-                                                "",
-                                                "Week 1",
-                                                "Week 2",
-                                                "Week 3",
-                                                "Week 4"
+                                                "pickup_longitude",
+                                                "pickup_latitude",
+                                                "pickup_hour"
                                             ],
                                 "rows":  [
                                              [
-                                                 "Team A",
-                                                 72,
-                                                 75,
-                                                 78,
-                                                 74
+                                                 -73.986214,
+                                                 40.760381,
+                                                 8
                                              ],
                                              [
-                                                 "Team B",
-                                                 68,
-                                                 70,
-                                                 73,
-                                                 71
-                                             ],
-                                             [
-                                                 "Team C",
-                                                 80,
-                                                 82,
-                                                 85,
-                                                 83
-                                             ],
-                                             [
-                                                 "Team D",
-                                                 76,
-                                                 77,
-                                                 79,
-                                                 78
+                                                 -73.999482,
+                                                 40.728944,
+                                                 17
                                              ]
                                          ]
                             },
         "hints":  [
-                      "This one is about making each heatmap cell boundary clearly visible.",
-                      "Use `sns.heatmap()` and control borders with `linewidths` and `linecolor`.",
-                      "Try `sns.heatmap(productivity, cmap=\u0027rocket\u0027, linewidths=0.5, linecolor=\u0027white\u0027)` and then add `plt.title(\u0027Team Productivity Heatmap\u0027)`."
-                  ]
+                      "When you have thousands of coordinates, density-based binning is more informative than plotting every point individually.",
+                      "Use `ax.hexbin()` for the longitude-latitude density and `plt.colorbar()` for the count scale.",
+                      "Try `fig, ax = plt.subplots(figsize=(10, 7))`, then `hb = ax.hexbin(df[\u0027pickup_longitude\u0027], df[\u0027pickup_latitude\u0027], gridsize=45, cmap=\u0027magma\u0027, mincnt=1)`, then `plt.colorbar(hb).set_label(\u0027Pickup Count\u0027)`."
+                  ],
+        "solution_code":  "fig, ax = plt.subplots(figsize=(10, 7))\nhb = ax.hexbin(df[\u0027pickup_longitude\u0027], df[\u0027pickup_latitude\u0027], gridsize=45, cmap=\u0027magma\u0027, mincnt=1)\ncbar = plt.colorbar(hb)\ncbar.set_label(\u0027Pickup Count\u0027)\nax.set_xlabel(\u0027Longitude\u0027)\nax.set_ylabel(\u0027Latitude\u0027)\nax.set_xlim(-74.03, -73.93)\nax.set_ylim(40.70, 40.82)\nax.annotate(\u0027Midtown Cluster\u0027, (-73.985, 40.758), xytext=(8, 8), textcoords=\u0027offset points\u0027)\nax.set_title(\u0027NYC Ride-Hailing Pickup Density\u0027)"
     },
     {
-        "id":  "19",
-        "title":  "Format Heatmap Annotations",
-        "markdown":  "### The Scenario\nA retailer wants a heatmap of store traffic with whole-number annotations only.\n\n### The Task\n- Use `sns.heatmap()` to visualize `traffic`.\n- Turn on annotations with `annot=True`.\n- Format the annotations as whole numbers with `fmt=\u0027.0f\u0027`.\n- Use the colormap `magma`.\n- Give the chart the title: `Store Traffic Heatmap`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\n\ntraffic = pd.DataFrame(\n    [[120, 135, 128], [142, 150, 147],[160, 158, 165]],\n    index=[\u0027Store A\u0027, \u0027Store B\u0027, \u0027Store C\u0027],\n    columns=[\u0027Morning\u0027, \u0027Afternoon\u0027, \u0027Evening\u0027]\n)\n\n# Create your formatted heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.collections) \u003e 0, \u0027We could not find a heatmap. Did you use sns.heatmap()?\u0027\nassert ax.collections[0].cmap.name == \u0027magma\u0027, \u0027Your heatmap should use the magma colormap.\u0027\nassert len(ax.texts) == 9, \u0027We expected annotations for all 9 cells.\u0027\nassert all(\u0027.\u0027 not in text.get_text() for text in ax.texts), \u0027Your annotations should be formatted as whole numbers.\u0027\nassert ax.get_title() == \u0027Store Traffic Heatmap\u0027, \u0027Check your plot title! It must be exactly Store Traffic Heatmap.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "",
-                                                "Morning",
-                                                "Afternoon",
-                                                "Evening"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "Store A",
-                                                 120,
-                                                 135,
-                                                 128
-                                             ],
-                                             [
-                                                 "Store B",
-                                                 142,
-                                                 150,
-                                                 147
-                                             ],
-                                             [
-                                                 "Store C",
-                                                 160,
-                                                 158,
-                                                 165
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "You want the annotations to show integers, not decimals.",
-                      "Use `sns.heatmap()` with `annot=True` and format the text with `fmt`.",
-                      "Try `sns.heatmap(traffic, annot=True, fmt=\u0027.0f\u0027, cmap=\u0027magma\u0027)` followed by `plt.title(\u0027Store Traffic Heatmap\u0027)`."
-                  ]
-    },
-    {
-        "id":  "20",
-        "title":  "Create a Masked Correlation Heatmap",
-        "markdown":  "### The Scenario\nA data scientist wants to show only the lower triangle of a correlation matrix.\n\n### The Task\n- Compute the correlation matrix of `metrics`.\n- Create an upper-triangle mask with `np.triu()`.\n- Plot the heatmap with `sns.heatmap()` using that mask.\n- Turn on annotations with `annot=True`.\n- Use the colormap `viridis`.\n- Set `square=True`.\n- Turn the color bar off with `cbar=False`.\n- Give the chart the title: `Masked Correlation Heatmap`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport numpy as np\nimport pandas as pd\nimport seaborn as sns\n\nmetrics = pd.DataFrame({\n    \u0027speed\u0027:[10, 12, 14, 16, 18, 20],\n    \u0027accuracy\u0027:[70, 72, 75, 79, 82, 85],\n    \u0027stamina\u0027:[55, 58, 60, 64, 68, 70],\n    \u0027focus\u0027:[65, 67, 70, 73, 77, 80]\n})\n\n# Create your masked heatmap below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nfig = plt.gcf()\nassert len(ax.collections) \u003e 0, \u0027We could not find a heatmap. Did you use sns.heatmap()?\u0027\nassert ax.collections[0].cmap.name == \u0027viridis\u0027, \u0027Your heatmap should use the viridis colormap.\u0027\nassert len(fig.axes) == 1, \u0027The color bar should be turned off, so we expected only one axis.\u0027\nassert len(ax.texts) == 6, \u0027We expected annotations only on the visible lower-triangle cells.\u0027\nassert ax.get_title() == \u0027Masked Correlation Heatmap\u0027, \u0027Check your plot title! It must be exactly Masked Correlation Heatmap.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "speed",
-                                                "accuracy",
-                                                "stamina",
-                                                "focus"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 10,
-                                                 70,
-                                                 55,
-                                                 65
-                                             ],
-                                             [
-                                                 12,
-                                                 72,
-                                                 58,
-                                                 67
-                                             ],
-                                             [
-                                                 14,
-                                                 75,
-                                                 60,
-                                                 70
-                                             ],
-                                             [
-                                                 16,
-                                                 79,
-                                                 64,
-                                                 73
-                                             ],
-                                             [
-                                                 18,
-                                                 82,
-                                                 68,
-                                                 77
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Start by computing correlations, then hide the upper triangle so only the lower half remains.",
-                      "You will need `metrics.corr()`, `np.triu()`, and `sns.heatmap()` with a `mask`.",
-                      "Try `corr = metrics.corr()` then `mask = np.triu(np.ones_like(corr, dtype=bool))` and `sns.heatmap(corr, mask=mask, annot=True, cmap=\u0027viridis\u0027, square=True, cbar=False)`."
-                  ]
-    },
-    {
-        "id":  "21",
-        "title":  "Executive Revenue vs Margin Dual-Axis Report",
-        "markdown":  "### The Scenario\nYou are preparing a board-ready monthly finance report for an ecommerce company. The CFO wants a compact chart that shows how total revenue and profit margin moved together across the quarter, with careful formatting that is presentation-ready.\n\n### The Task\n- Set the figure size to `(12, 6)`.\n- Create a primary axis and plot `revenue` as a bar chart against `month` using color `#1f77b4`.\n- Create a secondary y-axis using `ax.twinx()` and plot `margin_pct` as a red dashed line with circle markers and `linewidth=2.5`.\n- Format the x-axis as monthly abbreviations using `mdates.DateFormatter(\u0027%b\u0027)` and rotate the x tick labels by 45 degrees.\n- Set the primary y-axis label to `Revenue ($)` and the secondary y-axis label to `Margin (%)`, limiting the secondary axis from `0` to `50`.\n- Hide the top spine on both axes.\n- Combine both plots into one legend and place it outside the chart using `bbox_to_anchor=(1.02, 1)`.\n- Annotate the highest margin point with the text `Peak Margin`.\n- Title the chart `Monthly Revenue vs Margin`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.dates as mdates\n\nsns.set_theme(style=\u0027whitegrid\u0027)\n\ndata = {\n    \u0027month\u0027: pd.date_range(\u00272025-01-01\u0027, periods=6, freq=\u0027MS\u0027),\n    \u0027revenue\u0027: [125000, 138500, 149200, 161000, 158300, 172400],\n    \u0027margin_pct\u0027: [18.5, 20.2, 22.1, 21.4, 24.3, 26.1],\n    \u0027orders\u0027: [2100, 2255, 2440, 2595, 2530, 2712]\n}\n\ndf = pd.DataFrame(data)\n\n# Build your dual-axis chart below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.colors as mcolors\nimport matplotlib.dates as mdates\nfig = plt.gcf()\nassert len(fig.axes) \u003e= 2, \u0027Your secondary y-axis is missing! Use ax.twinx().\u0027\nax1, ax2 = fig.axes[0], fig.axes[1]\nassert len(ax1.patches) == len(df), \u0027The primary axis should contain one revenue bar for each month.\u0027\nassert mcolors.to_rgba(ax1.patches[0].get_facecolor()) == mcolors.to_rgba(\u0027#1f77b4\u0027), \u0027Revenue bars must use color #1f77b4.\u0027\nassert len(ax2.lines) \u003e= 1, \u0027The secondary axis should contain the margin line.\u0027\nline = ax2.lines[0]\nassert mcolors.to_rgba(line.get_color()) == mcolors.to_rgba(\u0027red\u0027), \u0027The margin line must be red.\u0027\nassert line.get_linestyle() == \u0027--\u0027, \u0027The margin line must be dashed.\u0027\nassert line.get_marker() == \u0027o\u0027, \u0027The margin line must use circle markers.\u0027\nassert abs(line.get_linewidth() - 2.5) \u003c 0.01, \u0027The margin line must have linewidth 2.5.\u0027\nassert ax1.get_ylabel() == \u0027Revenue ($)\u0027, \u0027The primary y-axis label must be Revenue ($).\u0027\nassert ax2.get_ylabel() == \u0027Margin (%)\u0027, \u0027The secondary y-axis label must be Margin (%).\u0027\nlow, high = ax2.get_ylim()\nassert abs(low - 0) \u003c 0.1 and abs(high - 50) \u003c 0.1, \u0027The secondary y-axis must run from 0 to 50.\u0027\nassert isinstance(ax1.xaxis.get_major_formatter(), mdates.DateFormatter), \u0027Format the x-axis with mdates.DateFormatter.\u0027\nassert ax1.xaxis.get_major_formatter().fmt == \u0027%b\u0027, \u0027Use DateFormatter(%b) for the x-axis.\u0027\nassert not ax1.spines[\u0027top\u0027].get_visible(), \u0027Hide the top spine on the primary axis.\u0027\nassert not ax2.spines[\u0027top\u0027].get_visible(), \u0027Hide the top spine on the secondary axis.\u0027\nlegend = ax1.get_legend()\nassert legend is not None, \u0027Your combined legend is missing.\u0027\nbbox = legend.get_bbox_to_anchor()._bbox\nassert bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nassert any(\u0027Peak Margin\u0027 in text.get_text() for text in ax2.texts), \u0027Add the Peak Margin annotation to the secondary axis.\u0027\nassert ax1.get_title() == \u0027Monthly Revenue vs Margin\u0027, \u0027Your chart title must be exactly Monthly Revenue vs Margin.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "month",
-                                                "revenue",
-                                                "margin_pct"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "2025-01-01",
-                                                 125000,
-                                                 18.5
-                                             ],
-                                             [
-                                                 "2025-02-01",
-                                                 138500,
-                                                 20.2
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "This chart needs one axis for bars and a second axis for the margin line.",
-                      "Use `plt.subplots()` to create `ax1`, then `ax1.twinx()` for `ax2`; plot bars with `ax1.bar()` and the line with `ax2.plot()`.",
-                      "Try `fig, ax1 = plt.subplots(figsize=(12, 6))`; `ax1.bar(df[\u0027month\u0027], df[\u0027revenue\u0027], color=\u0027#1f77b4\u0027)`; `ax2 = ax1.twinx()`; `ax2.plot(df[\u0027month\u0027], df[\u0027margin_pct\u0027], color=\u0027red\u0027, linestyle=\u0027--\u0027, marker=\u0027o\u0027, linewidth=2.5)`."
-                  ]
-    },
-    {
-        "id":  "22",
-        "title":  "Energy Load vs Temperature Control Room View",
-        "markdown":  "### The Scenario\nYou are building a utility operations dashboard for a power grid team. They need to compare daily electricity load against outside temperature to understand whether heat waves are pushing the system closer to capacity.\n\n### The Task\n- Set the figure size to `(11, 6)`.\n- Plot `load_mw` against `date` on the primary axis as a navy line with square markers and `linewidth=2.2`.\n- Create a secondary y-axis using `ax.twinx()` and plot `temperature_c` as semi-transparent orange bars.\n- Format the x-axis using `mdates.DateFormatter(\u0027%d-%b\u0027)`.\n- Set the primary y-axis label to `Load (MW)` and the secondary y-axis label to `Temperature (C)`.\n- Set the primary y ticks to `np.arange(500, 951, 100)` and limit the secondary y-axis to `10` through `40`.\n- Hide the top spine on both axes and also hide the right spine on the primary axis.\n- Add a combined legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Annotate the hottest day with the text `Heatwave Peak`.\n- Title the chart `Daily Grid Load and Temperature`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.dates as mdates\n\nsns.set_theme(style=\u0027ticks\u0027)\n\ndata = {\n    \u0027date\u0027: pd.date_range(\u00272025-07-01\u0027, periods=8, freq=\u0027D\u0027),\n    \u0027load_mw\u0027: [610, 645, 690, 720, 810, 845, 790, 735],\n    \u0027temperature_c\u0027: [24, 26, 28, 31, 35, 37, 33, 29],\n    \u0027reserve_margin\u0027: [18, 16, 15, 14, 11, 10, 12, 14]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the operations chart below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.colors as mcolors\nimport matplotlib.dates as mdates\nfig = plt.gcf()\nassert len(fig.axes) \u003e= 2, \u0027Your secondary y-axis is missing! Use ax.twinx().\u0027\nax1, ax2 = fig.axes[0], fig.axes[1]\nassert len(ax1.lines) \u003e= 1, \u0027The primary axis should contain the load line.\u0027\nline = ax1.lines[0]\nassert mcolors.to_rgba(line.get_color()) == mcolors.to_rgba(\u0027navy\u0027), \u0027The load line must be navy.\u0027\nassert line.get_marker() == \u0027s\u0027, \u0027Use square markers on the load line.\u0027\nassert abs(line.get_linewidth() - 2.2) \u003c 0.01, \u0027The load line must use linewidth 2.2.\u0027\nassert len(ax2.patches) == len(df), \u0027The secondary axis should contain one temperature bar per day.\u0027\nassert ax1.get_ylabel() == \u0027Load (MW)\u0027, \u0027Set the primary y-axis label to Load (MW).\u0027\nassert ax2.get_ylabel() == \u0027Temperature (C)\u0027, \u0027Set the secondary y-axis label to Temperature (C).\u0027\nassert np.allclose(ax1.get_yticks(), np.arange(500, 951, 100)), \u0027Set the primary y ticks to np.arange(500, 951, 100).\u0027\nlow, high = ax2.get_ylim()\nassert abs(low - 10) \u003c 0.1 and abs(high - 40) \u003c 0.1, \u0027The secondary axis must run from 10 to 40.\u0027\nassert isinstance(ax1.xaxis.get_major_formatter(), mdates.DateFormatter), \u0027Format the x-axis with mdates.DateFormatter.\u0027\nassert ax1.xaxis.get_major_formatter().fmt == \u0027%d-%b\u0027, \u0027Use DateFormatter(%d-%b) on the x-axis.\u0027\nassert not ax1.spines[\u0027top\u0027].get_visible(), \u0027Hide the top spine on the primary axis.\u0027\nassert not ax2.spines[\u0027top\u0027].get_visible(), \u0027Hide the top spine on the secondary axis.\u0027\nassert not ax1.spines[\u0027right\u0027].get_visible(), \u0027Hide the right spine on the primary axis.\u0027\nlegend = ax1.get_legend()\nassert legend is not None, \u0027Your combined legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot with bbox_to_anchor.\u0027\nassert any(\u0027Heatwave Peak\u0027 in text.get_text() for text in ax2.texts), \u0027Add the Heatwave Peak annotation.\u0027\nassert ax1.get_title() == \u0027Daily Grid Load and Temperature\u0027, \u0027Your chart title must be exactly Daily Grid Load and Temperature.\u0027",
+        "id":  "50",
+        "title":  "Emergency Department Demand Trend Monitoring",
+        "markdown":  "### The Scenario\nA hospital operations group is monitoring daily emergency department arrivals over 18 months. They need to distinguish noisy day-to-day variation from sustained shifts in patient volume, while also highlighting a major winter flu surge and comparing observed demand with practical capacity.\n\n### The Task\n- Set the figure size to `(13, 6)`.\n- Plot `arrivals` against `date` as a light gray daily line with reduced alpha so the raw noise remains visible.\n- Overlay a 30-day rolling mean as a navy line with `linewidth=2.5`.\n- Shade the flu-surge period from `surge_start` to `surge_end` using `ax.axvspan()`.\n- Add a horizontal dashed red capacity line at `y=185`.\n- Format the x-axis using `mdates.DateFormatter(\u0027%b %Y\u0027)`.\n- Set the y-axis label to `Daily ED Arrivals`.\n- Add an annotation `Flu Surge` near the peak of the rolling trend.\n- Title the chart `Emergency Department Demand and Capacity`.",
+        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.dates as mdates\n\nsns.set_theme(style=\u0027whitegrid\u0027)\nnp.random.seed(14)\n\ndate = pd.date_range(\u00272024-01-01\u0027, periods=540, freq=\u0027D\u0027)\ntrend = np.linspace(118, 156, len(date))\nweekly = 9 * np.sin(np.arange(len(date)) * 2 * np.pi / 7)\nseasonal = 12 * np.sin(np.arange(len(date)) * 2 * np.pi / 365)\nflu_bump = np.where((date \u003e= \u00272024-12-10\u0027) \u0026 (date \u003c= \u00272025-02-15\u0027), 28, 0)\nnoise = np.random.normal(0, 7, len(date))\narrivals = np.round((trend + weekly + seasonal + flu_bump + noise).clip(80, 230), 0)\n\ndf = pd.DataFrame({\u0027date\u0027: date, \u0027arrivals\u0027: arrivals})\ndf[\u0027rolling_30d\u0027] = df[\u0027arrivals\u0027].rolling(30, min_periods=1).mean()\nsurge_start = pd.Timestamp(\u00272024-12-10\u0027)\nsurge_end = pd.Timestamp(\u00272025-02-15\u0027)\n\n# Build the ED demand monitoring chart below\n\n\n\nplt.show()",
+        "validation_code":  "import matplotlib.dates as mdates\nax = plt.gca()\nassert len(ax.lines) \u003e= 3, \u0027Plot the raw arrivals, the rolling mean, and the capacity line.\u0027\nassert abs(ax.lines[1].get_linewidth() - 2.5) \u003c 0.01 or abs(ax.lines[0].get_linewidth() - 2.5) \u003c 0.01, \u0027The 30-day rolling mean should use linewidth 2.5.\u0027\nassert len(ax.patches) \u003e 0, \u0027Shade the flu surge period using ax.axvspan().\u0027\nassert any(np.allclose(line.get_ydata(), [185, 185]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add the dashed capacity line at y=185.\u0027\nassert isinstance(ax.xaxis.get_major_formatter(), mdates.DateFormatter), \u0027Format the x-axis with mdates.DateFormatter.\u0027\nassert ax.xaxis.get_major_formatter().fmt == \u0027%b %Y\u0027, \u0027Use DateFormatter(%b %Y) on the x-axis.\u0027\nassert ax.get_ylabel() == \u0027Daily ED Arrivals\u0027, \u0027Set the y-axis label to Daily ED Arrivals.\u0027\nassert any(\u0027Flu Surge\u0027 in text.get_text() for text in ax.texts), \u0027Add the Flu Surge annotation.\u0027\nassert ax.get_title() == \u0027Emergency Department Demand and Capacity\u0027, \u0027Check your plot title! It must be exactly Emergency Department Demand and Capacity.\u0027",
         "dataset_preview":  {
                                 "columns":  [
                                                 "date",
-                                                "load_mw",
-                                                "temperature_c"
+                                                "arrivals",
+                                                "rolling_30d"
                                             ],
                                 "rows":  [
                                              [
-                                                 "2025-07-01",
-                                                 610,
-                                                 24
+                                                 "2024-01-01",
+                                                 121.0,
+                                                 121.0
                                              ],
                                              [
-                                                 "2025-07-02",
-                                                 645,
-                                                 26
+                                                 "2024-01-02",
+                                                 129.0,
+                                                 125.0
                                              ]
                                          ]
                             },
         "hints":  [
-                      "Think of this as a time-series line on one axis and temperature bars on a second axis.",
-                      "Use `ax.twinx()` for the secondary axis, `DateFormatter` for the dates, and spine visibility controls on both axes.",
-                      "Try `fig, ax1 = plt.subplots(figsize=(11, 6))`; `ax1.plot(df[\u0027date\u0027], df[\u0027load_mw\u0027], color=\u0027navy\u0027, marker=\u0027s\u0027, linewidth=2.2)`; `ax2 = ax1.twinx()`; `ax2.bar(df[\u0027date\u0027], df[\u0027temperature_c\u0027], color=\u0027orange\u0027, alpha=0.6)`."
-                  ]
+                      "This is a time-series monitoring problem: keep the daily signal visible, but smooth it enough to reveal sustained pressure on the department.",
+                      "Use `ax.plot()` for both the raw series and the rolling mean, `ax.axvspan()` for the surge window, and `ax.axhline()` for the capacity line.",
+                      "Try `ax.plot(df[\u0027date\u0027], df[\u0027arrivals\u0027], color=\u0027gray\u0027, alpha=0.35)`, then `ax.plot(df[\u0027date\u0027], df[\u0027rolling_30d\u0027], color=\u0027navy\u0027, linewidth=2.5)`, then `ax.axvspan(surge_start, surge_end, alpha=0.2)` and `ax.axhline(185, color=\u0027red\u0027, linestyle=\u0027--\u0027)`."
+                  ],
+        "solution_code":  "fig, ax = plt.subplots(figsize=(13, 6))\nax.plot(df[\u0027date\u0027], df[\u0027arrivals\u0027], color=\u0027lightgray\u0027, alpha=0.6)\nax.plot(df[\u0027date\u0027], df[\u0027rolling_30d\u0027], color=\u0027navy\u0027, linewidth=2.5)\nax.axvspan(surge_start, surge_end, color=\u0027orange\u0027, alpha=0.2)\nax.axhline(185, color=\u0027red\u0027, linestyle=\u0027--\u0027)\nax.xaxis.set_major_formatter(mdates.DateFormatter(\u0027%b %Y\u0027))\nax.set_ylabel(\u0027Daily ED Arrivals\u0027)\nidx = df[\u0027rolling_30d\u0027].idxmax()\nax.annotate(\u0027Flu Surge\u0027, (df.loc[idx, \u0027date\u0027], df.loc[idx, \u0027rolling_30d\u0027]), xytext=(8, 8), textcoords=\u0027offset points\u0027)\nax.set_title(\u0027Emergency Department Demand and Capacity\u0027)"
     },
     {
-        "id":  "23",
-        "title":  "Split Violin of Support Wait Times by SLA Outcome",
-        "markdown":  "### The Scenario\nA customer support director wants to compare how wait times differ across support channels depending on whether the customer ticket met the same-day SLA. The chart must be polished enough for a service performance review.\n\n### The Task\n- Set the figure size to `(12, 6)`.\n- Create a Seaborn violin plot with `channel` on the x-axis, `wait_minutes` on the y-axis, and `sla_met` as the hue.\n- Use `split=True` and `inner=\u0027quartile\u0027`.\n- Apply the custom palette `{\u0027No\u0027: \u0027#c44e52\u0027, \u0027Yes\u0027: \u0027#55a868\u0027}`.\n- Set the y-axis label to `Wait Time (minutes)` and limit the y-axis from `0` to `60`.\n- Place the legend outside the chart using `bbox_to_anchor=(1.02, 1)`.\n- Hide the top and right spines.\n- Title the chart `Support Wait Time by Channel and SLA`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\nnp.random.seed(7)\n\nchannels = [\u0027Chat\u0027, \u0027Email\u0027, \u0027Phone\u0027, \u0027Social\u0027]\nrecords = []\nfor channel, base in zip(channels, [18, 28, 14, 22]):\n    for sla_met in [\u0027Yes\u0027, \u0027No\u0027]:\n        waits = np.random.normal(base - 4 if sla_met == \u0027Yes\u0027 else base + 7, 4, 40).clip(2, 58)\n        for wait in waits:\n            records.append({\n                \u0027channel\u0027: channel,\n                \u0027wait_minutes\u0027: round(float(wait), 1),\n                \u0027sla_met\u0027: sla_met,\n                \u0027ticket_count\u0027: np.random.randint(80, 160)\n            })\n\ndf = pd.DataFrame(records)\n\n# Build your split violin plot below\n\n\n\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nax = plt.gca()\nassert len(ax.collections) \u003e= 4, \u0027Your violin plot is missing or incomplete.\u0027\nassert len(ax.lines) \u003e 0, \u0027Use inner=quartile so quartile lines are visible.\u0027\nassert ax.get_ylabel() == \u0027Wait Time (minutes)\u0027, \u0027Set the y-axis label to Wait Time (minutes).\u0027\nlow, high = ax.get_ylim()\nassert abs(low - 0) \u003c 0.1 and abs(high - 60) \u003c 0.1, \u0027Set the y-axis limits from 0 to 60.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The SLA legend is missing.\u0027\nlabels = [t.get_text() for t in legend.get_texts()]\nassert labels == [\u0027No\u0027, \u0027Yes\u0027], \u0027Your legend labels should be No and Yes.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nassert not ax.spines[\u0027top\u0027].get_visible(), \u0027Hide the top spine.\u0027\nassert not ax.spines[\u0027right\u0027].get_visible(), \u0027Hide the right spine.\u0027\nassert ax.get_title() == \u0027Support Wait Time by Channel and SLA\u0027, \u0027Your chart title must be exactly Support Wait Time by Channel and SLA.\u0027",
+        "id":  "51",
+        "title":  "Hospital Length-of-Stay Distribution by Department",
+        "markdown":  "### The Scenario\nA hospital quality team is studying length of stay across departments while separating patients who required an ICU transfer from those who did not. Because length of stay is strongly right-skewed, a boxen plot with a log-scaled y-axis is a realistic way to compare the tails and central structure of these distributions.\n\n### The Task\n- Set the figure size to `(12, 6)`.\n- Create a Seaborn boxen plot with `department` on the x-axis, `stay_days` on the y-axis, and `icu_transfer` as the hue.\n- Use the palette `{\u0027No\u0027: \u0027#4c72b0\u0027, \u0027Yes\u0027: \u0027#c44e52\u0027}`.\n- Set the y-axis scale to logarithmic.\n- Add a horizontal dashed gray benchmark line at `y=5`.\n- Set the y-axis label to `Length of Stay (days)`.\n- Place the legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Title the chart `Length of Stay by Department and ICU Transfer`.",
+        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\nnp.random.seed(55)\n\ndepartments = [\u0027Cardiology\u0027, \u0027Oncology\u0027, \u0027General Surgery\u0027, \u0027Neurology\u0027]\nrows = []\nbase_map = {\n    \u0027Cardiology\u0027: 5.5,\n    \u0027Oncology\u0027: 7.8,\n    \u0027General Surgery\u0027: 4.9,\n    \u0027Neurology\u0027: 6.3\n}\nfor dept in departments:\n    for icu in [\u0027No\u0027, \u0027Yes\u0027]:\n        center = base_map[dept] * (1.0 if icu == \u0027No\u0027 else 1.8)\n        stays = np.random.lognormal(mean=np.log(center), sigma=0.42 if icu == \u0027No\u0027 else 0.48, size=120).clip(1, 45)\n        for stay in stays:\n            rows.append({\n                \u0027department\u0027: dept,\n                \u0027icu_transfer\u0027: icu,\n                \u0027stay_days\u0027: round(float(stay), 2),\n                \u0027age_years\u0027: int(np.random.randint(21, 90))\n            })\n\ndf = pd.DataFrame(rows)\n\n# Build the length-of-stay distribution chart below\n\n\n\nplt.show()",
+        "validation_code":  "ax = plt.gca()\nassert len(ax.patches) + len(ax.collections) \u003e 0, \u0027We could not find the boxen plot. Did you use sns.boxenplot()?\u0027\nassert ax.get_yscale() == \u0027log\u0027, \u0027Set the y-axis to a logarithmic scale.\u0027\nassert any(np.allclose(line.get_ydata(), [5, 5]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add the dashed benchmark line at y=5.\u0027\nassert ax.get_ylabel() == \u0027Length of Stay (days)\u0027, \u0027Set the y-axis label to Length of Stay (days).\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nlabels = [text.get_text() for text in legend.get_texts()]\nassert labels == [\u0027No\u0027, \u0027Yes\u0027], \u0027Your legend labels should be No and Yes.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nassert ax.get_title() == \u0027Length of Stay by Department and ICU Transfer\u0027, \u0027Check your plot title! It must be exactly Length of Stay by Department and ICU Transfer.\u0027",
         "dataset_preview":  {
                                 "columns":  [
-                                                "channel",
-                                                "wait_minutes",
-                                                "sla_met"
+                                                "department",
+                                                "icu_transfer",
+                                                "stay_days"
                                             ],
                                 "rows":  [
                                              [
-                                                 "Chat",
-                                                 20.8,
-                                                 "Yes"
+                                                 "Cardiology",
+                                                 "No",
+                                                 5.91
                                              ],
                                              [
-                                                 "Chat",
-                                                 31.6,
-                                                 "No"
+                                                 "Cardiology",
+                                                 "Yes",
+                                                 9.84
                                              ]
                                          ]
                             },
         "hints":  [
-                      "A split violin plot compares two groups inside the same category shape.",
-                      "Use `sns.violinplot()` with `hue=`, `split=True`, and `inner=\u0027quartile\u0027`.",
-                      "Try `sns.violinplot(data=df, x=\u0027channel\u0027, y=\u0027wait_minutes\u0027, hue=\u0027sla_met\u0027, split=True, inner=\u0027quartile\u0027, palette={\u0027No\u0027: \u0027#c44e52\u0027, \u0027Yes\u0027: \u0027#55a868\u0027})`."
-                  ]
+                      "Because length of stay is heavily right-skewed, use a distribution plot that handles long tails well and then make the y-axis log-scaled.",
+                      "Use `sns.boxenplot()` for the distributions, `ax.set_yscale(\u0027log\u0027)` for the skew, and `ax.axhline()` for the benchmark.",
+                      "Try `sns.boxenplot(data=df, x=\u0027department\u0027, y=\u0027stay_days\u0027, hue=\u0027icu_transfer\u0027, palette={\u0027No\u0027: \u0027#4c72b0\u0027, \u0027Yes\u0027: \u0027#c44e52\u0027})`, then `ax.set_yscale(\u0027log\u0027)` and `ax.axhline(5, color=\u0027gray\u0027, linestyle=\u0027--\u0027)`."
+                  ],
+        "solution_code":  "plt.figure(figsize=(12, 6))\nax = sns.boxenplot(data=df, x=\u0027department\u0027, y=\u0027stay_days\u0027, hue=\u0027icu_transfer\u0027, hue_order=[\u0027No\u0027, \u0027Yes\u0027], palette={\u0027No\u0027: \u0027#4c72b0\u0027, \u0027Yes\u0027: \u0027#c44e52\u0027})\nax.set_yscale(\u0027log\u0027)\nax.axhline(5, color=\u0027gray\u0027, linestyle=\u0027--\u0027)\nax.set_ylabel(\u0027Length of Stay (days)\u0027)\nax.legend(bbox_to_anchor=(1.02, 1), loc=\u0027upper left\u0027)\nax.set_title(\u0027Length of Stay by Department and ICU Transfer\u0027)"
     },
     {
-        "id":  "24",
-        "title":  "Priority Resolution Distribution with SLA Threshold",
-        "markdown":  "### The Scenario\nA service operations team wants a chart that compares ticket resolution times across incident priorities. They also want to see the raw variation of individual tickets and the SLA threshold all in one view.\n\n### The Task\n- Set the figure size to `(11, 6)`.\n- Create a Seaborn boxplot with `priority` on the x-axis and `resolution_minutes` on the y-axis using palette `Set2`.\n- Overlay a jittered strip plot of the same points in black with some transparency.\n- Add a horizontal dashed red line at `y=60` to mark the SLA threshold.\n- Add the text annotation `SLA Threshold` near coordinates `(2.15, 62)`.\n- Set the y-axis label to `Resolution Time (minutes)` and limit the y-axis from `0` to `110`.\n- Hide the top and right spines.\n- Title the chart `Incident Resolution by Priority`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\nnp.random.seed(11)\n\npriority_map = {\n    \u0027Low\u0027: (35, 8),\n    \u0027Medium\u0027: (48, 10),\n    \u0027High\u0027: (63, 12),\n    \u0027Critical\u0027: (78, 14)\n}\nrows = []\nfor priority, (mu, sigma) in priority_map.items():\n    values = np.random.normal(mu, sigma, 45).clip(10, 105)\n    for val in values:\n        rows.append({\n            \u0027priority\u0027: priority,\n            \u0027resolution_minutes\u0027: round(float(val), 1),\n            \u0027team_size\u0027: np.random.randint(4, 12),\n            \u0027reopened\u0027: np.random.choice([\u0027Yes\u0027, \u0027No\u0027], p=[0.18, 0.82])\n        })\n\ndf = pd.DataFrame(rows)\n\n# Build the distribution chart below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.colors as mcolors\nax = plt.gca()\nassert len(ax.patches) \u003e 0, \u0027The boxplot is missing.\u0027\nassert len(ax.collections) \u003e 0, \u0027Overlay the raw observations with a strip plot.\u0027\nmatching = [line for line in ax.lines if len(line.get_ydata()) == 2 and np.allclose(line.get_ydata(), [60, 60])]\nassert matching, \u0027Add a horizontal SLA line at y=60.\u0027\nassert any(mcolors.to_rgba(line.get_color()) == mcolors.to_rgba(\u0027red\u0027) and line.get_linestyle() == \u0027--\u0027 for line in matching), \u0027The SLA line must be red and dashed.\u0027\nassert any(\u0027SLA Threshold\u0027 in text.get_text() for text in ax.texts), \u0027Add the SLA Threshold annotation.\u0027\nassert ax.get_ylabel() == \u0027Resolution Time (minutes)\u0027, \u0027Set the y-axis label to Resolution Time (minutes).\u0027\nlow, high = ax.get_ylim()\nassert abs(low - 0) \u003c 0.1 and abs(high - 110) \u003c 0.1, \u0027Set the y-axis limits from 0 to 110.\u0027\nassert not ax.spines[\u0027top\u0027].get_visible(), \u0027Hide the top spine.\u0027\nassert not ax.spines[\u0027right\u0027].get_visible(), \u0027Hide the right spine.\u0027\nassert ax.get_title() == \u0027Incident Resolution by Priority\u0027, \u0027Your chart title must be exactly Incident Resolution by Priority.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "priority",
-                                                "resolution_minutes",
-                                                "reopened"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "Low",
-                                                 41.2,
-                                                 "No"
-                                             ],
-                                             [
-                                                 "Critical",
-                                                 83.5,
-                                                 "Yes"
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Build the summary distribution first, then overlay the individual observations and SLA reference.",
-                      "Use `sns.boxplot()` plus `sns.stripplot()`, then draw the threshold with `ax.axhline()` and label it with `ax.text()`.",
-                      "Try `sns.boxplot(data=df, x=\u0027priority\u0027, y=\u0027resolution_minutes\u0027, palette=\u0027Set2\u0027)`; `sns.stripplot(data=df, x=\u0027priority\u0027, y=\u0027resolution_minutes\u0027, color=\u0027black\u0027, alpha=0.4, jitter=0.15)`; `ax.axhline(60, color=\u0027red\u0027, linestyle=\u0027--\u0027)`."
-                  ]
-    },
-    {
-        "id":  "25",
-        "title":  "Campaign Efficiency Scatter with Regression and Benchmarks",
-        "markdown":  "### The Scenario\nA growth team needs a performance plot to compare advertising campaigns. They want spend, revenue, conversion efficiency, and regional differences summarized in one advanced chart.\n\n### The Task\n- Set the figure size to `(10, 6)`.\n- Create a Seaborn scatter plot with `ad_spend` on the x-axis, `revenue` on the y-axis, `region` as the hue, and `conversion_rate` as the size.\n- Use the palette `{\u0027North\u0027: \u0027#4c72b0\u0027, \u0027South\u0027: \u0027#dd8452\u0027, \u0027West\u0027: \u0027#55a868\u0027}` and a size range of `(60, 240)`.\n- Overlay a regression line using `sns.regplot()` with `scatter=False`, color `black`, dashed style, and `linewidth=2`.\n- Add a vertical dotted gray line at `x=40000` and a horizontal dotted gray line at `y=120000`.\n- Set the x-axis limits to `10000` through `70000` and the y-axis limits to `40000` through `200000`.\n- Place the legend outside the chart using `bbox_to_anchor=(1.02, 1)`.\n- Annotate the campaign with the highest revenue using the text `Top Campaign`.\n- Title the chart `Campaign Spend vs Revenue`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027ticks\u0027)\n\ndata = {\n    \u0027campaign\u0027: [\u0027Spring Search\u0027, \u0027Video Boost\u0027, \u0027Retargeting A\u0027, \u0027Holiday Social\u0027, \u0027Referral Push\u0027, \u0027Brand Search\u0027, \u0027Prospecting B\u0027, \u0027Influencer Run\u0027, \u0027Display Burst\u0027],\n    \u0027ad_spend\u0027: [18000, 42000, 26000, 54000, 21000, 39000, 47000, 32000, 61000],\n    \u0027revenue\u0027: [68000, 122000, 91000, 155000, 74000, 118000, 133000, 104000, 182000],\n    \u0027conversion_rate\u0027: [2.4, 3.2, 2.8, 3.9, 2.1, 3.0, 3.4, 2.9, 4.1],\n    \u0027region\u0027: [\u0027North\u0027, \u0027South\u0027, \u0027West\u0027, \u0027South\u0027, \u0027North\u0027, \u0027West\u0027, \u0027South\u0027, \u0027North\u0027, \u0027West\u0027]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the campaign efficiency chart below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.colors as mcolors\nax = plt.gca()\nassert len(ax.collections) \u003e 0, \u0027The scatter plot is missing.\u0027\nassert len(ax.lines) \u003e= 3, \u0027Add the regression line and both benchmark lines.\u0027\nassert any(mcolors.to_rgba(line.get_color()) == mcolors.to_rgba(\u0027black\u0027) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027The regression line must be black and dashed.\u0027\nassert any(np.allclose(line.get_xdata(), [40000, 40000]) and line.get_linestyle() == \u0027:\u0027 for line in ax.lines), \u0027Add a vertical dotted benchmark line at x=40000.\u0027\nassert any(np.allclose(line.get_ydata(), [120000, 120000]) and line.get_linestyle() == \u0027:\u0027 for line in ax.lines), \u0027Add a horizontal dotted benchmark line at y=120000.\u0027\nlow_x, high_x = ax.get_xlim()\nlow_y, high_y = ax.get_ylim()\nassert abs(low_x - 10000) \u003c 0.1 and abs(high_x - 70000) \u003c 0.1, \u0027Set the x-axis limits to 10000 through 70000.\u0027\nassert abs(low_y - 40000) \u003c 0.1 and abs(high_y - 200000) \u003c 0.1, \u0027Set the y-axis limits to 40000 through 200000.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nassert any(\u0027Top Campaign\u0027 in text.get_text() for text in ax.texts), \u0027Annotate the highest revenue campaign with Top Campaign.\u0027\nassert ax.get_title() == \u0027Campaign Spend vs Revenue\u0027, \u0027Your chart title must be exactly Campaign Spend vs Revenue.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "campaign",
-                                                "ad_spend",
-                                                "revenue"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "Spring Search",
-                                                 18000,
-                                                 68000
-                                             ],
-                                             [
-                                                 "Video Boost",
-                                                 42000,
-                                                 122000
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "You need a scatter plot for the campaigns, then a separate fitted trend line on top.",
-                      "Use `sns.scatterplot()` for hue and size mapping, then overlay `sns.regplot(scatter=False)` and add benchmark lines with `ax.axvline()` and `ax.axhline()`.",
-                      "Try `sns.scatterplot(data=df, x=\u0027ad_spend\u0027, y=\u0027revenue\u0027, hue=\u0027region\u0027, size=\u0027conversion_rate\u0027, sizes=(60, 240), palette={...})` and `sns.regplot(data=df, x=\u0027ad_spend\u0027, y=\u0027revenue\u0027, scatter=False, color=\u0027black\u0027, line_kws={\u0027linestyle\u0027: \u0027--\u0027, \u0027linewidth\u0027: 2})`."
-                  ]
-    },
-    {
-        "id":  "26",
-        "title":  "Order Value Histogram with KDE and Quartile Markers",
-        "markdown":  "### The Scenario\nYou are analyzing ecommerce order values for a merchandising team. They need a distribution chart that combines a histogram, KDE overlay, and clearly marked percentile thresholds.\n\n### The Task\n- Set the figure size to `(10, 6)`.\n- Plot a histogram of `order_value` with exactly `18` bins, `density=True`, color `#4c72b0`, white edges, and `alpha=0.6`.\n- Overlay a KDE curve in `darkorange` with `linewidth=2.5`.\n- Add vertical lines at the 25th, 50th, and 75th percentiles of `order_value`.\n- Make the median line dark red and solid, while the 25th and 75th percentile lines are gray and dashed.\n- Annotate the median line with the text `Median`.\n- Set the x-axis limits to `0` through `350`.\n- Place the legend outside the chart using `bbox_to_anchor=(1.02, 1)`.\n- Title the chart `Order Value Distribution`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\nnp.random.seed(19)\n\norders = np.random.lognormal(mean=4.3, sigma=0.45, size=350)\norders = np.clip(orders, 12, 340)\n\ndata = {\n    \u0027order_id\u0027: [f\u0027ORD-{1000+i}\u0027 for i in range(len(orders))],\n    \u0027order_value\u0027: np.round(orders, 2),\n    \u0027items\u0027: np.random.randint(1, 7, size=len(orders)),\n    \u0027channel\u0027: np.random.choice([\u0027Web\u0027, \u0027App\u0027, \u0027Marketplace\u0027], size=len(orders), p=[0.52, 0.33, 0.15])\n}\n\ndf = pd.DataFrame(data)\n\n# Build the histogram analysis below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.colors as mcolors\nax = plt.gca()\nq1, q2, q3 = np.percentile(df[\u0027order_value\u0027], [25, 50, 75])\nassert len(ax.patches) == 18, \u0027The histogram must use exactly 18 bins.\u0027\nassert len(ax.lines) \u003e= 4, \u0027Add the KDE curve and all three percentile lines.\u0027\nassert any(mcolors.to_rgba(line.get_color()) == mcolors.to_rgba(\u0027darkorange\u0027) and abs(line.get_linewidth() - 2.5) \u003c 0.01 for line in ax.lines if len(line.get_xdata()) \u003e 2), \u0027The KDE curve must be darkorange with linewidth 2.5.\u0027\nassert any(np.allclose(line.get_xdata(), [q2, q2]) and mcolors.to_rgba(line.get_color()) == mcolors.to_rgba(\u0027darkred\u0027) and line.get_linestyle() == \u0027-\u0027 for line in ax.lines), \u0027The median line must be dark red and solid.\u0027\nassert any(np.allclose(line.get_xdata(), [q1, q1]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add a dashed line at the 25th percentile.\u0027\nassert any(np.allclose(line.get_xdata(), [q3, q3]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add a dashed line at the 75th percentile.\u0027\nassert any(\u0027Median\u0027 in text.get_text() for text in ax.texts), \u0027Annotate the median line with the text Median.\u0027\nlow, high = ax.get_xlim()\nassert abs(low - 0) \u003c 0.1 and abs(high - 350) \u003c 0.1, \u0027Set the x-axis limits from 0 to 350.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nassert ax.get_title() == \u0027Order Value Distribution\u0027, \u0027Your chart title must be exactly Order Value Distribution.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "order_id",
-                                                "order_value",
-                                                "channel"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "ORD-1000",
-                                                 82.44,
-                                                 "Web"
-                                             ],
-                                             [
-                                                 "ORD-1001",
-                                                 56.18,
-                                                 "App"
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Plot the distribution first, then layer the smoother density curve and percentile guides.",
-                      "Use `plt.hist()` for the bins, `sns.kdeplot()` for the smooth curve, and `plt.axvline()` for the quartiles.",
-                      "Try `plt.hist(df[\u0027order_value\u0027], bins=18, density=True, color=\u0027#4c72b0\u0027, edgecolor=\u0027white\u0027, alpha=0.6)`; `sns.kdeplot(df[\u0027order_value\u0027], color=\u0027darkorange\u0027, linewidth=2.5)`; `plt.axvline(q2, color=\u0027darkred\u0027)`."
-                  ]
-    },
-    {
-        "id":  "27",
-        "title":  "Acquisition Dashboard with Rolling Trend and CAC Target",
-        "markdown":  "### The Scenario\nA subscription business wants a compact two-panel dashboard for user acquisition. The top panel should show daily signups and their short-term trend, while the bottom panel should show customer acquisition cost against a fixed target.\n\n### The Task\n- Set the figure size to `(13, 8)` and create a `2x1` subplot layout with `sharex=True`.\n- In the top subplot, plot `signups` as a line with markers and overlay a 7-day rolling average as a thicker black dashed line.\n- Annotate the day with the maximum number of signups using the text `Signup Spike`.\n- In the bottom subplot, plot `cac` as a bar chart.\n- Add a horizontal dashed red target line at `y=45` in the bottom subplot.\n- Format the shared x-axis using `mdates.DateFormatter(\u0027%d-%b\u0027)`.\n- Set the top subplot title to `Daily Signups` and the bottom subplot title to `Customer Acquisition Cost`.\n- Add a figure-level title `Acquisition Performance Dashboard`.\n- Place the legend in the top subplot outside the chart using `bbox_to_anchor=(1.02, 1)`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.dates as mdates\n\nsns.set_theme(style=\u0027whitegrid\u0027)\n\ndata = {\n    \u0027date\u0027: pd.date_range(\u00272025-03-01\u0027, periods=14, freq=\u0027D\u0027),\n    \u0027signups\u0027: [42, 48, 45, 53, 57, 61, 65, 74, 68, 72, 81, 79, 76, 84],\n    \u0027cac\u0027: [51, 49, 47, 46, 45, 44, 43, 42, 44, 46, 43, 41, 40, 39],\n    \u0027paid_clicks\u0027: [950, 1020, 998, 1085, 1120, 1175, 1202, 1260, 1210, 1245, 1305, 1290, 1270, 1330]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the acquisition dashboard below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.dates as mdates\nfig = plt.gcf()\nassert len(fig.axes) == 2, \u0027Create exactly two subplots for this dashboard.\u0027\nax1, ax2 = fig.axes\nassert len(ax1.lines) \u003e= 2, \u0027The top subplot must contain signups and the 7-day rolling average.\u0027\nassert len(ax2.patches) == len(df), \u0027The bottom subplot should contain one CAC bar per day.\u0027\nassert any(np.allclose(line.get_ydata(), [45, 45]) and line.get_linestyle() == \u0027--\u0027 for line in ax2.lines), \u0027Add the dashed CAC target line at y=45.\u0027\nassert any(\u0027Signup Spike\u0027 in text.get_text() for text in ax1.texts), \u0027Annotate the maximum signup day with Signup Spike.\u0027\nassert isinstance(ax2.xaxis.get_major_formatter(), mdates.DateFormatter), \u0027Format the shared x-axis with mdates.DateFormatter.\u0027\nassert ax2.xaxis.get_major_formatter().fmt == \u0027%d-%b\u0027, \u0027Use DateFormatter(%d-%b) on the shared x-axis.\u0027\nassert ax1.get_title() == \u0027Daily Signups\u0027, \u0027The top subplot title must be Daily Signups.\u0027\nassert ax2.get_title() == \u0027Customer Acquisition Cost\u0027, \u0027The bottom subplot title must be Customer Acquisition Cost.\u0027\nassert fig._suptitle is not None and fig._suptitle.get_text() == \u0027Acquisition Performance Dashboard\u0027, \u0027Add the figure title Acquisition Performance Dashboard.\u0027\nlegend = ax1.get_legend()\nassert legend is not None, \u0027The top subplot legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the top subplot legend outside the plot.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "date",
-                                                "signups",
-                                                "cac"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "2025-03-01",
-                                                 42,
-                                                 51
-                                             ],
-                                             [
-                                                 "2025-03-02",
-                                                 48,
-                                                 49
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "This is a two-row dashboard with a trend panel above and a cost panel below.",
-                      "Use `plt.subplots(2, 1, sharex=True)`; compute the rolling average with pandas, then use `axhline()` for the CAC target.",
-                      "Try `fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(13, 8), sharex=True)`; `ax1.plot(df[\u0027date\u0027], df[\u0027signups\u0027])`; `ax1.plot(df[\u0027date\u0027], df[\u0027signups\u0027].rolling(7).mean(), color=\u0027black\u0027, linestyle=\u0027--\u0027)`; `ax2.axhline(45, color=\u0027red\u0027, linestyle=\u0027--\u0027)`."
-                  ]
-    },
-    {
-        "id":  "28",
-        "title":  "Regional Operations 2x2 Executive Dashboard",
-        "markdown":  "### The Scenario\nAn operations VP wants a compact multi-view dashboard showing revenue trend, profit by region, customer retention vs satisfaction, and a heatmap of support tickets by month and region. The final result should look like a polished management dashboard.\n\n### The Task\n- Set the figure size to `(14, 10)` and create a `2x2` subplot layout.\n- In the top-left subplot, plot monthly `revenue` as a line chart and title it `Revenue Trend`.\n- In the top-right subplot, aggregate total `profit` by `region`, sort descending, and plot it as a bar chart titled `Profit by Region`.\n- In the bottom-left subplot, create a scatter plot of `satisfaction` vs `retention_rate`, using `region` as the hue, and title it `Retention vs Satisfaction`.\n- In the bottom-right subplot, create a pivot table of `tickets` by `region` and `month_label` and render it as a Seaborn heatmap with `cbar=False`, titled `Support Ticket Heatmap`.\n- Hide the top and right spines on the first three subplots.\n- Add a figure-level title `Regional Operations Dashboard`.\n- Ensure each subplot has its exact title.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\n\ndata = {\n    \u0027month\u0027: pd.to_datetime([\u00272025-01-01\u0027, \u00272025-01-01\u0027, \u00272025-01-01\u0027, \u00272025-01-01\u0027,\n                             \u00272025-02-01\u0027, \u00272025-02-01\u0027, \u00272025-02-01\u0027, \u00272025-02-01\u0027,\n                             \u00272025-03-01\u0027, \u00272025-03-01\u0027, \u00272025-03-01\u0027, \u00272025-03-01\u0027]),\n    \u0027month_label\u0027: [\u0027Jan\u0027, \u0027Jan\u0027, \u0027Jan\u0027, \u0027Jan\u0027, \u0027Feb\u0027, \u0027Feb\u0027, \u0027Feb\u0027, \u0027Feb\u0027, \u0027Mar\u0027, \u0027Mar\u0027, \u0027Mar\u0027, \u0027Mar\u0027],\n    \u0027region\u0027: [\u0027North\u0027, \u0027South\u0027, \u0027East\u0027, \u0027West\u0027] * 3,\n    \u0027revenue\u0027: [420, 390, 360, 440, 450, 405, 380, 465, 470, 430, 395, 490],\n    \u0027profit\u0027: [88, 76, 69, 95, 92, 80, 73, 101, 98, 85, 78, 108],\n    \u0027satisfaction\u0027: [4.2, 4.0, 3.8, 4.4, 4.3, 4.1, 3.9, 4.5, 4.4, 4.2, 4.0, 4.6],\n    \u0027retention_rate\u0027: [78, 74, 70, 82, 80, 75, 71, 84, 81, 77, 73, 86],\n    \u0027tickets\u0027: [125, 140, 155, 118, 132, 146, 160, 122, 129, 142, 152, 119]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the 2x2 dashboard below\n\n\n\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nassert len(fig.axes) == 4, \u0027Create exactly four subplots in a 2x2 layout.\u0027\nax1, ax2, ax3, ax4 = fig.axes\nassert len(ax1.lines) \u003e= 1, \u0027The Revenue Trend subplot should contain a line chart.\u0027\nassert len(ax2.patches) \u003e 0, \u0027The Profit by Region subplot should contain bars.\u0027\nassert len(ax3.collections) \u003e 0, \u0027The Retention vs Satisfaction subplot should contain a scatter plot.\u0027\nassert len(ax4.collections) \u003e 0, \u0027The Support Ticket Heatmap subplot should contain a heatmap.\u0027\nassert ax1.get_title() == \u0027Revenue Trend\u0027, \u0027The top-left title must be Revenue Trend.\u0027\nassert ax2.get_title() == \u0027Profit by Region\u0027, \u0027The top-right title must be Profit by Region.\u0027\nassert ax3.get_title() == \u0027Retention vs Satisfaction\u0027, \u0027The bottom-left title must be Retention vs Satisfaction.\u0027\nassert ax4.get_title() == \u0027Support Ticket Heatmap\u0027, \u0027The bottom-right title must be Support Ticket Heatmap.\u0027\nassert not ax1.spines[\u0027top\u0027].get_visible() and not ax1.spines[\u0027right\u0027].get_visible(), \u0027Hide the top and right spines on the Revenue Trend subplot.\u0027\nassert not ax2.spines[\u0027top\u0027].get_visible() and not ax2.spines[\u0027right\u0027].get_visible(), \u0027Hide the top and right spines on the Profit by Region subplot.\u0027\nassert not ax3.spines[\u0027top\u0027].get_visible() and not ax3.spines[\u0027right\u0027].get_visible(), \u0027Hide the top and right spines on the Retention vs Satisfaction subplot.\u0027\nassert fig._suptitle is not None and fig._suptitle.get_text() == \u0027Regional Operations Dashboard\u0027, \u0027Add the figure title Regional Operations Dashboard.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "month_label",
-                                                "region",
-                                                "revenue"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "Jan",
-                                                 "North",
-                                                 420
-                                             ],
-                                             [
-                                                 "Jan",
-                                                 "South",
-                                                 390
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Treat this as four separate visual questions arranged into one figure.",
-                      "Use `plt.subplots(2, 2)` and fill each axis with the required plot type; the heatmap will come from a pivot table and `sns.heatmap()`.",
-                      "Try `fig, axes = plt.subplots(2, 2, figsize=(14, 10))`; `ax1.plot(...)`; `ax2.bar(...)`; `sns.scatterplot(..., ax=ax3)`; `pivot = df.pivot_table(index=\u0027region\u0027, columns=\u0027month_label\u0027, values=\u0027tickets\u0027)`; `sns.heatmap(pivot, cbar=False, ax=ax4)`."
-                  ]
-    },
-    {
-        "id":  "29",
-        "title":  "Masked Correlation Heatmap for Product Metrics",
-        "markdown":  "### The Scenario\nA product analytics team wants a correlation view of multiple engagement metrics, but they only want the lower triangle shown to reduce duplicate information. The heatmap should be tightly formatted and clearly annotated.\n\n### The Task\n- Compute the correlation matrix from the numeric columns of `df`.\n- Create an upper-triangle mask using `np.triu()` so only the lower triangle remains visible.\n- Plot the masked matrix with `sns.heatmap()` using `annot=True`, `fmt=\u0027.2f\u0027`, `cmap=\u0027coolwarm\u0027`, `center=0`, `square=True`, and `linewidths=0.5`.\n- Keep the color bar visible and set its label to `Correlation`.\n- Rotate the x tick labels to 45 degrees and keep the y tick labels unrotated.\n- Title the chart `Product Metrics Correlation Heatmap`.\n- Make sure the heatmap remains on a single main axis plus its color bar.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\n\ndata = {\n    \u0027session_minutes\u0027: [12, 15, 18, 16, 20, 22, 19, 24, 21, 26, 28, 25],\n    \u0027pages_per_session\u0027: [4.1, 4.4, 4.8, 4.5, 5.2, 5.4, 5.1, 5.7, 5.5, 6.0, 6.2, 5.9],\n    \u0027conversion_rate\u0027: [1.8, 1.9, 2.1, 2.0, 2.3, 2.4, 2.2, 2.6, 2.5, 2.8, 2.9, 2.7],\n    \u0027retention_30d\u0027: [58, 60, 63, 61, 66, 68, 65, 71, 69, 74, 76, 73],\n    \u0027nps\u0027: [22, 24, 27, 26, 31, 33, 30, 36, 34, 39, 41, 38],\n    \u0027support_tickets\u0027: [18, 17, 16, 16, 14, 13, 14, 12, 12, 10, 9, 10]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the masked correlation heatmap below\n\n\n\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep the main heatmap and its color bar visible.\u0027\nassert len(ax.collections) \u003e 0, \u0027The heatmap is missing.\u0027\nassert ax.collections[0].cmap.name == \u0027coolwarm\u0027, \u0027Use the coolwarm colormap.\u0027\nassert str(ax.get_aspect()) in [\u00271.0\u0027, \u0027equal\u0027], \u0027Use square=True so the cells are square.\u0027\nassert len(ax.texts) == 21, \u0027With a masked 6x6 lower triangle and annot=True, there should be 21 visible annotations.\u0027\nassert fig.axes[1].get_ylabel() == \u0027Correlation\u0027, \u0027Label the color bar Correlation.\u0027\nassert ax.get_title() == \u0027Product Metrics Correlation Heatmap\u0027, \u0027Your chart title must be exactly Product Metrics Correlation Heatmap.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "session_minutes",
-                                                "pages_per_session",
-                                                "conversion_rate"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 12,
-                                                 4.1,
-                                                 1.8
-                                             ],
-                                             [
-                                                 15,
-                                                 4.4,
-                                                 1.9
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "You need a correlation matrix and a mask that hides the upper triangle.",
-                      "Use `df.corr()`, `np.triu(np.ones_like(...))`, and `sns.heatmap()` with `mask=`, `annot=True`, and `cbar_kws`.",
-                      "Try `corr = df.corr()`; `mask = np.triu(np.ones_like(corr, dtype=bool))`; `sns.heatmap(corr, mask=mask, annot=True, fmt=\u0027.2f\u0027, cmap=\u0027coolwarm\u0027, center=0, square=True, linewidths=0.5, cbar_kws={\u0027label\u0027: \u0027Correlation\u0027})`."
-                  ]
-    },
-    {
-        "id":  "30",
-        "title":  "Weekday-Hour Support Demand Heatmap",
-        "markdown":  "### The Scenario\nA support operations manager wants to visualize average ticket demand by weekday and hour block. They care about keeping the weekday order correct and using a heatmap that is annotated for rapid staffing decisions.\n\n### The Task\n- Build a pivot table from `df` with `weekday` as the index, `hour_block` as the columns, and the mean of `tickets` as the values.\n- Reorder the rows to `[\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027, \u0027Sat\u0027, \u0027Sun\u0027]`.\n- Plot the pivot table with `sns.heatmap()` using `annot=True`, `fmt=\u0027.0f\u0027`, `cmap=\u0027YlOrRd\u0027`, `linewidths=0.5`, and `vmin=20`, `vmax=90`.\n- Keep the color bar visible and label it `Avg Tickets`.\n- Title the chart `Support Demand by Weekday and Hour`.\n- Make sure the y-axis tick labels stay in the required weekday order.\n- Keep the heatmap on the main axis with its color bar as the only extra axis.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\n\nweekdays = [\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027, \u0027Sat\u0027, \u0027Sun\u0027]\nhours = [6, 9, 12, 15, 18, 21]\nrows = []\nbase_map = {\u0027Mon\u0027: 48, \u0027Tue\u0027: 52, \u0027Wed\u0027: 57, \u0027Thu\u0027: 61, \u0027Fri\u0027: 66, \u0027Sat\u0027: 38, \u0027Sun\u0027: 34}\nfor day in weekdays:\n    for hour in hours:\n        rows.append({\n            \u0027weekday\u0027: day,\n            \u0027hour_block\u0027: hour,\n            \u0027tickets\u0027: base_map[day] + (hour // 3) - 1,\n            \u0027agents_online\u0027: 8 + (hour // 6)\n        })\n\ndf = pd.DataFrame(rows)\n\n# Build the weekday-hour heatmap below\n\n\n\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep exactly one heatmap axis plus its color bar.\u0027\nassert len(ax.collections) \u003e 0, \u0027The heatmap is missing.\u0027\nassert ax.collections[0].cmap.name == \u0027YlOrRd\u0027, \u0027Use the YlOrRd colormap.\u0027\nassert len(ax.texts) == 42, \u0027Annotate all 42 heatmap cells.\u0027\nassert fig.axes[1].get_ylabel() == \u0027Avg Tickets\u0027, \u0027Label the color bar Avg Tickets.\u0027\nlabels = [t.get_text() for t in ax.get_yticklabels()][:7]\nassert labels == [\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027, \u0027Sat\u0027, \u0027Sun\u0027], \u0027Keep the weekday order as Mon through Sun.\u0027\nassert ax.get_title() == \u0027Support Demand by Weekday and Hour\u0027, \u0027Your chart title must be exactly Support Demand by Weekday and Hour.\u0027",
+        "id":  "52",
+        "title":  "Call Center Demand by Weekday and Hour",
+        "markdown":  "### The Scenario\nA workforce planning team needs to understand when inbound call demand peaks during the week. A weekday-by-hour heatmap is analytically appropriate because the underlying structure is a two-dimensional operational matrix where shifts depend on both time of day and day of week.\n\n### The Task\n- Build a pivot table from `df` with `weekday` as the index, `hour` as the columns, and `avg_calls` as the values.\n- Reorder the rows to `[\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027, \u0027Sat\u0027, \u0027Sun\u0027]`.\n- Plot the matrix with `sns.heatmap()` using `cmap=\u0027rocket\u0027`, `linewidths=0.3`, and `cbar_kws={\u0027label\u0027: \u0027Avg Calls / Hour\u0027}`.\n- Set the x-axis label to `Hour of Day` and the y-axis label to `Weekday`.\n- Title the chart `Inbound Call Volume Heatmap`.\n- Keep the main heatmap axis and its color bar visible.",
+        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\n\nweekdays = [\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027, \u0027Sat\u0027, \u0027Sun\u0027]\nhours = list(range(24))\nrows = []\nfor day in weekdays:\n    day_base = {\u0027Mon\u0027: 118, \u0027Tue\u0027: 124, \u0027Wed\u0027: 128, \u0027Thu\u0027: 131, \u0027Fri\u0027: 138, \u0027Sat\u0027: 72, \u0027Sun\u0027: 66}[day]\n    for hour in hours:\n        intraday = 28 * np.exp(-((hour - 10) ** 2) / 18) + 34 * np.exp(-((hour - 15) ** 2) / 12)\n        avg_calls = day_base + intraday + (6 if day in [\u0027Mon\u0027, \u0027Fri\u0027] else 0)\n        rows.append({\n            \u0027weekday\u0027: day,\n            \u0027hour\u0027: hour,\n            \u0027avg_calls\u0027: round(float(avg_calls), 1),\n            \u0027avg_handle_minutes\u0027: round(float(np.random.normal(7.5, 0.8)), 2)\n        })\n\ndf = pd.DataFrame(rows)\n\n# Build the weekday-hour call volume heatmap below\n\n\n\nplt.show()",
+        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep the main heatmap axis and its color bar visible.\u0027\nassert len(ax.collections) \u003e 0, \u0027We could not find a heatmap. Did you use sns.heatmap()?\u0027\nassert ax.collections[0].cmap.name == \u0027rocket\u0027, \u0027Your heatmap should use the rocket colormap.\u0027\nassert fig.axes[1].get_ylabel() == \u0027Avg Calls / Hour\u0027, \u0027Label the color bar Avg Calls / Hour.\u0027\nlabels = [tick.get_text() for tick in ax.get_yticklabels()][:7]\nassert labels == [\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027, \u0027Sat\u0027, \u0027Sun\u0027], \u0027Keep the weekday order as Mon through Sun.\u0027\nassert ax.get_xlabel() == \u0027Hour of Day\u0027, \u0027Set the x-axis label to Hour of Day.\u0027\nassert ax.get_ylabel() == \u0027Weekday\u0027, \u0027Set the y-axis label to Weekday.\u0027\nassert ax.get_title() == \u0027Inbound Call Volume Heatmap\u0027, \u0027Check your plot title! It must be exactly Inbound Call Volume Heatmap.\u0027",
         "dataset_preview":  {
                                 "columns":  [
                                                 "weekday",
-                                                "hour_block",
-                                                "tickets"
+                                                "hour",
+                                                "avg_calls"
                                             ],
                                 "rows":  [
                                              [
                                                  "Mon",
-                                                 6,
-                                                 49
+                                                 0,
+                                                 118.1
                                              ],
                                              [
                                                  "Mon",
-                                                 9,
-                                                 50
+                                                 1,
+                                                 118.5
                                              ]
                                          ]
                             },
         "hints":  [
-                      "First reshape the long table into a weekday-hour matrix, then heatmap that matrix.",
-                      "Use `pivot_table()` for the matrix and `sns.heatmap()` for the visualization with annotations.",
-                      "Try `pivot = df.pivot_table(index=\u0027weekday\u0027, columns=\u0027hour_block\u0027, values=\u0027tickets\u0027, aggfunc=\u0027mean\u0027).reindex([\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027, \u0027Sat\u0027, \u0027Sun\u0027])`; `sns.heatmap(pivot, annot=True, fmt=\u0027.0f\u0027, cmap=\u0027YlOrRd\u0027, linewidths=0.5, vmin=20, vmax=90, cbar_kws={\u0027label\u0027: \u0027Avg Tickets\u0027})`."
-                  ]
+                      "This is naturally a matrix problem, so reshape the long table into weekday-by-hour form before plotting it.",
+                      "Use `pivot_table()` to build the matrix and `sns.heatmap()` to render it.",
+                      "Try `pivot = df.pivot_table(index=\u0027weekday\u0027, columns=\u0027hour\u0027, values=\u0027avg_calls\u0027).reindex([\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027, \u0027Sat\u0027, \u0027Sun\u0027])`, then `sns.heatmap(pivot, cmap=\u0027rocket\u0027, linewidths=0.3, cbar_kws={\u0027label\u0027: \u0027Avg Calls / Hour\u0027})`."
+                  ],
+        "solution_code":  "pivot = df.pivot_table(index=\u0027weekday\u0027, columns=\u0027hour\u0027, values=\u0027avg_calls\u0027).reindex([\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027, \u0027Sat\u0027, \u0027Sun\u0027])\nax = sns.heatmap(pivot, cmap=\u0027rocket\u0027, linewidths=0.3, cbar_kws={\u0027label\u0027: \u0027Avg Calls / Hour\u0027})\nax.set_xlabel(\u0027Hour of Day\u0027)\nax.set_ylabel(\u0027Weekday\u0027)\nax.set_title(\u0027Inbound Call Volume Heatmap\u0027)"
     },
     {
-        "id":  "31",
-        "title":  "Stacked Channel Revenue with Rolling Total and Weekend Shading",
-        "markdown":  "### The Scenario\nA commerce analytics team wants a daily revenue chart that separates channels but also shows the total rolling trend. They also want weekends shaded so patterns in consumer behavior are immediately visible.\n\n### The Task\n- Set the figure size to `(12, 6)`.\n- Use `ax.stackplot()` to plot `web_revenue`, `app_revenue`, and `partner_revenue` over `date`.\n- Overlay a black rolling 7-day total revenue line with `linewidth=2.5`.\n- Shade weekend dates using `ax.axvspan()`.\n- Format the x-axis using `mdates.DateFormatter(\u0027%d %b\u0027)`.\n- Hide the top and right spines.\n- Place the legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Annotate the date with the highest total revenue using the text `Peak Total`.\n- Title the chart `Daily Revenue Mix and Total Trend`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.dates as mdates\n\nsns.set_theme(style=\u0027whitegrid\u0027)\n\ndata = {\n    \u0027date\u0027: pd.date_range(\u00272025-04-01\u0027, periods=14, freq=\u0027D\u0027),\n    \u0027web_revenue\u0027: [42, 45, 47, 44, 50, 53, 56, 58, 60, 62, 61, 64, 66, 68],\n    \u0027app_revenue\u0027: [28, 30, 31, 29, 33, 34, 35, 37, 39, 40, 38, 41, 42, 44],\n    \u0027partner_revenue\u0027: [15, 16, 15, 17, 18, 19, 20, 22, 21, 23, 24, 25, 24, 26],\n    \u0027orders\u0027: [210, 225, 233, 220, 248, 260, 272, 286, 294, 302, 296, 311, 320, 334]\n}\n\ndf = pd.DataFrame(data)\ndf[\u0027total_revenue\u0027] = df[[\u0027web_revenue\u0027, \u0027app_revenue\u0027, \u0027partner_revenue\u0027]].sum(axis=1)\n\n# Build the revenue mix chart below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.dates as mdates\nax = plt.gca()\nassert len(ax.collections) \u003e= 3, \u0027The stacked area chart is missing. Use stackplot for the three channels.\u0027\nassert len(ax.lines) \u003e= 1, \u0027Overlay the rolling total revenue line.\u0027\nline = ax.lines[0]\nassert abs(line.get_linewidth() - 2.5) \u003c 0.01, \u0027The rolling total line must use linewidth 2.5.\u0027\nassert len(ax.patches) \u003e 0, \u0027Shade the weekends using axvspan().\u0027 \nassert isinstance(ax.xaxis.get_major_formatter(), mdates.DateFormatter), \u0027Format the x-axis with mdates.DateFormatter.\u0027\nassert ax.xaxis.get_major_formatter().fmt == \u0027%d %b\u0027, \u0027Use DateFormatter(%d %b) on the x-axis.\u0027\nassert not ax.spines[\u0027top\u0027].get_visible(), \u0027Hide the top spine.\u0027\nassert not ax.spines[\u0027right\u0027].get_visible(), \u0027Hide the right spine.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nassert any(\u0027Peak Total\u0027 in text.get_text() for text in ax.texts), \u0027Annotate the highest total revenue point with Peak Total.\u0027\nassert ax.get_title() == \u0027Daily Revenue Mix and Total Trend\u0027, \u0027Your chart title must be exactly Daily Revenue Mix and Total Trend.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "date",
-                                                "web_revenue",
-                                                "app_revenue"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "2025-04-01",
-                                                 42,
-                                                 28
-                                             ],
-                                             [
-                                                 "2025-04-02",
-                                                 45,
-                                                 30
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "You want stacked channel areas plus a separate rolling total line layered over them.",
-                      "Use `ax.stackplot()` for the channel mix, a rolling sum or mean for the total trend, and `ax.axvspan()` to shade weekends.",
-                      "Try `ax.stackplot(df[\u0027date\u0027], df[\u0027web_revenue\u0027], df[\u0027app_revenue\u0027], df[\u0027partner_revenue\u0027], labels=[\u0027Web\u0027, \u0027App\u0027, \u0027Partner\u0027])`; `ax.plot(df[\u0027date\u0027], df[\u0027total_revenue\u0027].rolling(7).mean(), color=\u0027black\u0027, linewidth=2.5)`."
-                  ]
-    },
-    {
-        "id":  "32",
-        "title":  "Grouped Quarterly Revenue Bars with Target Line and Data Labels",
-        "markdown":  "### The Scenario\nA product finance team wants to compare quarterly revenue for hardware and software. They also want a company target line and visible labels on every bar so the chart can be dropped directly into a slide deck.\n\n### The Task\n- Set the figure size to `(11, 6)`.\n- Create a grouped bar chart showing `revenue` by `quarter` and `product_line`.\n- Use color `#4c72b0` for `Hardware` and `#55a868` for `Software`.\n- Add a horizontal dashed red target line at `y=450`.\n- Add value labels to every bar using `ax.bar_label()` or `ax.text()`.\n- Set the y-axis limits from `0` to `550`.\n- Place the legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Title the chart `Quarterly Revenue by Product Line`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\n\ndata = {\n    \u0027quarter\u0027: [\u0027Q1\u0027, \u0027Q1\u0027, \u0027Q2\u0027, \u0027Q2\u0027, \u0027Q3\u0027, \u0027Q3\u0027, \u0027Q4\u0027, \u0027Q4\u0027],\n    \u0027product_line\u0027: [\u0027Hardware\u0027, \u0027Software\u0027] * 4,\n    \u0027revenue\u0027: [320, 280, 365, 305, 410, 360, 455, 398],\n    \u0027gross_margin\u0027: [28, 41, 29, 42, 31, 43, 32, 44]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the grouped bar chart below\n\n\n\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.patches) == 8, \u0027The grouped bar chart should contain 8 bars.\u0027\nassert any(np.allclose(line.get_ydata(), [450, 450]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add the dashed target line at y=450.\u0027\nassert len(ax.texts) \u003e= 8, \u0027Add a visible value label to every bar.\u0027\nlow, high = ax.get_ylim()\nassert abs(low - 0) \u003c 0.1 and abs(high - 550) \u003c 0.1, \u0027Set the y-axis limits from 0 to 550.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nlabels = [t.get_text() for t in legend.get_texts()]\nassert labels == [\u0027Hardware\u0027, \u0027Software\u0027], \u0027The legend labels should be Hardware and Software.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nassert ax.get_title() == \u0027Quarterly Revenue by Product Line\u0027, \u0027Your chart title must be exactly Quarterly Revenue by Product Line.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "quarter",
-                                                "product_line",
-                                                "revenue"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "Q1",
-                                                 "Hardware",
-                                                 320
-                                             ],
-                                             [
-                                                 "Q1",
-                                                 "Software",
-                                                 280
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Group the bars by quarter so each product line appears side by side, then add labels and a target line.",
-                      "You can use either Matplotlib grouped bars or `sns.barplot()` with `hue=`, then `ax.axhline()` and `ax.bar_label()`.",
-                      "Try `sns.barplot(data=df, x=\u0027quarter\u0027, y=\u0027revenue\u0027, hue=\u0027product_line\u0027, palette=[\u0027#4c72b0\u0027, \u0027#55a868\u0027])`; `ax.axhline(450, color=\u0027red\u0027, linestyle=\u0027--\u0027)`; `for c in ax.containers: ax.bar_label(c)`."
-                  ]
-    },
-    {
-        "id":  "33",
-        "title":  "Weekly Active Users by Plan with Promotion Window",
-        "markdown":  "### The Scenario\nA SaaS growth team wants to see how weekly active users moved by pricing plan around a promotional event. The chart needs date formatting, a highlighted campaign window, and careful axis control.\n\n### The Task\n- Set the figure size to `(12, 6)`.\n- Plot `free_users`, `pro_users`, and `enterprise_users` against `week_start` as three separate lines with markers.\n- Add a shaded promotional window using `ax.axvspan()` from `promo_start` to `promo_end`.\n- Format the x-axis using `mdates.DateFormatter(\u0027%d %b\u0027)`.\n- Set the y ticks to `[0, 100, 200, 300, 400, 500, 600]`.\n- Hide the top and right spines.\n- Place the legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Add a text annotation `Promo Ends` near the campaign end date.\n- Title the chart `Weekly Active Users by Plan`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.dates as mdates\n\nsns.set_theme(style=\u0027ticks\u0027)\n\ndata = {\n    \u0027week_start\u0027: pd.date_range(\u00272025-05-05\u0027, periods=8, freq=\u0027W-MON\u0027),\n    \u0027free_users\u0027: [260, 275, 290, 325, 360, 392, 410, 428],\n    \u0027pro_users\u0027: [120, 128, 136, 158, 176, 191, 205, 214],\n    \u0027enterprise_users\u0027: [44, 46, 49, 56, 60, 66, 71, 74],\n    \u0027trial_signups\u0027: [85, 92, 95, 122, 138, 145, 151, 158]\n}\n\ndf = pd.DataFrame(data)\npromo_start = pd.Timestamp(\u00272025-05-26\u0027)\npromo_end = pd.Timestamp(\u00272025-06-09\u0027)\n\n# Build the weekly active users chart below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.dates as mdates\nax = plt.gca()\nassert len(ax.lines) \u003e= 3, \u0027Plot all three plan lines.\u0027\nassert len(ax.patches) \u003e 0, \u0027Add the promotional window using axvspan().\u0027 \nassert isinstance(ax.xaxis.get_major_formatter(), mdates.DateFormatter), \u0027Format the x-axis with mdates.DateFormatter.\u0027\nassert ax.xaxis.get_major_formatter().fmt == \u0027%d %b\u0027, \u0027Use DateFormatter(%d %b) on the x-axis.\u0027\nexpected_ticks = [0, 100, 200, 300, 400, 500, 600]\nassert list(ax.get_yticks())[:7] == expected_ticks, \u0027Set the y ticks to 0, 100, 200, 300, 400, 500, and 600.\u0027\nassert not ax.spines[\u0027top\u0027].get_visible(), \u0027Hide the top spine.\u0027\nassert not ax.spines[\u0027right\u0027].get_visible(), \u0027Hide the right spine.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot.\u0027\nassert any(\u0027Promo Ends\u0027 in text.get_text() for text in ax.texts), \u0027Add the Promo Ends annotation.\u0027\nassert ax.get_title() == \u0027Weekly Active Users by Plan\u0027, \u0027Your chart title must be exactly Weekly Active Users by Plan.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "week_start",
-                                                "free_users",
-                                                "pro_users"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "2025-05-05",
-                                                 260,
-                                                 120
-                                             ],
-                                             [
-                                                 "2025-05-12",
-                                                 275,
-                                                 128
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Plot the three plans as separate time-series lines, then highlight the promotional window.",
-                      "Use `ax.plot()` for each plan, `ax.axvspan()` for the shaded period, and `mdates.DateFormatter` for the dates.",
-                      "Try `ax.plot(df[\u0027week_start\u0027], df[\u0027free_users\u0027], marker=\u0027o\u0027, label=\u0027Free\u0027)`; `ax.plot(df[\u0027week_start\u0027], df[\u0027pro_users\u0027], marker=\u0027o\u0027, label=\u0027Pro\u0027)`; `ax.axvspan(promo_start, promo_end, alpha=0.2, color=\u0027gold\u0027)`."
-                  ]
-    },
-    {
-        "id":  "34",
-        "title":  "Engagement Density Hexbin with Mean Reference Lines",
-        "markdown":  "### The Scenario\nA product researcher wants to understand how session duration and pages viewed cluster across users. A standard scatter plot is too cluttered, so they need a density-based visualization with reference lines and a color scale.\n\n### The Task\n- Set the figure size to `(10, 6)`.\n- Create a hexbin plot of `session_minutes` on the x-axis and `pages_viewed` on the y-axis with `gridsize=20`, `cmap=\u0027viridis\u0027`, and `mincnt=1`.\n- Add a color bar and label it `Sessions`.\n- Draw a vertical dashed red line at the mean of `session_minutes` and a horizontal dashed navy line at the mean of `pages_viewed`.\n- Add the text annotation `High Engagement` near coordinates `(14, 10)`.\n- Set the x-axis limits to `0` through `20` and the y-axis limits to `0` through `16`.\n- Title the chart `Session Engagement Density`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\nnp.random.seed(13)\n\nsession_minutes = np.random.normal(10.5, 3.2, 500).clip(1, 19.5)\npages_viewed = (session_minutes * 0.7 + np.random.normal(1.8, 1.6, 500)).clip(1, 15.5)\n\ndata = {\n    \u0027session_minutes\u0027: np.round(session_minutes, 2),\n    \u0027pages_viewed\u0027: np.round(pages_viewed, 2),\n    \u0027device\u0027: np.random.choice([\u0027Mobile\u0027, \u0027Desktop\u0027, \u0027Tablet\u0027], size=500, p=[0.58, 0.31, 0.11]),\n    \u0027subscriber\u0027: np.random.choice([\u0027Yes\u0027, \u0027No\u0027], size=500, p=[0.37, 0.63])\n}\n\ndf = pd.DataFrame(data)\n\n# Build the hexbin density chart below\n\n\n\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep the main hexbin axis and its color bar.\u0027\nassert len(ax.collections) \u003e 0, \u0027The hexbin plot is missing.\u0027\nassert ax.collections[0].cmap.name == \u0027viridis\u0027, \u0027Use the viridis colormap.\u0027\nassert fig.axes[1].get_ylabel() == \u0027Sessions\u0027, \u0027Label the color bar Sessions.\u0027\nmean_x = df[\u0027session_minutes\u0027].mean()\nmean_y = df[\u0027pages_viewed\u0027].mean()\nassert any(np.allclose(line.get_xdata(), [mean_x, mean_x]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add a vertical dashed line at the mean session duration.\u0027\nassert any(np.allclose(line.get_ydata(), [mean_y, mean_y]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add a horizontal dashed line at the mean pages viewed.\u0027\nassert any(\u0027High Engagement\u0027 in text.get_text() for text in ax.texts), \u0027Add the High Engagement annotation.\u0027\nlow_x, high_x = ax.get_xlim()\nlow_y, high_y = ax.get_ylim()\nassert abs(low_x - 0) \u003c 0.1 and abs(high_x - 20) \u003c 0.1, \u0027Set the x-axis limits from 0 to 20.\u0027\nassert abs(low_y - 0) \u003c 0.1 and abs(high_y - 16) \u003c 0.1, \u0027Set the y-axis limits from 0 to 16.\u0027\nassert ax.get_title() == \u0027Session Engagement Density\u0027, \u0027Your chart title must be exactly Session Engagement Density.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "session_minutes",
-                                                "pages_viewed",
-                                                "device"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 8.74,
-                                                 7.15,
-                                                 "Mobile"
-                                             ],
-                                             [
-                                                 12.11,
-                                                 9.68,
-                                                 "Desktop"
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "A hexbin plot is a good replacement when a scatter plot gets too dense.",
-                      "Use `ax.hexbin()` and attach a color bar with `plt.colorbar()`, then add mean guides with `ax.axvline()` and `ax.axhline()`.",
-                      "Try `hb = ax.hexbin(df[\u0027session_minutes\u0027], df[\u0027pages_viewed\u0027], gridsize=20, cmap=\u0027viridis\u0027, mincnt=1)`; `cbar = plt.colorbar(hb)`; `cbar.set_label(\u0027Sessions\u0027)`."
-                  ]
-    },
-    {
-        "id":  "35",
-        "title":  "Membership Spend KDE Comparison with Median Guides",
-        "markdown":  "### The Scenario\nA retention strategist wants to compare spend distributions for Basic and Premium members. The chart should emphasize the shape of each distribution while also showing where each segment\u0027s median falls.\n\n### The Task\n- Set the figure size to `(10, 6)`.\n- Create two filled KDE curves of `monthly_spend`, one for `Basic` and one for `Premium`, using `common_norm=False`, `fill=True`, `alpha=0.4`, and `linewidth=2`.\n- Use color `#4c72b0` for `Basic` and `#dd8452` for `Premium`.\n- Add dashed vertical median lines for each segment in the matching colors.\n- Set the x-axis limits to `0` through `500`.\n- Place the legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Add an annotation `Premium Median` near the premium median line.\n- Title the chart `Monthly Spend Distribution by Membership Tier`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\nnp.random.seed(31)\n\nbasic = np.random.normal(125, 35, 220).clip(20, 320)\npremium = np.random.normal(245, 55, 220).clip(60, 480)\n\ndata = {\n    \u0027member_id\u0027: [f\u0027M-{i:04d}\u0027 for i in range(440)],\n    \u0027membership_tier\u0027: [\u0027Basic\u0027] * 220 + [\u0027Premium\u0027] * 220,\n    \u0027monthly_spend\u0027: np.round(np.concatenate([basic, premium]), 2),\n    \u0027tenure_months\u0027: np.concatenate([np.random.randint(1, 25, 220), np.random.randint(6, 37, 220)])\n}\n\ndf = pd.DataFrame(data)\n\n# Build the KDE comparison chart below\n\n\n\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nmed_basic = df.loc[df[\u0027membership_tier\u0027] == \u0027Basic\u0027, \u0027monthly_spend\u0027].median()\nmed_premium = df.loc[df[\u0027membership_tier\u0027] == \u0027Premium\u0027, \u0027monthly_spend\u0027].median()\nassert len(ax.collections) \u003e= 2, \u0027Use filled KDE curves for both tiers.\u0027\nassert len(ax.lines) \u003e= 4, \u0027Add both KDE outlines and both median guide lines.\u0027\nassert any(np.allclose(line.get_xdata(), [med_basic, med_basic]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add a dashed median line for Basic members.\u0027\nassert any(np.allclose(line.get_xdata(), [med_premium, med_premium]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add a dashed median line for Premium members.\u0027\nlow, high = ax.get_xlim()\nassert abs(low - 0) \u003c 0.1 and abs(high - 500) \u003c 0.1, \u0027Set the x-axis limits from 0 to 500.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nlabels = [t.get_text() for t in legend.get_texts()]\nassert labels == [\u0027Basic\u0027, \u0027Premium\u0027], \u0027The legend labels should be Basic and Premium.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nassert any(\u0027Premium Median\u0027 in text.get_text() for text in ax.texts), \u0027Add the Premium Median annotation.\u0027\nassert ax.get_title() == \u0027Monthly Spend Distribution by Membership Tier\u0027, \u0027Your chart title must be exactly Monthly Spend Distribution by Membership Tier.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "member_id",
-                                                "membership_tier",
-                                                "monthly_spend"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "M-0000",
-                                                 "Basic",
-                                                 118.42
-                                             ],
-                                             [
-                                                 "M-0220",
-                                                 "Premium",
-                                                 267.13
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "You need two density curves, one for each membership tier, plus median markers.",
-                      "Use `sns.kdeplot()` twice with `fill=True`, then compute each median and add `ax.axvline()` guides.",
-                      "Try `sns.kdeplot(data=df[df[\u0027membership_tier\u0027]==\u0027Basic\u0027], x=\u0027monthly_spend\u0027, fill=True, alpha=0.4, linewidth=2, label=\u0027Basic\u0027)`; `ax.axvline(med_basic, linestyle=\u0027--\u0027)`."
-                  ]
-    },
-    {
-        "id":  "36",
-        "title":  "Service Quality Distribution Dashboard",
-        "markdown":  "### The Scenario\nA customer experience team wants a two-panel distribution dashboard. On the left, they want a split violin of resolution time by queue and first-contact resolution. On the right, they want a CSAT boxplot with a visible target line.\n\n### The Task\n- Set the figure size to `(14, 6)` and create a `1x2` subplot layout.\n- In the left subplot, create a split violin plot of `resolution_time` by `queue` with `first_contact_resolution` as the hue, `split=True`, `inner=\u0027quartile\u0027`, and a custom palette.\n- Place the left subplot legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- In the right subplot, create a Seaborn boxplot of `csat` by `queue` using palette `Set2` and `showfliers=False`.\n- Add a horizontal dashed red line at `y=4.5` on the right subplot.\n- Add the text annotation `CSAT Goal` near coordinates `(1.8, 4.55)` on the right subplot.\n- Hide the top and right spines on both subplots.\n- Title the left subplot `Resolution Time Distribution`, the right subplot `CSAT by Queue`, and add the figure title `Service Quality Dashboard`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\nnp.random.seed(23)\n\nqueues = [\u0027Billing\u0027, \u0027Technical\u0027, \u0027Account\u0027, \u0027Returns\u0027]\nrows = []\nfor queue, base_res, base_csat in zip(queues, [34, 42, 29, 37], [4.3, 4.1, 4.5, 4.2]):\n    for first_contact in [\u0027Yes\u0027, \u0027No\u0027]:\n        times = np.random.normal(base_res - 6 if first_contact == \u0027Yes\u0027 else base_res + 8, 5, 35).clip(8, 75)\n        scores = np.random.normal(base_csat + 0.15 if first_contact == \u0027Yes\u0027 else base_csat - 0.25, 0.22, 35).clip(3.1, 4.95)\n        for t, s in zip(times, scores):\n            rows.append({\n                \u0027queue\u0027: queue,\n                \u0027resolution_time\u0027: round(float(t), 1),\n                \u0027first_contact_resolution\u0027: first_contact,\n                \u0027csat\u0027: round(float(s), 2),\n                \u0027tickets\u0027: np.random.randint(20, 80)\n            })\n\ndf = pd.DataFrame(rows)\n\n# Build the service quality dashboard below\n\n\n\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nassert len(fig.axes) == 2, \u0027Create exactly two subplots.\u0027\nax1, ax2 = fig.axes\nassert len(ax1.collections) \u003e= 4, \u0027The left subplot should contain a split violin plot.\u0027\nassert len(ax1.lines) \u003e 0, \u0027Use inner=quartile on the violin plot.\u0027\nlegend = ax1.get_legend()\nassert legend is not None, \u0027The left subplot legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the left legend outside the plot.\u0027\nassert len(ax2.patches) \u003e 0, \u0027The right subplot should contain a boxplot.\u0027\nassert any(np.allclose(line.get_ydata(), [4.5, 4.5]) and line.get_linestyle() == \u0027--\u0027 for line in ax2.lines), \u0027Add the dashed CSAT goal line at y=4.5.\u0027\nassert any(\u0027CSAT Goal\u0027 in text.get_text() for text in ax2.texts), \u0027Add the CSAT Goal annotation.\u0027\nassert not ax1.spines[\u0027top\u0027].get_visible() and not ax1.spines[\u0027right\u0027].get_visible(), \u0027Hide the top and right spines on the left subplot.\u0027\nassert not ax2.spines[\u0027top\u0027].get_visible() and not ax2.spines[\u0027right\u0027].get_visible(), \u0027Hide the top and right spines on the right subplot.\u0027\nassert ax1.get_title() == \u0027Resolution Time Distribution\u0027, \u0027The left subplot title must be Resolution Time Distribution.\u0027\nassert ax2.get_title() == \u0027CSAT by Queue\u0027, \u0027The right subplot title must be CSAT by Queue.\u0027\nassert fig._suptitle is not None and fig._suptitle.get_text() == \u0027Service Quality Dashboard\u0027, \u0027Add the figure title Service Quality Dashboard.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "queue",
-                                                "resolution_time",
-                                                "csat"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "Billing",
-                                                 26.4,
-                                                 4.52
-                                             ],
-                                             [
-                                                 "Technical",
-                                                 49.3,
-                                                 3.98
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Build the left and right panels separately: a split violin on the left and a boxplot with a goal line on the right.",
-                      "Use `plt.subplots(1, 2)`, `sns.violinplot(..., split=True)` for the left panel, and `sns.boxplot()` plus `axhline()` for the right panel.",
-                      "Try `fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))`; `sns.violinplot(data=df, x=\u0027queue\u0027, y=\u0027resolution_time\u0027, hue=\u0027first_contact_resolution\u0027, split=True, inner=\u0027quartile\u0027, ax=ax1)`; `sns.boxplot(data=df, x=\u0027queue\u0027, y=\u0027csat\u0027, showfliers=False, ax=ax2)`."
-                  ]
-    },
-    {
-        "id":  "37",
-        "title":  "Bubble Chart of Campaign Quality with Quadrant Benchmarks",
-        "markdown":  "### The Scenario\nA performance marketing lead wants a chart that compares CTR, conversion rate, spend, and ROAS for several campaigns. The chart should visually separate strong campaigns from weaker ones using benchmark lines and a color scale.\n\n### The Task\n- Set the figure size to `(10, 6)`.\n- Create a bubble chart with `ctr` on the x-axis, `conversion_rate` on the y-axis, bubble size mapped to `spend`, and bubble color mapped to `roas` using `cmap=\u0027plasma\u0027`.\n- Set `alpha=0.75` and `edgecolor=\u0027black\u0027` on the scatter plot.\n- Add a color bar and label it `ROAS`.\n- Add a vertical dashed gray line at the mean of `ctr` and a horizontal dashed gray line at the mean of `conversion_rate`.\n- Set the x-axis limits to `0` through `0.12` and the y-axis limits to `0` through `0.08`.\n- Annotate the campaign with the highest ROAS using the text `Best ROAS`.\n- Title the chart `Campaign Quality Bubble Chart`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\n\ndata = {\n    \u0027campaign\u0027: [\u0027Search A\u0027, \u0027Search B\u0027, \u0027Social C\u0027, \u0027Display D\u0027, \u0027Video E\u0027, \u0027Affiliate F\u0027, \u0027Email G\u0027, \u0027Retarget H\u0027],\n    \u0027ctr\u0027: [0.031, 0.045, 0.052, 0.028, 0.061, 0.039, 0.072, 0.056],\n    \u0027conversion_rate\u0027: [0.021, 0.028, 0.032, 0.019, 0.041, 0.026, 0.048, 0.035],\n    \u0027spend\u0027: [18000, 26000, 31000, 15000, 42000, 23000, 36000, 29500],\n    \u0027roas\u0027: [2.9, 3.4, 3.8, 2.4, 4.6, 3.1, 5.0, 4.0],\n    \u0027channel\u0027: [\u0027Search\u0027, \u0027Search\u0027, \u0027Social\u0027, \u0027Display\u0027, \u0027Video\u0027, \u0027Affiliate\u0027, \u0027Email\u0027, \u0027Retargeting\u0027]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the campaign quality bubble chart below\n\n\n\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep the bubble chart axis and its color bar.\u0027\nassert len(ax.collections) \u003e 0, \u0027The scatter plot is missing.\u0027\nassert ax.collections[0].cmap.name == \u0027plasma\u0027, \u0027Use the plasma colormap for bubble colors.\u0027\nassert fig.axes[1].get_ylabel() == \u0027ROAS\u0027, \u0027Label the color bar ROAS.\u0027\nmean_ctr = df[\u0027ctr\u0027].mean()\nmean_conv = df[\u0027conversion_rate\u0027].mean()\nassert any(np.allclose(line.get_xdata(), [mean_ctr, mean_ctr]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add a vertical dashed mean CTR line.\u0027\nassert any(np.allclose(line.get_ydata(), [mean_conv, mean_conv]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add a horizontal dashed mean conversion line.\u0027\nlow_x, high_x = ax.get_xlim()\nlow_y, high_y = ax.get_ylim()\nassert abs(low_x - 0) \u003c 0.001 and abs(high_x - 0.12) \u003c 0.001, \u0027Set the x-axis limits from 0 to 0.12.\u0027\nassert abs(low_y - 0) \u003c 0.001 and abs(high_y - 0.08) \u003c 0.001, \u0027Set the y-axis limits from 0 to 0.08.\u0027\nassert any(\u0027Best ROAS\u0027 in text.get_text() for text in ax.texts), \u0027Annotate the highest ROAS campaign with Best ROAS.\u0027\nassert ax.get_title() == \u0027Campaign Quality Bubble Chart\u0027, \u0027Your chart title must be exactly Campaign Quality Bubble Chart.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "campaign",
-                                                "ctr",
-                                                "conversion_rate"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "Search A",
-                                                 0.031,
-                                                 0.021
-                                             ],
-                                             [
-                                                 "Search B",
-                                                 0.045,
-                                                 0.028
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "This is a bubble chart, so size and color both encode extra variables.",
-                      "Use `plt.scatter()` or `ax.scatter()` with `s=` for size and `c=` for color, then attach a color bar.",
-                      "Try `sc = ax.scatter(df[\u0027ctr\u0027], df[\u0027conversion_rate\u0027], s=df[\u0027spend\u0027]/100, c=df[\u0027roas\u0027], cmap=\u0027plasma\u0027, alpha=0.75, edgecolor=\u0027black\u0027)`; `cbar = plt.colorbar(sc)`; `cbar.set_label(\u0027ROAS\u0027)`."
-                  ]
-    },
-    {
-        "id":  "38",
-        "title":  "Four-Region Weekly Orders Panel",
-        "markdown":  "### The Scenario\nA retail logistics team wants one small-multiples view for weekly orders across four regions. Each panel should show actual orders, a regional target line, and a quick annotation at the peak week.\n\n### The Task\n- Set the figure size to `(14, 8)` and create a `2x2` subplot layout with `sharex=True` and `sharey=True`.\n- In each subplot, filter to a single `region` and plot `orders` over `week_start` as a line with markers.\n- Add a dashed red target line at `y=300` in every subplot.\n- Format the x-axis using `mdates.DateFormatter(\u0027%d-%b\u0027)`.\n- Hide the top and right spines in every subplot.\n- Add a `Peak` annotation at the maximum order value within each region.\n- Title each subplot with the region name exactly.\n- Add a figure-level title `Regional Weekly Orders`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.dates as mdates\n\nsns.set_theme(style=\u0027whitegrid\u0027)\n\nweeks = pd.date_range(\u00272025-02-03\u0027, periods=6, freq=\u0027W-MON\u0027)\nrows = []\nregion_data = {\n    \u0027North\u0027: [250, 268, 282, 301, 315, 322],\n    \u0027South\u0027: [235, 248, 257, 274, 288, 296],\n    \u0027East\u0027: [220, 232, 241, 259, 272, 286],\n    \u0027West\u0027: [260, 272, 289, 305, 319, 333]\n}\nfor region, values in region_data.items():\n    for week, orders in zip(weeks, values):\n        rows.append({\n            \u0027region\u0027: region,\n            \u0027week_start\u0027: week,\n            \u0027orders\u0027: orders,\n            \u0027returns\u0027: int(orders * 0.06)\n        })\n\ndf = pd.DataFrame(rows)\n\n# Build the regional panel chart below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.dates as mdates\nfig = plt.gcf()\nassert len(fig.axes) == 4, \u0027Create exactly four subplots.\u0027\nexpected_titles = {\u0027North\u0027, \u0027South\u0027, \u0027East\u0027, \u0027West\u0027}\nactual_titles = {ax.get_title() for ax in fig.axes}\nassert actual_titles == expected_titles, \u0027Title each subplot with its exact region name.\u0027\nfor ax in fig.axes:\n    assert len(ax.lines) \u003e= 2, \u0027Each subplot should contain the orders line and the target line.\u0027\n    assert any(np.allclose(line.get_ydata(), [300, 300]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Each subplot needs a dashed target line at y=300.\u0027\n    assert isinstance(ax.xaxis.get_major_formatter(), mdates.DateFormatter), \u0027Format the x-axis dates with mdates.DateFormatter.\u0027\n    assert ax.xaxis.get_major_formatter().fmt == \u0027%d-%b\u0027, \u0027Use DateFormatter(%d-%b) on the x-axis.\u0027\n    assert not ax.spines[\u0027top\u0027].get_visible() and not ax.spines[\u0027right\u0027].get_visible(), \u0027Hide the top and right spines in every subplot.\u0027\n    assert any(\u0027Peak\u0027 in text.get_text() for text in ax.texts), \u0027Add a Peak annotation in every subplot.\u0027\nassert fig._suptitle is not None and fig._suptitle.get_text() == \u0027Regional Weekly Orders\u0027, \u0027Add the figure title Regional Weekly Orders.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "region",
-                                                "week_start",
-                                                "orders"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "North",
-                                                 "2025-02-03",
-                                                 250
-                                             ],
-                                             [
-                                                 "South",
-                                                 "2025-02-03",
-                                                 235
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Loop through the four regions so each gets its own small subplot with the same structure.",
-                      "Use `plt.subplots(2, 2, sharex=True, sharey=True)` and inside a loop plot the regional line plus a target `axhline()`.",
-                      "Try `fig, axes = plt.subplots(2, 2, figsize=(14, 8), sharex=True, sharey=True)` then for each region `sub = df[df[\u0027region\u0027]==region]`; `ax.plot(sub[\u0027week_start\u0027], sub[\u0027orders\u0027], marker=\u0027o\u0027)`; `ax.axhline(300, color=\u0027red\u0027, linestyle=\u0027--\u0027)`."
-                  ]
-    },
-    {
-        "id":  "39",
-        "title":  "Monthly Anomaly Heatmap Centered at Zero",
-        "markdown":  "### The Scenario\nAn environmental monitoring team is tracking anomaly scores across several cities. They want a heatmap that makes positive and negative deviations equally interpretable by centering the scale at zero.\n\n### The Task\n- Build a pivot table from `df` with `city` as the index, `month_label` as the columns, and `anomaly_index` as the values.\n- Plot the result with `sns.heatmap()` using `annot=True`, `fmt=\u0027.1f\u0027`, `cmap=\u0027RdBu_r\u0027`, `center=0`, and `linewidths=0.5`.\n- Keep the color bar visible and label it `Deviation`.\n- Rotate the x tick labels by 45 degrees.\n- Title the chart `Monthly Climate Anomaly Heatmap`.\n- Make sure every visible cell is annotated.\n- Keep the main heatmap axis plus the color bar as the only axes.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\n\ndata = {\n    \u0027city\u0027: [\u0027Lagos\u0027, \u0027Lagos\u0027, \u0027Lagos\u0027, \u0027Lagos\u0027, \u0027Lagos\u0027, \u0027Nairobi\u0027, \u0027Nairobi\u0027, \u0027Nairobi\u0027, \u0027Nairobi\u0027, \u0027Nairobi\u0027, \u0027Cairo\u0027, \u0027Cairo\u0027, \u0027Cairo\u0027, \u0027Cairo\u0027, \u0027Cairo\u0027],\n    \u0027month_label\u0027: [\u0027Jan\u0027, \u0027Feb\u0027, \u0027Mar\u0027, \u0027Apr\u0027, \u0027May\u0027] * 3,\n    \u0027anomaly_index\u0027: [0.8, 1.2, -0.4, -1.1, 0.3, -0.6, -0.2, 0.5, 1.1, 0.7, 1.4, 0.9, -0.1, -0.8, -0.3],\n    \u0027avg_temp\u0027: [31.2, 32.1, 30.4, 29.3, 30.1, 26.4, 26.8, 27.5, 28.0, 27.1, 22.5, 24.0, 26.3, 29.1, 31.0]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the anomaly heatmap below\n\n\n\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep the heatmap and its color bar as the only axes.\u0027\nassert len(ax.collections) \u003e 0, \u0027The heatmap is missing.\u0027\nassert ax.collections[0].cmap.name == \u0027RdBu_r\u0027, \u0027Use the RdBu_r colormap.\u0027\nassert len(ax.texts) == 15, \u0027Annotate all 15 heatmap cells.\u0027\nassert fig.axes[1].get_ylabel() == \u0027Deviation\u0027, \u0027Label the color bar Deviation.\u0027\nassert ax.get_title() == \u0027Monthly Climate Anomaly Heatmap\u0027, \u0027Your chart title must be exactly Monthly Climate Anomaly Heatmap.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "city",
-                                                "month_label",
-                                                "anomaly_index"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "Lagos",
-                                                 "Jan",
-                                                 0.8
-                                             ],
-                                             [
-                                                 "Lagos",
-                                                 "Feb",
-                                                 1.2
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Turn the long anomaly table into a city-by-month grid before plotting it.",
-                      "Use `pivot_table()` or `pivot()` and then pass the matrix to `sns.heatmap()` with `center=0`.",
-                      "Try `pivot = df.pivot(index=\u0027city\u0027, columns=\u0027month_label\u0027, values=\u0027anomaly_index\u0027)`; `sns.heatmap(pivot, annot=True, fmt=\u0027.1f\u0027, cmap=\u0027RdBu_r\u0027, center=0, linewidths=0.5, cbar_kws={\u0027label\u0027: \u0027Deviation\u0027})`."
-                  ]
-    },
-    {
-        "id":  "40",
-        "title":  "Executive Multi-Axis Growth and Retention Dashboard",
-        "markdown":  "### The Scenario\nA SaaS executive team wants one figure that combines finance and customer health. The left panel should compare revenue and margin using dual y-axes, while the right panel should show the relationship between satisfaction and churn by segment.\n\n### The Task\n- Set the figure size to `(15, 6)` and create a `1x2` subplot layout.\n- In the left subplot, plot `revenue` by `month` as bars using color `#1f77b4`.\n- Create a secondary y-axis on the left subplot using `ax.twinx()` and plot `margin_pct` as a red dashed line with circle markers.\n- Set the left primary y-axis label to `Revenue ($k)` and the secondary y-axis label to `Margin (%)`, limiting the secondary axis from `10` to `40`.\n- In the right subplot, create a scatter plot of `satisfaction` vs `churn_rate`, using `segment` as the hue and `customers` as the size.\n- Add a horizontal dashed gray benchmark line at `y=8` in the right subplot.\n- Place the right subplot legend outside the chart using `bbox_to_anchor=(1.02, 1)`.\n- Title the left subplot `Revenue and Margin`, the right subplot `Satisfaction vs Churn`, and add the figure title `Growth and Retention Dashboard`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.dates as mdates\n\nsns.set_theme(style=\u0027whitegrid\u0027)\n\nfinance_data = {\n    \u0027month\u0027: pd.date_range(\u00272025-01-01\u0027, periods=5, freq=\u0027MS\u0027),\n    \u0027revenue\u0027: [420, 455, 470, 498, 525],\n    \u0027margin_pct\u0027: [18, 21, 24, 26, 29],\n    \u0027new_customers\u0027: [120, 132, 141, 155, 166]\n}\nfinance_df = pd.DataFrame(finance_data)\n\nretention_data = {\n    \u0027segment\u0027: [\u0027SMB\u0027, \u0027Mid-Market\u0027, \u0027Enterprise\u0027, \u0027Startup\u0027, \u0027Agency\u0027, \u0027Education\u0027],\n    \u0027satisfaction\u0027: [4.1, 4.3, 4.6, 3.9, 4.0, 4.4],\n    \u0027churn_rate\u0027: [9.5, 8.1, 5.4, 11.2, 10.0, 6.8],\n    \u0027customers\u0027: [380, 240, 120, 410, 190, 160]\n}\nretention_df = pd.DataFrame(retention_data)\n\n# Build the executive dashboard below\n\n\n\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nassert len(fig.axes) \u003e= 3, \u0027The dashboard should include the left subplot, its twin axis, and the right subplot.\u0027\nax_left = fig.axes[0]\nax_left_twin = fig.axes[1]\nax_right = fig.axes[2]\nassert len(ax_left.patches) == len(finance_df), \u0027The left subplot should contain one revenue bar per month.\u0027\nassert len(ax_left_twin.lines) \u003e= 1, \u0027The left subplot needs the margin line on a secondary axis.\u0027\nline = ax_left_twin.lines[0]\nassert line.get_linestyle() == \u0027--\u0027, \u0027The margin line must be dashed.\u0027\nassert line.get_marker() == \u0027o\u0027, \u0027The margin line must use circle markers.\u0027\nassert ax_left.get_ylabel() == \u0027Revenue ($k)\u0027, \u0027Set the primary y-axis label to Revenue ($k).\u0027\nassert ax_left_twin.get_ylabel() == \u0027Margin (%)\u0027, \u0027Set the secondary y-axis label to Margin (%).\u0027\nlow, high = ax_left_twin.get_ylim()\nassert abs(low - 10) \u003c 0.1 and abs(high - 40) \u003c 0.1, \u0027Limit the secondary axis from 10 to 40.\u0027\nassert len(ax_right.collections) \u003e 0, \u0027The right subplot should contain a scatter plot.\u0027\nassert any(np.allclose(line.get_ydata(), [8, 8]) and line.get_linestyle() == \u0027--\u0027 for line in ax_right.lines), \u0027Add the dashed churn benchmark line at y=8.\u0027\nlegend = ax_right.get_legend()\nassert legend is not None, \u0027The right subplot legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the right subplot legend outside the plot.\u0027\nassert ax_left.get_title() == \u0027Revenue and Margin\u0027, \u0027The left subplot title must be Revenue and Margin.\u0027\nassert ax_right.get_title() == \u0027Satisfaction vs Churn\u0027, \u0027The right subplot title must be Satisfaction vs Churn.\u0027\nassert fig._suptitle is not None and fig._suptitle.get_text() == \u0027Growth and Retention Dashboard\u0027, \u0027Add the figure title Growth and Retention Dashboard.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "month",
-                                                "revenue",
-                                                "margin_pct"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "2025-01-01",
-                                                 420,
-                                                 18
-                                             ],
-                                             [
-                                                 "2025-02-01",
-                                                 455,
-                                                 21
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Split the figure into two panels, then give the left panel a twin axis for margin.",
-                      "Use `plt.subplots(1, 2)`, `ax_left.twinx()` for the left panel, and `sns.scatterplot()` for the right panel.",
-                      "Try `fig, (ax_left, ax_right) = plt.subplots(1, 2, figsize=(15, 6))`; `ax_left.bar(finance_df[\u0027month\u0027], finance_df[\u0027revenue\u0027], color=\u0027#1f77b4\u0027)`; `ax_left_twin = ax_left.twinx()`; `ax_left_twin.plot(finance_df[\u0027month\u0027], finance_df[\u0027margin_pct\u0027], color=\u0027red\u0027, linestyle=\u0027--\u0027, marker=\u0027o\u0027)`."
-                  ]
-    },
-    {
-        "id":  "41",
-        "title":  "Portfolio Risk-Return Scatter with Efficient Frontier Guide",
-        "markdown":  "### The Scenario\nAn investment analytics team is comparing model portfolios by risk, return, asset count, and Sharpe ratio. They want a polished scatter chart with benchmark guides and a visible color scale.\n\n### The Task\n- Set the figure size to `(10, 6)`.\n- Create a scatter plot with `volatility` on the x-axis, `return_pct` on the y-axis, bubble size mapped to `asset_count`, and color mapped to `sharpe_ratio` using `cmap=\u0027cividis\u0027`.\n- Add a color bar and label it `Sharpe Ratio`.\n- Draw a vertical dashed gray line at `x=14` and a horizontal dashed gray line at `y=11`.\n- Add the text annotation `Efficient Zone` near coordinates `(15.2, 12.2)`.\n- Set the x-axis limits to `8` through `20` and the y-axis limits to `4` through `16`.\n- Title the chart `Portfolio Risk vs Return`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\n\ndata = {\n    \u0027portfolio\u0027: [\u0027Alpha\u0027, \u0027Beta\u0027, \u0027Gamma\u0027, \u0027Delta\u0027, \u0027Epsilon\u0027, \u0027Zeta\u0027, \u0027Eta\u0027, \u0027Theta\u0027],\n    \u0027volatility\u0027: [9.8, 11.2, 12.6, 13.9, 15.1, 16.4, 17.3, 18.5],\n    \u0027return_pct\u0027: [6.4, 7.8, 9.2, 10.7, 11.8, 12.6, 13.4, 14.1],\n    \u0027asset_count\u0027: [18, 22, 26, 28, 34, 38, 41, 45],\n    \u0027sharpe_ratio\u0027: [0.68, 0.81, 0.92, 1.05, 1.14, 1.18, 1.23, 1.19]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the risk-return chart below\n\n\n\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep the scatter axis and the Sharpe Ratio color bar.\u0027\nassert len(ax.collections) \u003e 0, \u0027The scatter plot is missing.\u0027\nassert ax.collections[0].cmap.name == \u0027cividis\u0027, \u0027Use the cividis colormap.\u0027\nassert fig.axes[1].get_ylabel() == \u0027Sharpe Ratio\u0027, \u0027Label the color bar Sharpe Ratio.\u0027\nassert any(np.allclose(line.get_xdata(), [14, 14]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add the vertical dashed guide at x=14.\u0027\nassert any(np.allclose(line.get_ydata(), [11, 11]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add the horizontal dashed guide at y=11.\u0027\nassert any(\u0027Efficient Zone\u0027 in text.get_text() for text in ax.texts), \u0027Add the Efficient Zone annotation.\u0027\nlow_x, high_x = ax.get_xlim()\nlow_y, high_y = ax.get_ylim()\nassert abs(low_x - 8) \u003c 0.1 and abs(high_x - 20) \u003c 0.1, \u0027Set the x-axis limits from 8 to 20.\u0027\nassert abs(low_y - 4) \u003c 0.1 and abs(high_y - 16) \u003c 0.1, \u0027Set the y-axis limits from 4 to 16.\u0027\nassert ax.get_title() == \u0027Portfolio Risk vs Return\u0027, \u0027Your chart title must be exactly Portfolio Risk vs Return.\u0027",
+        "id":  "53",
+        "title":  "Portfolio Risk-Return Bubble Map",
+        "markdown":  "### The Scenario\nAn asset allocation team wants to compare model portfolios across risk, expected return, scale, and risk-adjusted performance. A bubble chart is appropriate because each portfolio is a single point with two continuous coordinates, a size metric, and a color metric.\n\n### The Task\n- Set the figure size to `(10, 6)`.\n- Create a scatter plot with `volatility_pct` on the x-axis, `expected_return_pct` on the y-axis, bubble size mapped to `aum_bn`, and color mapped to `sharpe_ratio` using `cmap=\u0027viridis\u0027`.\n- Add a color bar and label it `Sharpe Ratio`.\n- Add a vertical dashed gray line at the median of `volatility_pct`.\n- Add a horizontal dashed gray line at `y=12`.\n- Set the x-axis label to `Volatility (%)` and the y-axis label to `Expected Return (%)`.\n- Annotate the portfolio with the highest Sharpe ratio using the text `Frontier Candidate`.\n- Title the chart `Portfolio Risk vs Return`.",
+        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027white\u0027)\n\ndata = {\n    \u0027portfolio\u0027: [\u0027Alpha Core\u0027, \u0027Balanced Plus\u0027, \u0027Dividend Tilt\u0027, \u0027Global Growth\u0027, \u0027Quality Factor\u0027, \u0027ESG Blend\u0027, \u0027Low Vol\u0027, \u0027Infrastructure\u0027, \u0027Small Cap\u0027, \u0027Value Rotation\u0027, \u0027Asia Equity\u0027, \u0027Multi-Asset Income\u0027],\n    \u0027volatility_pct\u0027: [8.9, 10.2, 9.6, 14.7, 11.8, 10.9, 7.8, 12.6, 16.1, 13.4, 15.2, 9.1],\n    \u0027expected_return_pct\u0027: [7.1, 8.4, 7.9, 13.2, 10.1, 9.2, 6.4, 11.1, 14.0, 11.8, 13.5, 8.3],\n    \u0027aum_bn\u0027: [12, 18, 10, 22, 14, 11, 20, 9, 8, 13, 7, 16],\n    \u0027sharpe_ratio\u0027: [0.74, 0.82, 0.79, 0.96, 0.87, 0.84, 0.81, 0.88, 0.92, 0.89, 0.93, 0.78]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the portfolio bubble chart below\n\n\n\nplt.show()",
+        "validation_code":  "fig = plt.gcf()\nax = fig.axes[0]\nassert len(fig.axes) == 2, \u0027Keep the scatter axis and the color bar visible.\u0027\nassert len(ax.collections) \u003e 0, \u0027We could not find the scatter plot.\u0027\nassert ax.collections[0].cmap.name == \u0027viridis\u0027, \u0027Your bubble colors should use the viridis colormap.\u0027\nassert fig.axes[1].get_ylabel() == \u0027Sharpe Ratio\u0027, \u0027Label the color bar Sharpe Ratio.\u0027\nmed = df[\u0027volatility_pct\u0027].median()\nassert any(np.allclose(line.get_xdata(), [med, med]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add the vertical dashed line at the median volatility.\u0027\nassert any(np.allclose(line.get_ydata(), [12, 12]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add the horizontal dashed line at y=12.\u0027\nassert ax.get_xlabel() == \u0027Volatility (%)\u0027, \u0027Set the x-axis label to Volatility (%).\u0027\nassert ax.get_ylabel() == \u0027Expected Return (%)\u0027, \u0027Set the y-axis label to Expected Return (%).\u0027\nassert any(\u0027Frontier Candidate\u0027 in text.get_text() for text in ax.texts), \u0027Annotate the portfolio with the highest Sharpe ratio.\u0027\nassert ax.get_title() == \u0027Portfolio Risk vs Return\u0027, \u0027Check your plot title! It must be exactly Portfolio Risk vs Return.\u0027",
         "dataset_preview":  {
                                 "columns":  [
                                                 "portfolio",
-                                                "volatility",
-                                                "return_pct"
+                                                "volatility_pct",
+                                                "expected_return_pct"
                                             ],
                                 "rows":  [
                                              [
-                                                 "Alpha",
-                                                 9.8,
-                                                 6.4
+                                                 "Alpha Core",
+                                                 8.9,
+                                                 7.1
                                              ],
                                              [
-                                                 "Beta",
-                                                 11.2,
-                                                 7.8
+                                                 "Balanced Plus",
+                                                 10.2,
+                                                 8.4
                                              ]
                                          ]
                             },
         "hints":  [
-                      "This chart combines a size-encoded scatter plot with a continuous color scale.",
-                      "Use `ax.scatter()` with `s=` and `c=` plus `plt.colorbar()`, then add the benchmark guides with `ax.axvline()` and `ax.axhline()`.",
-                      "Try `sc = ax.scatter(df[\u0027volatility\u0027], df[\u0027return_pct\u0027], s=df[\u0027asset_count\u0027]*10, c=df[\u0027sharpe_ratio\u0027], cmap=\u0027cividis\u0027)`; `plt.colorbar(sc).set_label(\u0027Sharpe Ratio\u0027)`."
-                  ]
+                      "Each portfolio is a single observation with multiple attributes, so one point with both size and color encodings is a good analytical fit.",
+                      "Use `ax.scatter()` with `s=` for AUM, `c=` for Sharpe ratio, and `plt.colorbar()` for the continuous scale.",
+                      "Try `sc = ax.scatter(df[\u0027volatility_pct\u0027], df[\u0027expected_return_pct\u0027], s=df[\u0027aum_bn\u0027] * 35, c=df[\u0027sharpe_ratio\u0027], cmap=\u0027viridis\u0027, alpha=0.8, edgecolor=\u0027black\u0027)`, then `plt.colorbar(sc).set_label(\u0027Sharpe Ratio\u0027)`."
+                  ],
+        "solution_code":  "fig, ax = plt.subplots(figsize=(10, 6))\nsc = ax.scatter(df[\u0027volatility_pct\u0027], df[\u0027expected_return_pct\u0027], s=df[\u0027aum_bn\u0027] * 35, c=df[\u0027sharpe_ratio\u0027], cmap=\u0027viridis\u0027, alpha=0.8, edgecolor=\u0027black\u0027)\ncbar = plt.colorbar(sc)\ncbar.set_label(\u0027Sharpe Ratio\u0027)\nax.axvline(df[\u0027volatility_pct\u0027].median(), color=\u0027gray\u0027, linestyle=\u0027--\u0027)\nax.axhline(12, color=\u0027gray\u0027, linestyle=\u0027--\u0027)\nax.set_xlabel(\u0027Volatility (%)\u0027)\nax.set_ylabel(\u0027Expected Return (%)\u0027)\nidx = df[\u0027sharpe_ratio\u0027].idxmax()\nax.annotate(\u0027Frontier Candidate\u0027, (df.loc[idx, \u0027volatility_pct\u0027], df.loc[idx, \u0027expected_return_pct\u0027]), xytext=(8, 8), textcoords=\u0027offset points\u0027)\nax.set_title(\u0027Portfolio Risk vs Return\u0027)"
     },
     {
-        "id":  "42",
-        "title":  "Manufacturing Yield Histogram with Spec Limits",
-        "markdown":  "### The Scenario\nA quality engineering team is evaluating output yield from a production line. They need a distribution plot with KDE and visible lower and upper specification limits to assess process capability.\n\n### The Task\n- Set the figure size to `(10, 6)`.\n- Plot a histogram of `yield_pct` with exactly `16` bins, color `#55a868`, white edges, and `alpha=0.65`.\n- Overlay a KDE curve in black with `linewidth=2`.\n- Add a dashed red vertical line at the lower spec limit `92` and another dashed red vertical line at the upper spec limit `99`.\n- Add the text labels `LSL` and `USL` near the respective lines.\n- Set the x-axis limits to `88` through `100`.\n- Place the legend outside the chart using `bbox_to_anchor=(1.02, 1)`.\n- Title the chart `Production Yield Distribution`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\nnp.random.seed(41)\n\nyields = np.random.normal(95.6, 1.45, 320).clip(88.4, 99.8)\n\ndata = {\n    \u0027batch_id\u0027: [f\u0027B-{i:04d}\u0027 for i in range(320)],\n    \u0027yield_pct\u0027: np.round(yields, 2),\n    \u0027machine\u0027: np.random.choice([\u0027Line-1\u0027, \u0027Line-2\u0027, \u0027Line-3\u0027], size=320, p=[0.4, 0.35, 0.25]),\n    \u0027shift\u0027: np.random.choice([\u0027Day\u0027, \u0027Night\u0027], size=320, p=[0.58, 0.42])\n}\n\ndf = pd.DataFrame(data)\n\n# Build the yield distribution chart below\n\n\n\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.patches) == 16, \u0027The histogram must use exactly 16 bins.\u0027\nassert any(np.allclose(line.get_xdata(), [92, 92]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add the dashed LSL line at x=92.\u0027\nassert any(np.allclose(line.get_xdata(), [99, 99]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add the dashed USL line at x=99.\u0027\nassert any(\u0027LSL\u0027 in text.get_text() for text in ax.texts), \u0027Add the LSL annotation.\u0027\nassert any(\u0027USL\u0027 in text.get_text() for text in ax.texts), \u0027Add the USL annotation.\u0027\nlow, high = ax.get_xlim()\nassert abs(low - 88) \u003c 0.1 and abs(high - 100) \u003c 0.1, \u0027Set the x-axis limits from 88 to 100.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot.\u0027\nassert ax.get_title() == \u0027Production Yield Distribution\u0027, \u0027Your chart title must be exactly Production Yield Distribution.\u0027",
+        "id":  "54",
+        "title":  "Vendor Lead-Time Reliability with ECDF Curves",
+        "markdown":  "### The Scenario\nA supply chain analytics team wants to compare purchase-order lead times across vendor tiers. An ECDF plot is analytically appropriate here because it shows the full cumulative distribution, making it easy to compare service reliability, long tails, and median-like thresholds without binning.\n\n### The Task\n- Set the figure size to `(11, 6)`.\n- Create an ECDF plot of `lead_time_days` by `vendor_tier` using `sns.ecdfplot()` with `linewidth=2`.\n- Set the x-axis label to `Lead Time (days)` and the y-axis label to `Cumulative Probability`.\n- Limit the x-axis to `0` through `80`.\n- Place the legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Add an annotation `Long tail` near the slowest vendor-tier curve.\n- Title the chart `Purchase Order Lead-Time Reliability`.",
+        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\nsns.set_theme(style=\u0027whitegrid\u0027)\nnp.random.seed(88)\n\nrows = []\nparams = {\n    \u0027Gold\u0027: (16, 4.5),\n    \u0027Silver\u0027: (25, 6.5),\n    \u0027Bronze\u0027: (36, 9.5)\n}\nfor tier, (mu, sigma) in params.items():\n    leads = np.random.normal(mu, sigma, 300).clip(4, 78)\n    for lead in leads:\n        rows.append({\n            \u0027vendor_tier\u0027: tier,\n            \u0027lead_time_days\u0027: round(float(lead), 1),\n            \u0027order_value_k\u0027: round(float(np.random.gamma(4, 6)), 1)\n        })\n\ndf = pd.DataFrame(rows)\n\n# Build the vendor lead-time ECDF plot below\n\n\n\nplt.show()",
+        "validation_code":  "ax = plt.gca()\nassert len(ax.lines) \u003e= 3, \u0027Plot one ECDF curve for each vendor tier.\u0027\nassert ax.get_xlabel() == \u0027Lead Time (days)\u0027, \u0027Set the x-axis label to Lead Time (days).\u0027\nassert ax.get_ylabel() == \u0027Cumulative Probability\u0027, \u0027Set the y-axis label to Cumulative Probability.\u0027\nlow, high = ax.get_xlim()\nassert abs(low - 0) \u003c 0.1 and abs(high - 80) \u003c 0.1, \u0027Set the x-axis limits from 0 to 80.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nlabels = [text.get_text() for text in legend.get_texts()]\nassert set(labels) == {\u0027Gold\u0027, \u0027Silver\u0027, \u0027Bronze\u0027}, \u0027The legend should contain Gold, Silver, and Bronze.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot using bbox_to_anchor.\u0027\nassert any(\u0027Long tail\u0027 in text.get_text() for text in ax.texts), \u0027Add the Long tail annotation.\u0027\nassert ax.get_title() == \u0027Purchase Order Lead-Time Reliability\u0027, \u0027Check your plot title! It must be exactly Purchase Order Lead-Time Reliability.\u0027",
         "dataset_preview":  {
                                 "columns":  [
-                                                "batch_id",
-                                                "yield_pct",
-                                                "machine"
+                                                "vendor_tier",
+                                                "lead_time_days",
+                                                "order_value_k"
                                             ],
                                 "rows":  [
                                              [
-                                                 "B-0000",
-                                                 95.74,
-                                                 "Line-1"
+                                                 "Gold",
+                                                 14.2,
+                                                 21.5
                                              ],
                                              [
-                                                 "B-0001",
-                                                 94.88,
-                                                 "Line-2"
+                                                 "Silver",
+                                                 27.8,
+                                                 18.4
                                              ]
                                          ]
                             },
         "hints":  [
-                      "Start with the distribution itself, then mark the lower and upper specification limits.",
-                      "Use `plt.hist()` for the bars, `sns.kdeplot()` for the smooth curve, and `plt.axvline()` for the spec limits.",
-                      "Try `plt.hist(df[\u0027yield_pct\u0027], bins=16, color=\u0027#55a868\u0027, edgecolor=\u0027white\u0027, alpha=0.65)`; `sns.kdeplot(df[\u0027yield_pct\u0027], color=\u0027black\u0027, linewidth=2)`; `plt.axvline(92, color=\u0027red\u0027, linestyle=\u0027--\u0027)`; `plt.axvline(99, color=\u0027red\u0027, linestyle=\u0027--\u0027)`."
-                  ]
-    },
-    {
-        "id":  "43",
-        "title":  "Hospital Throughput Dual-Axis Capacity Chart",
-        "markdown":  "### The Scenario\nA hospital operations team wants to compare daily patient admissions with average wait time to understand when capacity stress is driving delays. The chart needs dual axes, date formatting, and a visible warning annotation.\n\n### The Task\n- Set the figure size to `(12, 6)`.\n- Plot `admissions` by `date` on the primary axis as teal bars.\n- Create a secondary y-axis using `ax.twinx()` and plot `avg_wait_minutes` as a maroon line with triangle markers and `linewidth=2.4`.\n- Format the x-axis using `mdates.DateFormatter(\u0027%d-%b\u0027)`.\n- Set the primary y-axis label to `Admissions` and the secondary y-axis label to `Avg Wait (minutes)`.\n- Limit the secondary y-axis from `10` to `80`.\n- Hide the top spine on both axes.\n- Place a combined legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Annotate the longest wait day with the text `Capacity Strain`.\n- Title the chart `Admissions vs Wait Time`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.dates as mdates\n\nsns.set_theme(style=\u0027whitegrid\u0027)\n\ndata = {\n    \u0027date\u0027: pd.date_range(\u00272025-08-01\u0027, periods=7, freq=\u0027D\u0027),\n    \u0027admissions\u0027: [122, 134, 141, 156, 168, 162, 149],\n    \u0027avg_wait_minutes\u0027: [24, 29, 35, 48, 62, 57, 43],\n    \u0027staff_on_shift\u0027: [38, 37, 36, 35, 34, 35, 36]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the hospital capacity chart below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.dates as mdates\nfig = plt.gcf()\nassert len(fig.axes) \u003e= 2, \u0027Your secondary y-axis is missing! Use ax.twinx().\u0027\nax1, ax2 = fig.axes[0], fig.axes[1]\nassert len(ax1.patches) == len(df), \u0027The primary axis should contain one admissions bar per day.\u0027\nassert len(ax2.lines) \u003e= 1, \u0027The secondary axis should contain the wait-time line.\u0027\nline = ax2.lines[0]\nassert line.get_marker() == \u0027^\u0027, \u0027Use triangle markers on the wait-time line.\u0027\nassert abs(line.get_linewidth() - 2.4) \u003c 0.01, \u0027The wait-time line must use linewidth 2.4.\u0027\nassert isinstance(ax1.xaxis.get_major_formatter(), mdates.DateFormatter), \u0027Format the x-axis with mdates.DateFormatter.\u0027\nassert ax1.xaxis.get_major_formatter().fmt == \u0027%d-%b\u0027, \u0027Use DateFormatter(%d-%b) on the x-axis.\u0027\nassert ax1.get_ylabel() == \u0027Admissions\u0027, \u0027Set the primary y-axis label to Admissions.\u0027\nassert ax2.get_ylabel() == \u0027Avg Wait (minutes)\u0027, \u0027Set the secondary y-axis label to Avg Wait (minutes).\u0027\nlow, high = ax2.get_ylim()\nassert abs(low - 10) \u003c 0.1 and abs(high - 80) \u003c 0.1, \u0027Limit the secondary y-axis from 10 to 80.\u0027\nassert not ax1.spines[\u0027top\u0027].get_visible() and not ax2.spines[\u0027top\u0027].get_visible(), \u0027Hide the top spine on both axes.\u0027\nlegend = ax1.get_legend()\nassert legend is not None, \u0027The combined legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot.\u0027\nassert any(\u0027Capacity Strain\u0027 in text.get_text() for text in ax2.texts), \u0027Add the Capacity Strain annotation.\u0027\nassert ax1.get_title() == \u0027Admissions vs Wait Time\u0027, \u0027Your chart title must be exactly Admissions vs Wait Time.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "date",
-                                                "admissions",
-                                                "avg_wait_minutes"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "2025-08-01",
-                                                 122,
-                                                 24
-                                             ],
-                                             [
-                                                 "2025-08-02",
-                                                 134,
-                                                 29
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "Use bars for admissions and a second axis for wait time so the scales stay readable.",
-                      "Create `ax1` with `plt.subplots()`, then `ax2 = ax1.twinx()` and plot the wait metric as a line.",
-                      "Try `fig, ax1 = plt.subplots(figsize=(12, 6))`; `ax1.bar(df[\u0027date\u0027], df[\u0027admissions\u0027], color=\u0027teal\u0027)`; `ax2 = ax1.twinx()`; `ax2.plot(df[\u0027date\u0027], df[\u0027avg_wait_minutes\u0027], color=\u0027maroon\u0027, marker=\u0027^\u0027, linewidth=2.4)`."
-                  ]
-    },
-    {
-        "id":  "44",
-        "title":  "Research Metrics Multi-Line Plot with Target and Annotation",
-        "markdown":  "### The Scenario\nA clinical research manager wants to compare enrollment, retention, and protocol adherence over time. They need a polished line chart with a visible target threshold and a highlighted milestone note.\n\n### The Task\n- Set the figure size to `(11, 6)`.\n- Plot `enrollment`, `retention_rate`, and `adherence_rate` against `month` as separate lines with markers.\n- Use a dashed gray horizontal line at `y=90` as the study quality target.\n- Format the x-axis using `mdates.DateFormatter(\u0027%b\u0027)`.\n- Set the y-axis limits from `50` to `110`.\n- Hide the top and right spines.\n- Place the legend outside the plot using `bbox_to_anchor=(1.02, 1)`.\n- Annotate the final month with the text `Audit Ready`.\n- Title the chart `Clinical Study Performance Metrics`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\nimport matplotlib.dates as mdates\n\nsns.set_theme(style=\u0027whitegrid\u0027)\n\ndata = {\n    \u0027month\u0027: pd.date_range(\u00272025-01-01\u0027, periods=6, freq=\u0027MS\u0027),\n    \u0027enrollment\u0027: [58, 66, 74, 82, 91, 102],\n    \u0027retention_rate\u0027: [78, 81, 84, 88, 91, 94],\n    \u0027adherence_rate\u0027: [83, 85, 87, 89, 92, 96],\n    \u0027screen_failures\u0027: [16, 14, 15, 12, 10, 9]\n}\n\ndf = pd.DataFrame(data)\n\n# Build the clinical metrics chart below\n\n\n\nplt.show()",
-        "validation_code":  "import matplotlib.dates as mdates\nax = plt.gca()\nassert len(ax.lines) \u003e= 4, \u0027Plot the three metric lines and the target line.\u0027\nassert any(np.allclose(line.get_ydata(), [90, 90]) and line.get_linestyle() == \u0027--\u0027 for line in ax.lines), \u0027Add the dashed target line at y=90.\u0027\nassert isinstance(ax.xaxis.get_major_formatter(), mdates.DateFormatter), \u0027Format the x-axis with mdates.DateFormatter.\u0027\nassert ax.xaxis.get_major_formatter().fmt == \u0027%b\u0027, \u0027Use DateFormatter(%b) on the x-axis.\u0027\nlow, high = ax.get_ylim()\nassert abs(low - 50) \u003c 0.1 and abs(high - 110) \u003c 0.1, \u0027Set the y-axis limits from 50 to 110.\u0027\nassert not ax.spines[\u0027top\u0027].get_visible(), \u0027Hide the top spine.\u0027\nassert not ax.spines[\u0027right\u0027].get_visible(), \u0027Hide the right spine.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027The legend is missing.\u0027\nassert legend.get_bbox_to_anchor()._bbox.x0 \u003e= 1, \u0027Place the legend outside the plot.\u0027\nassert any(\u0027Audit Ready\u0027 in text.get_text() for text in ax.texts), \u0027Add the Audit Ready annotation.\u0027\nassert ax.get_title() == \u0027Clinical Study Performance Metrics\u0027, \u0027Your chart title must be exactly Clinical Study Performance Metrics.\u0027",
-        "dataset_preview":  {
-                                "columns":  [
-                                                "month",
-                                                "enrollment",
-                                                "retention_rate"
-                                            ],
-                                "rows":  [
-                                             [
-                                                 "2025-01-01",
-                                                 58,
-                                                 78
-                                             ],
-                                             [
-                                                 "2025-02-01",
-                                                 66,
-                                                 81
-                                             ]
-                                         ]
-                            },
-        "hints":  [
-                      "This is a multi-line time-series chart with one horizontal quality benchmark.",
-                      "Use `ax.plot()` for each metric line, `ax.axhline()` for the target, and `DateFormatter` for month labels.",
-                      "Try `ax.plot(df[\u0027month\u0027], df[\u0027enrollment\u0027], marker=\u0027o\u0027, label=\u0027Enrollment\u0027)`; `ax.plot(df[\u0027month\u0027], df[\u0027retention_rate\u0027], marker=\u0027o\u0027, label=\u0027Retention Rate\u0027)`; `ax.axhline(90, color=\u0027gray\u0027, linestyle=\u0027--\u0027)`."
-                  ]
+                      "An ECDF is ideal when you want to compare the entire lead-time distribution without choosing histogram bins.",
+                      "Use `sns.ecdfplot()` with `hue=\u0027vendor_tier\u0027` so each vendor tier gets its own cumulative curve.",
+                      "Try `sns.ecdfplot(data=df, x=\u0027lead_time_days\u0027, hue=\u0027vendor_tier\u0027, linewidth=2)`, then set `plt.xlim(0, 80)`, the labels, and the title."
+                  ],
+        "solution_code":  "plt.figure(figsize=(11, 6))\nax = sns.ecdfplot(data=df, x=\u0027lead_time_days\u0027, hue=\u0027vendor_tier\u0027, linewidth=2)\nax.set_xlabel(\u0027Lead Time (days)\u0027)\nax.set_ylabel(\u0027Cumulative Probability\u0027)\nax.set_xlim(0, 80)\nax.legend(bbox_to_anchor=(1.02, 1), loc=\u0027upper left\u0027)\nax.annotate(\u0027Long tail\u0027, (50, 0.9), xytext=(8, 8), textcoords=\u0027offset points\u0027)\nax.set_title(\u0027Purchase Order Lead-Time Reliability\u0027)"
     }
 ]

@@ -1,86 +1,202 @@
 [
-    {
-        "id":  "8",
-        "title":  "Build a Basic Histogram",
-        "markdown":  "### The Scenario\nA teacher wants to see how exam scores are distributed.\n\n### The Task\n- Use `plt.hist()` to create a histogram of `scores`.\n- Use exactly `5` bins.\n- Give the chart the title: `Exam Scores Distribution`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\nscores =[55, 60, 62, 65, 68, 70, 72, 75, 78, 80, 83, 85, 88, 90, 92]\n\n# Create your histogram below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.patches) == 5, \u0027We expected a histogram with exactly 5 bins.\u0027\nassert ax.get_title() == \u0027Exam Scores Distribution\u0027, \u0027Check your plot title! It must be exactly Exam Scores Distribution.\u0027",
-        "hints":  [
-                      "Think about grouping the score values into a fixed number of bins.",
-                      "Use `plt.hist()` and pass the number of bins you need.",
-                      "Try `plt.hist(scores, bins=5)` followed by `plt.title(\u0027Exam Scores Distribution\u0027)`."
-                  ]
+  {
+    "id": "11",
+    "title": "Interview Score Distribution",
+    "markdown": "### The Scenario\nAn HR analyst wants to understand how candidate interview scores are distributed before setting a screening threshold.\n\n### The Task\n- Use `plt.hist()` to create a histogram of `scores`.\n- Use exactly `6` bins.\n- Set the bar color to `orange`.\n- Set the edge color to `black`.\n- Set the x-axis label to `Score`.\n- Set the title to `Interview Score Distribution`.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nscores = [58, 61, 64, 67, 68, 70, 72, 73, 75, 78, 81, 84, 86, 89, 91, 94]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "import matplotlib.colors as mcolors\nax = plt.gca()\nassert len(ax.patches) == 6, 'We expected a histogram with exactly 6 bins.'\npatch = ax.patches[0]\nassert mcolors.to_rgba(patch.get_facecolor()) == mcolors.to_rgba('orange'), 'Set the histogram bar color to orange.'\nassert mcolors.to_rgba(patch.get_edgecolor()) == mcolors.to_rgba('black'), 'Set the histogram edge color to black.'\nassert ax.get_xlabel() == 'Score', 'Set the x-axis label to exactly \"Score\".'\nassert ax.get_title() == 'Interview Score Distribution', 'Set the title to exactly \"Interview Score Distribution\".'",
+    "dataset_preview": {
+      "columns": ["score"],
+      "rows": [
+        [58],
+        [61]
+      ]
     },
-    {
-        "id":  "9",
-        "title":  "Customize Histogram Colors",
-        "markdown":  "### The Scenario\nAn HR analyst is reviewing interview scores and wants a histogram with clearer styling.\n\n### The Task\n- Use `plt.hist()` to create a histogram of `scores`.\n- Use exactly `6` bins.\n- Set the bar color to `orange`.\n- Set the edge color to `black`.\n- Set the x-axis label to `Score`.\n- Give the chart the title: `Interview Score Distribution`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\nscores =[58, 61, 64, 67, 68, 70, 72, 73, 75, 78, 81, 84, 86, 89, 91, 94]\n\n# Create your customized histogram below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "import matplotlib.colors as mcolors\nax = plt.gca()\nassert len(ax.patches) == 6, \u0027We expected a histogram with exactly 6 bins.\u0027\npatch = ax.patches[0]\nassert mcolors.to_rgba(patch.get_facecolor()) == mcolors.to_rgba(\u0027orange\u0027), \u0027Your histogram bars should be orange.\u0027\nassert mcolors.to_rgba(patch.get_edgecolor()) == mcolors.to_rgba(\u0027black\u0027), \u0027Your histogram bar edges should be black.\u0027\nassert ax.get_xlabel() == \u0027Score\u0027, \u0027Check your x-axis label! It must be exactly Score.\u0027\nassert ax.get_title() == \u0027Interview Score Distribution\u0027, \u0027Check your plot title! It must be exactly Interview Score Distribution.\u0027",
-        "hints":  [
-                      "Build the histogram first, then customize how the bars look and label the x-axis.",
-                      "Use `plt.hist()` with `bins`, `color`, and `edgecolor`, then `plt.xlabel()`.",
-                      "Try `plt.hist(scores, bins=6, color=\u0027orange\u0027, edgecolor=\u0027black\u0027)`, then `plt.xlabel(\u0027Score\u0027)` and `plt.title(\u0027Interview Score Distribution\u0027)`."
-                  ]
+    "hints": [
+      "This is still a histogram task, but now the bar styling matters too.",
+      "Use `plt.hist()` with `bins`, `color`, and `edgecolor`, then add `plt.xlabel()`.",
+      "Try `plt.hist(scores, bins=6, color='orange', edgecolor='black')`, then `plt.xlabel('Score')` and `plt.title('Interview Score Distribution')`."
+    ],
+    "solution_code": "plt.hist(scores, bins=6, color='orange', edgecolor='black')\nplt.xlabel('Score')\nplt.title('Interview Score Distribution')"
+  },
+  {
+    "id": "12",
+    "title": "Workout Duration Comparison",
+    "markdown": "### The Scenario\nA fitness studio wants to compare the distribution of workout durations for morning and evening members.\n\n### The Task\n- Plot `morning_minutes` and `evening_minutes` on the same histogram.\n- Use `5` bins for each histogram.\n- Add labels `Morning` and `Evening` so the legend is correct.\n- Show the legend.\n- Set the title to `Workout Duration Comparison`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nmorning_minutes = [20, 22, 25, 28, 30, 32, 35, 38]\nevening_minutes = [25, 27, 29, 31, 34, 36, 39, 42]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.patches) == 10, 'We expected two histograms with 5 bins each.'\nlegend = ax.get_legend()\nassert legend is not None, 'Show the legend using plt.legend().' \nlabels = {text.get_text() for text in legend.get_texts()}\nassert labels == {'Morning', 'Evening'}, 'The legend labels must be Morning and Evening.'\nassert ax.get_title() == 'Workout Duration Comparison', 'Set the title to exactly \"Workout Duration Comparison\".'",
+    "dataset_preview": {
+      "columns": ["morning_minutes", "evening_minutes"],
+      "rows": [
+        [20, 25],
+        [22, 27]
+      ]
     },
-    {
-        "id":  "10",
-        "title":  "Compare Two Histograms",
-        "markdown":  "### The Scenario\nA gym wants to compare morning and evening workout durations.\n\n### The Task\n- Plot `morning_minutes` and `evening_minutes` on the same histogram.\n- Use `5` bins for each histogram.\n- Add labels so the legend shows `Morning` and `Evening`.\n- Show the legend.\n- Give the chart the title: `Workout Duration Comparison`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\nmorning_minutes =[20, 22, 25, 28, 30, 32, 35, 38]\nevening_minutes =[25, 27, 29, 31, 34, 36, 39, 42]\n\n# Create your overlapping histograms below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "ax = plt.gca()\nassert len(ax.patches) == 10, \u0027We expected two histograms with 5 bins each, for a total of 10 bars.\u0027\nlegend = ax.get_legend()\nassert legend is not None, \u0027We could not find a legend. Did you call plt.legend()?\u0027\nlabels = {text.get_text() for text in legend.get_texts()}\nassert labels == {\u0027Morning\u0027, \u0027Evening\u0027}, \u0027Your legend labels must be Morning and Evening.\u0027\nassert ax.get_title() == \u0027Workout Duration Comparison\u0027, \u0027Check your plot title! It must be exactly Workout Duration Comparison.\u0027",
-        "hints":  [
-                      "Draw both distributions on the same histogram so they can be compared side by side.",
-                      "Use `plt.hist()` twice with `label=` for each group, then call `plt.legend()`.",
-                      "Try `plt.hist(morning_minutes, bins=5, label=\u0027Morning\u0027)` and `plt.hist(evening_minutes, bins=5, label=\u0027Evening\u0027)`, then `plt.legend()` and `plt.title(\u0027Workout Duration Comparison\u0027)`."
-                  ]
+    "hints": [
+      "You need both groups drawn on the same axes so their distributions can be compared directly.",
+      "Use `plt.hist()` twice with `label=` for each group, then call `plt.legend()`.",
+      "Try `plt.hist(morning_minutes, bins=5, label='Morning')` and `plt.hist(evening_minutes, bins=5, label='Evening')`, then `plt.legend()` and `plt.title('Workout Duration Comparison')`."
+    ],
+    "solution_code": "plt.hist(morning_minutes, bins=5, label='Morning')\nplt.hist(evening_minutes, bins=5, label='Evening')\nplt.legend()\nplt.title('Workout Duration Comparison')"
+  },
+  {
+    "id": "13",
+    "title": "Revenue and Orders Subplot",
+    "markdown": "### The Scenario\nA small business wants one figure that shows monthly revenue beside the distribution of customer order counts.\n\n### The Task\n- Create a `1x2` subplot layout.\n- In the first subplot, plot `months` vs `revenue` as a line chart.\n- Set the first subplot title to `Revenue`.\n- In the second subplot, create a histogram of `orders` using `4` bins.\n- Set the second subplot title to `Orders`.\n- Display the full figure.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nmonths = ['Jan', 'Feb', 'Mar', 'Apr']\nrevenue = [200, 230, 250, 280]\norders = [18, 20, 22, 24, 25, 27, 28, 30]\n\n# Create your figure below\n\n\n\nplt.show()",
+    "validation_code": "fig = plt.gcf()\nassert len(fig.axes) == 2, 'Create exactly two subplots.'\nleft_ax, right_ax = fig.axes\nassert len(left_ax.lines) == 1, 'The first subplot should contain a line chart.'\nassert len(right_ax.patches) == 4, 'The second subplot should contain a histogram with 4 bins.'\nassert left_ax.get_title() == 'Revenue', 'Set the first subplot title to exactly \"Revenue\".'\nassert right_ax.get_title() == 'Orders', 'Set the second subplot title to exactly \"Orders\".'",
+    "dataset_preview": {
+      "columns": ["month", "revenue"],
+      "rows": [
+        ["Jan", 200],
+        ["Feb", 230]
+      ]
     },
-    {
-        "id":  "11",
-        "title":  "Create a 1x2 Subplot Layout",
-        "markdown":  "### The Scenario\nA small business wants revenue shown beside order distribution in one figure.\n\n### The Task\n- Create a `1x2` subplot layout.\n- In the first subplot, make a line chart of `months` vs `revenue` and title it `Revenue`.\n- In the second subplot, make a histogram of `orders` with `4` bins and title it `Orders`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\nmonths =[\u0027Jan\u0027, \u0027Feb\u0027, \u0027Mar\u0027, \u0027Apr\u0027]\nrevenue =[200, 230, 250, 280]\norders =[18, 20, 22, 24, 25, 27, 28, 30]\n\n# Create your 1x2 subplot figure below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nassert len(fig.axes) == 2, \u0027We expected exactly two subplots.\u0027\nleft_ax, right_ax = fig.axes\nassert len(left_ax.lines) == 1, \u0027The first subplot should contain a line chart.\u0027\nassert len(right_ax.patches) == 4, \u0027The second subplot should contain a histogram with 4 bins.\u0027\nassert left_ax.get_title() == \u0027Revenue\u0027, \u0027The first subplot title must be Revenue.\u0027\nassert right_ax.get_title() == \u0027Orders\u0027, \u0027The second subplot title must be Orders.\u0027",
-        "hints":  [
-                      "Create two subplots in one row, then put a different chart type in each panel.",
-                      "Use `plt.subplot()` or `plt.subplots()` to build a `1x2` layout.",
-                      "Try `plt.subplot(1, 2, 1)` with `plt.plot(months, revenue)` and title `Revenue`, then `plt.subplot(1, 2, 2)` with `plt.hist(orders, bins=4)` and title `Orders`."
-                  ]
+    "hints": [
+      "This figure needs two panels placed side by side.",
+      "Use `plt.subplot()` or `plt.subplots()` to create a `1x2` layout, then draw one chart in each axis.",
+      "Try `plt.subplot(1, 2, 1)` with `plt.plot(months, revenue)` and `plt.title('Revenue')`, then `plt.subplot(1, 2, 2)` with `plt.hist(orders, bins=4)` and `plt.title('Orders')`."
+    ],
+    "solution_code": "plt.subplot(1, 2, 1)\nplt.plot(months, revenue)\nplt.title('Revenue')\nplt.subplot(1, 2, 2)\nplt.hist(orders, bins=4)\nplt.title('Orders')"
+  },
+  {
+    "id": "14",
+    "title": "Traffic and Purchase Value Dashboard",
+    "markdown": "### The Scenario\nAn ecommerce analyst wants a simple vertical dashboard showing daily site visits and the distribution of purchase values.\n\n### The Task\n- Set the figure size to `(8, 6)`.\n- Create a `2x1` subplot layout.\n- In the top subplot, plot `days` vs `visits`.\n- Set the top subplot title to `Website Visits`.\n- In the bottom subplot, create a histogram of `purchase_values` using `5` bins.\n- Set the bottom subplot title to `Purchase Values`.",
+    "starting_code": "import matplotlib.pyplot as plt\n\ndays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']\nvisits = [120, 145, 138, 160, 172]\npurchase_values = [18, 22, 25, 30, 35, 40, 42, 45, 48, 50, 55]\n\n# Create your figure below\n\n\n\nplt.show()",
+    "validation_code": "fig = plt.gcf()\nwidth, height = fig.get_size_inches()\nassert abs(width - 8) < 0.1 and abs(height - 6) < 0.1, 'Set the figure size to 8 by 6.'\nassert len(fig.axes) == 2, 'Create exactly two subplots.'\ntop_ax, bottom_ax = fig.axes\nassert len(top_ax.lines) == 1, 'The top subplot should contain a line chart.'\nassert len(bottom_ax.patches) == 5, 'The bottom subplot should contain a histogram with 5 bins.'\nassert top_ax.get_title() == 'Website Visits', 'Set the top subplot title to exactly \"Website Visits\".'\nassert bottom_ax.get_title() == 'Purchase Values', 'Set the bottom subplot title to exactly \"Purchase Values\".'",
+    "dataset_preview": {
+      "columns": ["day", "visits"],
+      "rows": [
+        ["Mon", 120],
+        ["Tue", 145]
+      ]
     },
-    {
-        "id":  "12",
-        "title":  "Stack Two Subplots Vertically",
-        "markdown":  "### The Scenario\nAn ecommerce analyst wants traffic and purchase values in a vertical dashboard.\n\n### The Task\n- Set the figure size to `(8, 6)`.\n- Create a `2x1` subplot layout.\n- In the top subplot, plot `days` vs `visits` and title it `Website Visits`.\n- In the bottom subplot, create a histogram of `purchase_values` with `5` bins and title it `Purchase Values`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\ndays =[\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027, \u0027Fri\u0027]\nvisits =[120, 145, 138, 160, 172]\npurchase_values =[18, 22, 25, 30, 35, 40, 42, 45, 48, 50, 55]\n\n# Create your vertical subplot figure below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nwidth, height = fig.get_size_inches()\nassert abs(width - 8) \u003c 0.1 and abs(height - 6) \u003c 0.1, \u0027Your figure size should be 8 by 6.\u0027\nassert len(fig.axes) == 2, \u0027We expected exactly two subplots.\u0027\ntop_ax, bottom_ax = fig.axes\nassert len(top_ax.lines) == 1, \u0027The top subplot should contain a line chart.\u0027\nassert len(bottom_ax.patches) == 5, \u0027The bottom subplot should contain a histogram with 5 bins.\u0027\nassert top_ax.get_title() == \u0027Website Visits\u0027, \u0027The top subplot title must be Website Visits.\u0027\nassert bottom_ax.get_title() == \u0027Purchase Values\u0027, \u0027The bottom subplot title must be Purchase Values.\u0027",
-        "hints":  [
-                      "This layout stacks two charts vertically, so set the figure size and then fill the top and bottom panels.",
-                      "Use `plt.figure(figsize=(8, 6))` with a `2x1` subplot layout and then plot each chart in its own axis.",
-                      "Try `plt.figure(figsize=(8, 6))`; `plt.subplot(2, 1, 1)` with `plt.plot(days, visits)` and title `Website Visits`; then `plt.subplot(2, 1, 2)` with `plt.hist(purchase_values, bins=5)` and title `Purchase Values`."
-                  ]
+    "hints": [
+      "You need a taller figure with one subplot stacked above the other.",
+      "Use `plt.figure(figsize=(8, 6))` and a `2x1` subplot layout.",
+      "Try `plt.figure(figsize=(8, 6))`, then `plt.subplot(2, 1, 1)` with `plt.plot(days, visits)` and `plt.title('Website Visits')`, then `plt.subplot(2, 1, 2)` with `plt.hist(purchase_values, bins=5)` and `plt.title('Purchase Values')`."
+    ],
+    "solution_code": "plt.figure(figsize=(8, 6))\nplt.subplot(2, 1, 1)\nplt.plot(days, visits)\nplt.title('Website Visits')\nplt.subplot(2, 1, 2)\nplt.hist(purchase_values, bins=5)\nplt.title('Purchase Values')"
+  },
+  {
+    "id": "15",
+    "title": "Mini Business Dashboard",
+    "markdown": "### The Scenario\nA startup founder wants a compact visual dashboard with four quick views of business performance.\n\n### The Task\n- Create a `2x2` subplot layout.\n- In subplot 1, create a line chart of `days` vs `sales` titled `Sales Line`.\n- In subplot 2, create a scatter plot of `ad_spend` vs `signups` titled `Ad Spend vs Signups`.\n- In subplot 3, create a bar chart of `regions` vs `region_sales` titled `Regional Sales`.\n- In subplot 4, create a histogram of `ratings` with `4` bins titled `Ratings Histogram`.\n- Display the full figure.",
+    "starting_code": "import matplotlib.pyplot as plt\n\ndays = ['Mon', 'Tue', 'Wed', 'Thu']\nsales = [20, 24, 19, 27]\nad_spend = [100, 120, 90, 140]\nsignups = [5, 7, 4, 8]\nregions = ['North', 'South', 'East', 'West']\nregion_sales = [80, 65, 70, 90]\nratings = [3, 4, 5, 4, 3, 5, 4, 4]\n\n# Create your dashboard below\n\n\n\nplt.show()",
+    "validation_code": "fig = plt.gcf()\nassert len(fig.axes) == 4, 'Create exactly four subplots in a 2x2 layout.'\nax1, ax2, ax3, ax4 = fig.axes\nassert len(ax1.lines) == 1, 'The first subplot should contain a line chart.'\nassert len(ax2.collections) > 0, 'The second subplot should contain a scatter plot.'\nassert len(ax3.patches) == 4, 'The third subplot should contain a bar chart with four bars.'\nassert len(ax4.patches) == 4, 'The fourth subplot should contain a histogram with 4 bins.'\nassert ax1.get_title() == 'Sales Line', 'Set the first subplot title to exactly \"Sales Line\".'\nassert ax2.get_title() == 'Ad Spend vs Signups', 'Set the second subplot title to exactly \"Ad Spend vs Signups\".'\nassert ax3.get_title() == 'Regional Sales', 'Set the third subplot title to exactly \"Regional Sales\".'\nassert ax4.get_title() == 'Ratings Histogram', 'Set the fourth subplot title to exactly \"Ratings Histogram\".'",
+    "dataset_preview": {
+      "columns": ["day", "sales", "ad_spend"],
+      "rows": [
+        ["Mon", 20, 100],
+        ["Tue", 24, 120]
+      ]
     },
-    {
-        "id":  "13",
-        "title":  "Build a 2x2 Visualization Dashboard",
-        "markdown":  "### The Scenario\nA startup wants a quick visual dashboard with four different views of its data.\n\n### The Task\n- Create a `2x2` subplot layout.\n- In subplot 1, create a line chart of `days` vs `sales` titled `Sales Line`.\n- In subplot 2, create a scatter plot of `ad_spend` vs `signups` titled `Ad Spend vs Signups`.\n- In subplot 3, create a bar chart of `regions` vs `region_sales` titled `Regional Sales`.\n- In subplot 4, create a histogram of `ratings` with `4` bins titled `Ratings Histogram`.",
-        "starting_code":  "import matplotlib.pyplot as plt\n\ndays = [\u0027Mon\u0027, \u0027Tue\u0027, \u0027Wed\u0027, \u0027Thu\u0027]\nsales =[20, 24, 19, 27]\nad_spend =[100, 120, 90, 140]\nsignups = [5, 7, 4, 8]\nregions = [\u0027North\u0027, \u0027South\u0027, \u0027East\u0027, \u0027West\u0027]\nregion_sales =[80, 65, 70, 90]\nratings =[3, 4, 5, 4, 3, 5, 4, 4]\n\n# Create your 2x2 dashboard below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "fig = plt.gcf()\nassert len(fig.axes) == 4, \u0027We expected exactly four subplots in a 2x2 layout.\u0027\nax1, ax2, ax3, ax4 = fig.axes\nassert len(ax1.lines) == 1, \u0027The first subplot should contain a line chart.\u0027\nassert len(ax2.collections) \u003e 0, \u0027The second subplot should contain a scatter plot.\u0027\nassert len(ax3.patches) == 4, \u0027The third subplot should contain a bar chart with four bars.\u0027\nassert len(ax4.patches) == 4, \u0027The fourth subplot should contain a histogram with 4 bins.\u0027\nassert ax1.get_title() == \u0027Sales Line\u0027, \u0027The first subplot title must be Sales Line.\u0027\nassert ax2.get_title() == \u0027Ad Spend vs Signups\u0027, \u0027The second subplot title must be Ad Spend vs Signups.\u0027\nassert ax3.get_title() == \u0027Regional Sales\u0027, \u0027The third subplot title must be Regional Sales.\u0027\nassert ax4.get_title() == \u0027Ratings Histogram\u0027, \u0027The fourth subplot title must be Ratings Histogram.\u0027",
-        "hints":  [
-                      "You need four separate panels, each showing a different kind of visualization.",
-                      "Use a `2x2` subplot layout with `plt.subplot()` or `plt.subplots()` and place one plot type in each axis.",
-                      "Try `plt.subplot(2, 2, 1)` with `plt.plot(...)`, `plt.subplot(2, 2, 2)` with `plt.scatter(...)`, `plt.subplot(2, 2, 3)` with `plt.bar(...)`, and `plt.subplot(2, 2, 4)` with `plt.hist(ratings, bins=4)`."
-                  ]
+    "hints": [
+      "Treat this as four small charts inside one figure.",
+      "Use a `2x2` subplot layout and place one chart type in each panel.",
+      "Try `plt.subplot(2, 2, 1)` with `plt.plot(...)`, `plt.subplot(2, 2, 2)` with `plt.scatter(...)`, `plt.subplot(2, 2, 3)` with `plt.bar(...)`, and `plt.subplot(2, 2, 4)` with `plt.hist(ratings, bins=4)`."
+    ],
+    "solution_code": "plt.subplot(2, 2, 1)\nplt.plot(days, sales)\nplt.title('Sales Line')\nplt.subplot(2, 2, 2)\nplt.scatter(ad_spend, signups)\nplt.title('Ad Spend vs Signups')\nplt.subplot(2, 2, 3)\nplt.bar(regions, region_sales)\nplt.title('Regional Sales')\nplt.subplot(2, 2, 4)\nplt.hist(ratings, bins=4)\nplt.title('Ratings Histogram')"
+  },
+  {
+    "id": "16",
+    "title": "Delivery Time Histogram with Mean Line",
+    "markdown": "### The Scenario\nA logistics team wants to visualize delivery times and clearly mark the average delivery time.\n\n### The Task\n- Create a histogram of `delivery_times` using `6` bins.\n- Add a vertical dashed line at the mean delivery time.\n- Set the title to `Delivery Times`.\n- Set the x-axis label to `Minutes`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\nimport numpy as np\n\ndelivery_times = [22, 24, 25, 27, 29, 30, 31, 33, 35, 36, 38, 40]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "import numpy as np\nax = plt.gca()\nexpected_mean = np.mean(delivery_times)\nassert len(ax.patches) == 6, 'We expected a histogram with exactly 6 bins.'\nassert any(np.allclose(line.get_xdata(), [expected_mean, expected_mean]) for line in ax.lines), 'Add a vertical line at the mean using plt.axvline().' \nassert ax.get_title() == 'Delivery Times', 'Set the title to exactly \"Delivery Times\".'\nassert ax.get_xlabel() == 'Minutes', 'Set the x-axis label to exactly \"Minutes\".'",
+    "dataset_preview": {
+      "columns": ["delivery_times"],
+      "rows": [
+        [22],
+        [24]
+      ]
     },
-    {
-        "id":  "14",
-        "title":  "Add a Mean Line to a Histogram",
-        "markdown":  "### The Scenario\nA delivery company wants to show delivery times and highlight the average.\n\n### The Task\n- Create a histogram of `delivery_times` using `6` bins.\n- Add a vertical dashed line at the mean delivery time.\n- Give the chart the title: `Delivery Times`.",
-        "starting_code":  "import matplotlib.pyplot as plt\nimport numpy as np\n\ndelivery_times =[22, 24, 25, 27, 29, 30, 31, 33, 35, 36, 38, 40]\n\n# Create your histogram below\n\n\n\n# Display the plot natively\nplt.show()",
-        "validation_code":  "import numpy as np\nax = plt.gca()\nexpected_mean = np.mean(delivery_times)\nassert len(ax.patches) == 6, \u0027We expected a histogram with exactly 6 bins.\u0027\nassert any(np.allclose(line.get_xdata(), [expected_mean, expected_mean]) for line in ax.lines), \u0027Add a vertical line at the mean using plt.axvline().\u0027\nassert ax.get_title() == \u0027Delivery Times\u0027, \u0027Check your plot title! It must be exactly Delivery Times.\u0027",
-        "hints":  [
-                      "Create the histogram first, then mark the average with a vertical guide line.",
-                      "Use `plt.hist()` for the bars and `plt.axvline()` for the mean line.",
-                      "Try `plt.hist(delivery_times, bins=6)`, then `plt.axvline(np.mean(delivery_times), linestyle=\u0027--\u0027)` and `plt.title(\u0027Delivery Times\u0027)`."
-                  ]
-    }
+    "hints": [
+      "First build the histogram, then compute and mark the average as a guide line.",
+      "Use `plt.hist()` for the bins and `plt.axvline()` for the mean line.",
+      "Try `plt.hist(delivery_times, bins=6)`, then `plt.axvline(np.mean(delivery_times), linestyle='--')`, `plt.title('Delivery Times')`, and `plt.xlabel('Minutes')`."
+    ],
+    "solution_code": "plt.hist(delivery_times, bins=6)\nplt.axvline(np.mean(delivery_times), linestyle='--')\nplt.title('Delivery Times')\nplt.xlabel('Minutes')"
+  },
+  {
+    "id": "17",
+    "title": "Regional Profit Bar Chart",
+    "markdown": "### The Scenario\nA sales manager wants to compare profit across regions in a clean bar chart.\n\n### The Task\n- Use `plt.bar()` to create a bar chart of `regions` vs `profit`.\n- Set the bar color to `teal`.\n- Set the title to `Regional Profit`.\n- Set the x-axis label to `Region`.\n- Set the y-axis label to `Profit ($k)`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nregions = ['North', 'South', 'East', 'West']\nprofit = [88, 76, 69, 95]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "import matplotlib.colors as mcolors\nax = plt.gca()\nassert len(ax.patches) == 4, 'We expected four bars on the chart.'\nassert mcolors.to_rgba(ax.patches[0].get_facecolor()) == mcolors.to_rgba('teal'), 'Set the bar color to teal.'\nassert ax.get_title() == 'Regional Profit', 'Set the title to exactly \"Regional Profit\".'\nassert ax.get_xlabel() == 'Region', 'Set the x-axis label to exactly \"Region\".'\nassert ax.get_ylabel() == 'Profit ($k)', 'Set the y-axis label to exactly \"Profit ($k)\".'",
+    "dataset_preview": {
+      "columns": ["region", "profit"],
+      "rows": [
+        ["North", 88],
+        ["South", 76]
+      ]
+    },
+    "hints": [
+      "This is a category comparison, so a bar chart is the right choice.",
+      "Use `plt.bar()` and set `color='teal'`, then add both axis labels and the title.",
+      "Try `plt.bar(regions, profit, color='teal')`, then `plt.title('Regional Profit')`, `plt.xlabel('Region')`, and `plt.ylabel('Profit ($k)')`."
+    ],
+    "solution_code": "plt.bar(regions, profit, color='teal')\nplt.title('Regional Profit')\nplt.xlabel('Region')\nplt.ylabel('Profit ($k)')"
+  },
+  {
+    "id": "18",
+    "title": "Study Hours Relationship Scatter",
+    "markdown": "### The Scenario\nAn instructor wants a scatter plot that highlights the relationship between study time and exam performance.\n\n### The Task\n- Use `plt.scatter()` to plot `study_hours` vs `exam_score`.\n- Set the marker color to `red`.\n- Set the title to `Study Time and Exam Score`.\n- Set the x-axis label to `Study Hours`.\n- Set the y-axis label to `Exam Score`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nstudy_hours = [1, 2, 3, 4, 5, 6, 7]\nexam_score = [52, 58, 63, 70, 76, 84, 90]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "import matplotlib.colors as mcolors\nax = plt.gca()\nassert len(ax.collections) > 0, 'We could not find a scatter plot. Did you use plt.scatter()?'\nfacecolors = ax.collections[0].get_facecolors()\nassert len(facecolors) > 0 and mcolors.to_rgba(facecolors[0]) == mcolors.to_rgba('red'), 'Set the scatter marker color to red.'\nassert ax.get_title() == 'Study Time and Exam Score', 'Set the title to exactly \"Study Time and Exam Score\".'\nassert ax.get_xlabel() == 'Study Hours', 'Set the x-axis label to exactly \"Study Hours\".'\nassert ax.get_ylabel() == 'Exam Score', 'Set the y-axis label to exactly \"Exam Score\".'",
+    "dataset_preview": {
+      "columns": ["study_hours", "exam_score"],
+      "rows": [
+        [1, 52],
+        [2, 58]
+      ]
+    },
+    "hints": [
+      "A scatter plot is best when you want to show the relationship between two numeric variables.",
+      "Use `plt.scatter()` and set the point color with `color='red'`.",
+      "Try `plt.scatter(study_hours, exam_score, color='red')`, then add `plt.title('Study Time and Exam Score')`, `plt.xlabel('Study Hours')`, and `plt.ylabel('Exam Score')`."
+    ],
+    "solution_code": "plt.scatter(study_hours, exam_score, color='red')\nplt.title('Study Time and Exam Score')\nplt.xlabel('Study Hours')\nplt.ylabel('Exam Score')"
+  },
+  {
+    "id": "19",
+    "title": "Customer Satisfaction Boxplot",
+    "markdown": "### The Scenario\nA service team wants to compare customer satisfaction scores across support channels using a simple summary chart.\n\n### The Task\n- Use `plt.boxplot()` to create a boxplot with the three score lists in the order `chat_scores`, `email_scores`, `phone_scores`.\n- Set the x-axis tick labels to `Chat`, `Email`, and `Phone`.\n- Set the title to `Customer Satisfaction by Channel`.\n- Set the y-axis label to `Satisfaction Score`.\n- Display the chart.",
+    "starting_code": "import matplotlib.pyplot as plt\n\nchat_scores = [4.3, 4.5, 4.0, 4.6, 4.2, 4.4]\nemail_scores = [3.8, 4.0, 4.1, 3.9, 4.2, 4.0]\nphone_scores = [4.1, 4.3, 4.4, 4.2, 4.5, 4.3]\n\n# Create your chart below\n\n\n\nplt.show()",
+    "validation_code": "ax = plt.gca()\nassert len(ax.lines) > 0, 'We could not find a boxplot. Did you use plt.boxplot()?'\nlabels = [tick.get_text() for tick in ax.get_xticklabels()[:3]]\nassert labels == ['Chat', 'Email', 'Phone'], 'Set the x-axis tick labels to Chat, Email, and Phone.'\nassert ax.get_title() == 'Customer Satisfaction by Channel', 'Set the title to exactly \"Customer Satisfaction by Channel\".'\nassert ax.get_ylabel() == 'Satisfaction Score', 'Set the y-axis label to exactly \"Satisfaction Score\".'",
+    "dataset_preview": {
+      "columns": ["channel", "sample_score"],
+      "rows": [
+        ["Chat", 4.3],
+        ["Email", 3.8]
+      ]
+    },
+    "hints": [
+      "A boxplot summarizes a distribution using quartiles and spread, which fits this comparison well.",
+      "Use `plt.boxplot()` on a list of score lists, then set the tick labels with `plt.xticks()`.",
+      "Try `plt.boxplot([chat_scores, email_scores, phone_scores])`, then `plt.xticks([1, 2, 3], ['Chat', 'Email', 'Phone'])`, `plt.title('Customer Satisfaction by Channel')`, and `plt.ylabel('Satisfaction Score')`."
+    ],
+    "solution_code": "plt.boxplot([chat_scores, email_scores, phone_scores])\nplt.xticks([1, 2, 3], ['Chat', 'Email', 'Phone'])\nplt.title('Customer Satisfaction by Channel')\nplt.ylabel('Satisfaction Score')"
+  },
+  {
+    "id": "20",
+    "title": "Website Visits and Signups",
+    "markdown": "### The Scenario\nA growth team wants a two-panel figure comparing daily website visits and daily signups over the same week.\n\n### The Task\n- Create a `1x2` subplot layout.\n- In the first subplot, plot `days` vs `visits` and set the title to `Website Visits`.\n- In the second subplot, plot `days` vs `signups` and set the title to `Daily Signups`.\n- Set the first subplot y-axis label to `Visits`.\n- Set the second subplot y-axis label to `Signups`.\n- Display the figure.",
+    "starting_code": "import matplotlib.pyplot as plt\n\ndays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']\nvisits = [120, 145, 138, 160, 172]\nsignups = [12, 15, 14, 18, 21]\n\n# Create your figure below\n\n\n\nplt.show()",
+    "validation_code": "fig = plt.gcf()\nassert len(fig.axes) == 2, 'Create exactly two subplots.'\nleft_ax, right_ax = fig.axes\nassert len(left_ax.lines) == 1, 'The first subplot should contain one line chart.'\nassert len(right_ax.lines) == 1, 'The second subplot should contain one line chart.'\nassert left_ax.get_title() == 'Website Visits', 'Set the first subplot title to exactly \"Website Visits\".'\nassert right_ax.get_title() == 'Daily Signups', 'Set the second subplot title to exactly \"Daily Signups\".'\nassert left_ax.get_ylabel() == 'Visits', 'Set the first subplot y-axis label to exactly \"Visits\".'\nassert right_ax.get_ylabel() == 'Signups', 'Set the second subplot y-axis label to exactly \"Signups\".'",
+    "dataset_preview": {
+      "columns": ["day", "visits", "signups"],
+      "rows": [
+        ["Mon", 120, 12],
+        ["Tue", 145, 15]
+      ]
+    },
+    "hints": [
+      "This figure needs two side-by-side line charts, one for each metric.",
+      "Use a `1x2` subplot layout and place one `plt.plot()` call in each panel.",
+      "Try `plt.subplot(1, 2, 1)` with `plt.plot(days, visits)`, `plt.title('Website Visits')`, `plt.ylabel('Visits')`, then `plt.subplot(1, 2, 2)` with `plt.plot(days, signups)`, `plt.title('Daily Signups')`, and `plt.ylabel('Signups')`."
+    ],
+    "solution_code": "plt.subplot(1, 2, 1)\nplt.plot(days, visits)\nplt.title('Website Visits')\nplt.ylabel('Visits')\nplt.subplot(1, 2, 2)\nplt.plot(days, signups)\nplt.title('Daily Signups')\nplt.ylabel('Signups')"
+  }
 ]
