@@ -41,7 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 
-
+# prompt files 
 
 PROJECT_SPECS.md
 CLAUDE.md
@@ -49,3 +49,4 @@ AGENTS.md
 implementation_plan.md
 app_shell_implementation_plan.md
 app_shell_implementation_plan
+error.txt
