@@ -1,9 +1,5 @@
 'use client';
 
-/**
- * Workspace.tsx  –  src/components/Workspace.tsx
- */
-
 import React, { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import { Panel, Group, Separator } from 'react-resizable-panels';

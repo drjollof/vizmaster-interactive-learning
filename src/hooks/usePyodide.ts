@@ -20,9 +20,9 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// ─────────────────────────────────────────────────────────────────────────────
+
 // Shared types (exported so Workspace.tsx can import them)
-// ─────────────────────────────────────────────────────────────────────────────
+
 
 export interface PyodideOutput {
   stdout: string;
@@ -54,9 +54,7 @@ export interface UsePyodideReturn {
   reset: () => void;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Worker message protocol (mirrors pyodide.worker.js)
-// ─────────────────────────────────────────────────────────────────────────────
+//  Worker message protocol (mirrors pyodide.worker.js)
 
 type WorkerIncoming =
   | { id: string; type: 'init' }
@@ -67,11 +65,9 @@ type WorkerOutgoing =
   | { id: string; type: 'result'; stdout: string; images: string[] }
   | { id: string; type: 'error'; message: string; traceback?: string | undefined; stdout?: string; images?: string[] };
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Known Python exception names – used to find the bottommost error line
 // AssertionError is intentionally excluded here; it is handled separately in
 // parseGradingError so it always routes to grading_error, never runtime_error.
-// ─────────────────────────────────────────────────────────────────────────────
 
 const PYTHON_EXCEPTION_NAMES = [
   'SyntaxError',
@@ -97,8 +93,7 @@ const PYTHON_EXCEPTION_NAMES = [
   'Exception',
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// buildGradingScript
+//  buildGradingScript
 //
 // Concatenates the student's raw code with the validation code verbatim —
 // no try/except wrappers, no JS-side indentation. Python receives the code
@@ -107,7 +102,6 @@ const PYTHON_EXCEPTION_NAMES = [
 // plt.show() is mocked to a no-op so figures remain open for plt.gca()
 // inspection by the validation assertions. The worker's _show_override has
 // already captured rendered figures before this script runs.
-// ─────────────────────────────────────────────────────────────────────────────
 
 function buildGradingScript(userCode: string, validationCode: string): string {
   return [
@@ -123,13 +117,11 @@ function buildGradingScript(userCode: string, validationCode: string): string {
   ].join('\n');
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// extractBottomExceptionLine
+//  extractBottomExceptionLine
 //
 // Walks the combined traceback string from the bottom up and returns the first
 // line that matches a known Python exception name. Falls back to the last
 // non-empty line if nothing matches.
-// ─────────────────────────────────────────────────────────────────────────────
 
 function extractBottomExceptionLine(full: string): string {
   const exceptionPattern = new RegExp(`(${PYTHON_EXCEPTION_NAMES.join('|')})[^\n]*`);
@@ -140,8 +132,7 @@ function extractBottomExceptionLine(full: string): string {
   return lines.find((l) => l.trim() !== '')?.trim() ?? full.trim();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// parseGradingError
+//  parseGradingError
 //
 // Pyodide surfaces Python exceptions as { message, traceback }. Both fields
 // may contain the full multi-line traceback, or one may have only the final
@@ -161,7 +152,6 @@ function extractBottomExceptionLine(full: string): string {
 //
 // NOTE: AssertionError is deliberately absent from PYTHON_EXCEPTION_NAMES so
 // it cannot accidentally fall through and be labelled a runtime_error.
-// ─────────────────────────────────────────────────────────────────────────────
 
 function parseGradingError(
   message: string,
@@ -173,7 +163,7 @@ function parseGradingError(
   const tb = traceback ?? '';
   const full = `${tb}\n${message}`;
 
-  // ── 1. AssertionError → grading feedback ─────────────────────────────────
+  //  1. AssertionError → grading feedback 
   if (full.includes('AssertionError')) {
     const assertMatch = full.match(/AssertionError:?\s*([^\n]*)/);
     const hint =
@@ -183,7 +173,7 @@ function parseGradingError(
     return { status: 'grading_error', message: hint, stdout, images };
   }
 
-  // ── 2. Any other exception → runtime error ────────────────────────────────
+  //  Any other exception → runtime error 
   const errorLine = extractBottomExceptionLine(full);
   return {
     status: 'runtime_error',
@@ -193,21 +183,19 @@ function parseGradingError(
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// extractRunError
+//  extractRunError
 //
 // For plain (non-graded) runs: extract a clean single-line error rather than
 // dumping the full Pyodide traceback blob into the Console.
-// ─────────────────────────────────────────────────────────────────────────────
+// 
 
 function extractRunError(message: string, traceback: string | undefined): string {
   const full = `${traceback ?? ''}\n${message}`;
   return extractBottomExceptionLine(full) || message || 'An error occurred.';
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Hook
-// ─────────────────────────────────────────────────────────────────────────────
+//  Hook
+
 
 export function usePyodide(): UsePyodideReturn {
   const workerRef  = useRef<Worker | null>(null);
@@ -222,7 +210,7 @@ export function usePyodide(): UsePyodideReturn {
   const [output,      setOutput]      = useState<PyodideOutput | null>(null);
   const [runError,    setRunError]    = useState<string | null>(null);
 
-  // ── Boot worker ────────────────────────────────────────────────────────────
+  //  Boot worker 
   useEffect(() => {
     const worker = new Worker('/pyodide.worker.js');
     workerRef.current = worker;
@@ -255,7 +243,7 @@ export function usePyodide(): UsePyodideReturn {
     return () => { worker.terminate(); workerRef.current = null; };
   }, []);
 
-  // ── Low-level send ─────────────────────────────────────────────────────────
+  //  Low-level send 
   const postToWorker = useCallback((msg: WorkerIncoming): Promise<WorkerOutgoing> => {
     return new Promise((resolve, reject) => {
       if (!workerRef.current) { reject(new Error('Worker not initialised')); return; }
@@ -264,7 +252,7 @@ export function usePyodide(): UsePyodideReturn {
     });
   }, []);
 
-  // ── runCode (Run button) ───────────────────────────────────────────────────
+  //  runCode (Run button) 
   const runCode = useCallback(async (code: string) => {
     if (!workerRef.current) return;
     setIsExecuting(true);
@@ -286,7 +274,7 @@ export function usePyodide(): UsePyodideReturn {
     }
   }, [postToWorker]);
 
-  // ── submitAndGrade (Submit button) ────────────────────────────────────────
+  //  submitAndGrade (Submit button) 
   const submitAndGrade = useCallback(
     async (userCode: string, validationCode: string): Promise<GradeResult> => {
       if (!workerRef.current) {
@@ -331,7 +319,7 @@ export function usePyodide(): UsePyodideReturn {
     [postToWorker],
   );
 
-  // ── reset ──────────────────────────────────────────────────────────────────
+  //  reset 
   const reset = useCallback(() => { setOutput(null); setRunError(null); }, []);
 
   return { runCode, submitAndGrade, isLoading, isReady, isExecuting, isGrading, output, runError, reset };

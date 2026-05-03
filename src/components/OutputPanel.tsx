@@ -1,26 +1,3 @@
-/**
- * OutputPanel.tsx
- * Place at: src/components/OutputPanel.tsx
- *
- * Example consumer of usePyodide – shows stdout text AND matplotlib images.
- * Wire this into your Workspace component alongside your Monaco editor.
- *
- * Example usage inside Workspace.tsx:
- *
- *   const { runCode, isLoading, isReady, isExecuting, output, error, reset } = usePyodide();
- *
- *   <button onClick={() => runCode(editorValue)} disabled={!isReady || isExecuting}>
- *     {isExecuting ? 'Running…' : 'Run'}
- *   </button>
- *
- *   <OutputPanel
- *     isLoading={isLoading}
- *     isExecuting={isExecuting}
- *     output={output}
- *     error={error}
- *   />
- */
-
 'use client';
 
 import React from 'react';
@@ -38,7 +15,7 @@ export default function OutputPanel({
   output,
   error,
 }: OutputPanelProps) {
-  // ---------- Loading state (Pyodide + packages still downloading) ----------
+  // Loading state (Pyodide + packages still downloading)
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-3 text-[var(--text-muted)]">
@@ -49,7 +26,7 @@ export default function OutputPanel({
     );
   }
 
-  // ---------- Executing state -----------------------------------------------
+  // Executing state 
   if (isExecuting) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-3 text-[var(--text-muted)]">
@@ -59,7 +36,7 @@ export default function OutputPanel({
     );
   }
 
-  // ---------- Error state ----------------------------------------------------
+  // Error state
   if (error) {
     return (
       <div className="p-4 h-full overflow-auto">
@@ -77,7 +54,7 @@ export default function OutputPanel({
     );
   }
 
-  // ---------- Successful output ---------------------------------------------
+  // Successful output
   if (output) {
     const hasStdout = output.stdout.trim().length > 0;
     const hasImages = output.images.length > 0;
@@ -117,7 +94,7 @@ export default function OutputPanel({
     );
   }
 
-  // ---------- Idle / empty state --------------------------------------------
+  // Idle / empty state
   return (
     <div className="flex items-center justify-center h-full text-[var(--text-muted)] text-sm">
       Run your code to see output here.
@@ -125,9 +102,8 @@ export default function OutputPanel({
   );
 }
 
-// ---------------------------------------------------------------------------
-// Tiny inline spinner so this file is self-contained
-// ---------------------------------------------------------------------------
+// Inline spinner so this file is self-contained
+
 function Spinner() {
   return (
     <svg

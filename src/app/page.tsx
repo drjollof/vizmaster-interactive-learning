@@ -19,8 +19,9 @@ import { Panel, Group, Separator, type PanelImperativeHandle } from 'react-resiz
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import WelcomeDashboard from '@/components/WelcomeDashboard';
+import { Show, SignInButton, UserButton } from '@clerk/nextjs';
 
-// ── Utility hook: detect mobile viewport ─────────────────────────────────────
+//  Utility hook: detect mobile viewport
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
@@ -34,7 +35,7 @@ function useIsMobile(breakpoint = 768) {
   return isMobile;
 }
 
-// ── Dataset preview helper ────────────────────────────────────────────────────
+//  Dataset preview helper 
 
 function extractPreviewData(code: string) {
   const listRegex = /([a-zA-Z0-9_]+)\s*=\s*\[([\s\S]*?)\]/g;
@@ -74,9 +75,9 @@ function extractPreviewData(code: string) {
   return { columns, rows };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Sidebar content – extracted so it can be rendered in both desktop & mobile
-// ─────────────────────────────────────────────────────────────────────────────
+
+//  Sidebar content – extracted so it can be rendered in both desktop & mobile
+
 
 interface SidebarContentProps {
   activeExerciseId: string | null;
@@ -166,13 +167,29 @@ function SidebarContent({
           </details>
         ))}
       </div>
+
+      {/* User Profile Section */}
+      <div className="p-4 border-t border-panel-border shrink-0 bg-[#111113]">
+        <Show when="signed-out">
+          <SignInButton mode="modal">
+            <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md text-sm font-medium transition-colors">
+              Sign In
+            </button>
+          </SignInButton>
+        </Show>
+        <Show when="signed-in">
+          <div className="flex items-center gap-3">
+            <UserButton />
+            <span className="text-sm font-medium text-zinc-300">My Account</span>
+          </div>
+        </Show>
+      </div>
     </>
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Left Panel – Instructions + Dataset Preview + Progressive Hints
-// ─────────────────────────────────────────────────────────────────────────────
+//  Left Panel – Instructions + Dataset Preview + Progressive Hints
+
 
 interface LeftPanelProps {
   activeExercise: import('@/data').Exercise;
@@ -236,7 +253,7 @@ function LeftPanel({ activeExercise, previewData, panelRef, isMobile }: LeftPane
         </div>
       )}
 
-      {/* ── Progressive Hints ── */}
+      {/*  Progressive Hints  */}
       {hints.length > 0 && (
         <div className="mt-8">
           <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3">Hints</h3>
@@ -320,14 +337,14 @@ function LeftPanel({ activeExercise, previewData, panelRef, isMobile }: LeftPane
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Home (App Shell)
-// ─────────────────────────────────────────────────────────────────────────────
+//  Home (App Shell)
+
 
 export default function Home() {
   const [activeExerciseId, setActiveExerciseId] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // ── Sidebar collapsed state (desktop only) ─────────────────────────────────
+
+  //  Sidebar collapsed state (desktop only)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const { completedExerciseIds, markCompleted } = useProgress();
@@ -379,7 +396,7 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden bg-background text-foreground">
 
-      {/* ── MOBILE HEADER (visible only below md) ────────────────────────── */}
+      {/*  MOBILE HEADER (visible only below md)  */}
       <header className="flex md:hidden items-center justify-between px-4 h-14 bg-[#111113] border-b border-panel-border shrink-0 z-40">
         <button
           onClick={() => setIsMobileMenuOpen(true)}
@@ -406,10 +423,10 @@ export default function Home() {
         )}
       </header>
 
-      {/* ── BODY ROW (sidebar + main content) ───────────────────────────── */}
+      {/*  BODY ROW (sidebar + main content)  */}
       <div className="flex flex-1 overflow-hidden">
 
-        {/* ── DESKTOP SIDEBAR (hidden on mobile) ───────────────────────── */}
+        {/*  DESKTOP SIDEBAR (hidden on mobile)  */}
         {isSidebarCollapsed ? (
           /* Collapsed strip: just the expand icon */
           <div className="hidden md:flex flex-col items-center bg-[#111113] border-r border-panel-border py-3 px-1.5 shrink-0">
@@ -435,7 +452,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* ── MOBILE SIDEBAR OVERLAY ────────────────────────────────────── */}
+        {/*  MOBILE SIDEBAR OVERLAY */}
         {isMobileMenuOpen && (
           <>
             {/* Backdrop */}
@@ -457,7 +474,7 @@ export default function Home() {
           </>
         )}
 
-        {/* ── MAIN CONTENT AREA ────────────────────────────────────────── */}
+        {/* MAIN CONTENT AREA  */}
         <div className="flex-1 h-full relative flex flex-col bg-background overflow-hidden">
           {!activeExercise ? (
             <WelcomeDashboard onStartLesson={(id) => setActiveExerciseId(id)} />
@@ -477,7 +494,7 @@ export default function Home() {
                   isMobile={isMobile}
                 />
 
-                {/* ── DRAG HANDLE ──────────────────────────────────────── */}
+                {/*  DRAG HANDLE  */}
                 <Separator
                   className={`group relative bg-panel-border hover:bg-zinc-600 transition-colors flex items-center justify-center shrink-0 z-10 ${
                     isMobile

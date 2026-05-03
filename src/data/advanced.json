@@ -321,5 +321,47 @@
                       "Try `sns.ecdfplot(data=df, x=\u0027lead_time_days\u0027, hue=\u0027vendor_tier\u0027, linewidth=2)`, then set `plt.xlim(0, 80)`, the labels, and the title."
                   ],
         "solution_code":  "plt.figure(figsize=(11, 6))\nax = sns.ecdfplot(data=df, x=\u0027lead_time_days\u0027, hue=\u0027vendor_tier\u0027, linewidth=2)\nax.set_xlabel(\u0027Lead Time (days)\u0027)\nax.set_ylabel(\u0027Cumulative Probability\u0027)\nax.set_xlim(0, 80)\nax.legend(bbox_to_anchor=(1.02, 1), loc=\u0027upper left\u0027)\nax.annotate(\u0027Long tail\u0027, (50, 0.9), xytext=(8, 8), textcoords=\u0027offset points\u0027)\nax.set_title(\u0027Purchase Order Lead-Time Reliability\u0027)"
-    }
+    },
+
+
+    {
+    "id": "55",
+    "title": "SaaS Cohort Retention Analysis",
+    "markdown": "### The Scenario\nThe Product team wants to see if recent platform updates have improved user retention. A cohort retention heatmap is analytically perfect here because it displays the drop-off rate of user cohorts over their lifecycle months.\n\n### The Task\n- Set the figure size to `(10, 8)`.\n- Use `sns.heatmap()` to plot `retention_df`.\n- Use the colormap `YlGnBu`.\n- Turn on annotations with `annot=True` and format them as percentages without decimals using `fmt='.0%'`.\n- Title the chart `User Retention by Cohort`.",
+    "starting_code": "import matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nimport numpy as np\n\n# Simulate a SaaS cohort retention matrix\ndata = [[1.0, 0.85, 0.70, 0.65, 0.60],[1.0, 0.82, 0.68, 0.62, np.nan],[1.0, 0.88, 0.74, np.nan, np.nan],[1.0, 0.90, np.nan, np.nan, np.nan],[1.0, np.nan, np.nan, np.nan, np.nan]\n]\n\nretention_df = pd.DataFrame(\n    data, \n    columns=['Month 0', 'Month 1', 'Month 2', 'Month 3', 'Month 4'],\n    index=['Jan Cohort', 'Feb Cohort', 'Mar Cohort', 'Apr Cohort', 'May Cohort']\n)\n\n# Build the retention heatmap below\n\n\n\nplt.show()",
+    "validation_code": "fig = plt.gcf()\nax = plt.gca()\nassert len(ax.collections) > 0, 'We could not find a heatmap. Use sns.heatmap().'\nassert ax.collections[0].cmap.name == 'YlGnBu', 'Your heatmap must use the YlGnBu colormap.'\nassert len(ax.texts) > 0, 'Make sure to turn on annotations with annot=True.'\nassert all('%' in text.get_text() for text in ax.texts if text.get_text() != ''), 'Format the annotations as percentages using fmt=\".0%\".'\nassert ax.get_title() == 'User Retention by Cohort', 'Check your chart title!'",
+    "dataset_preview": {
+        "columns": [
+            "",
+            "Month 0",
+            "Month 1",
+            "Month 2"
+        ],
+        "rows": [
+            [
+                "Jan Cohort",
+                1,
+                0.85,
+                0.7
+            ],
+            [
+                "Feb Cohort",
+                1,
+                0.82,
+                0.68
+            ]
+        ]
+    },
+    "hints": [
+        "A heatmap is the perfect chart for a cohort matrix. Use `sns.heatmap()`.",
+        "Don't forget to pass the `fmt='.0%'` argument inside the heatmap function to turn decimals into percentages.",
+        "Try: `sns.heatmap(retention_df, annot=True, fmt='.0%', cmap='YlGnBu')`"
+    ],
+    "solution_code": "plt.figure(figsize=(10, 8))\nsns.heatmap(retention_df, annot=True, fmt='.0%', cmap='YlGnBu')\nplt.title('User Retention by Cohort')"
+}
+
+
+
+
+
 ]
